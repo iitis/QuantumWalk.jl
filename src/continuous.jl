@@ -1,6 +1,4 @@
 
-
-
 function continuous_quantum_search(graph::Graph,
                                    marked::Array{T} where T<:Int,
                                    time::Real,
