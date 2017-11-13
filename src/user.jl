@@ -5,14 +5,14 @@ export
 function quantumsearch(graph::Graph,
                        marked::Array{T} where T<:Int,
                        time::Real,
-                       model::Symbol,
-                       params::Dict{String,T} where T)
+                       model::Symbol;
+                       state::Bool = true)
 
    result = Array{Float64}[]
    if model == :continuous
-      result = continuous_quantum_search(graph, marked, time, params)
+      result = continuous_quantum_search(graph, marked, time, state=state)
    elseif model == :szegedy
-      result = szegedy_quantum_search(graph, marked, time, params)
+      result = szegedy_quantum_search(graph, marked, time)
    else
       throw(AssertionError("Model not implemented"))
    end

@@ -1,9 +1,9 @@
 module QSpatialSearch
 using Expokit
 using LightGraphs
-using QSWalk
 
 
+include("utils.jl")
 include("continuous.jl")
 include("szegedy.jl")
 include("coined.jl")
