@@ -1,5 +1,5 @@
 
-SparseDenseMatrix = Union{SparseMatrixCSC{T} where T<:Number, Matrix{S} where S<:Number}
+SparseDenseMatrix{T} = Union{SparseMatrixCSC{S}, Matrix{S}} where S<:T
 
 """
     proj(index, size)

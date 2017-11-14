@@ -30,13 +30,13 @@ end
     continuous_quantum_search(graph, marked, time[, graphmatrixsymbol][, jumpingrate][, state])
 
 Makes evolution for continuous-time quantum walk spatial search. `graph` needs
-to be undirected graph and `marked` needs to be list being a subset of vertices
+to be undirected graph and `marked` needs to be a non-empty list being a subset of vertices
 of `graph`.  The evolution is made for time `time`. Parameter `graphmatrixsymbol` needs
 to be equal to :adjacency or :laplacian, by default is equal to :adjacency.
 For defaulty value of `graphmatrixsymbol` Parameter `jumpingrate` is calulated as the inverse
 of eigenvalue of largest magnitude of adjacency matrix. If parameter `state` is `true`, the
 probability distribution over vertices is returned, otherwise the resulting state
-is returned.
+is returned. By default state is returned.
 
     continuous_quantum_search(graphmatrix, marked, time[, state])
 

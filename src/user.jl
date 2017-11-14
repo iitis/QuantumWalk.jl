@@ -1,7 +1,6 @@
 export
    quantumsearch
 
-
 function quantumsearch(graph::Graph,
                        marked::Array{T} where T<:Int,
                        time::Real,
@@ -12,7 +11,7 @@ function quantumsearch(graph::Graph,
    if model == :continuous
       result = continuous_quantum_search(graph, marked, time, state=state)
    elseif model == :szegedy
-      result = szegedy_quantum_search(graph, marked, time)
+      result = szegedy_quantum_search(graph, marked, time, state=state)
    else
       throw(AssertionError("Model not implemented"))
    end
