@@ -41,4 +41,9 @@
   end
 
 
+  @testset "Szegedy search test" begin
+    graph = smallgraph(:bull)
+
+    @test norm(szegedy_quantum_search(graph, [1], 10, measure=false)) ≈ 1
+  end
 end

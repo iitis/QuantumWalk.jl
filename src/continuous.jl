@@ -76,7 +76,7 @@ function continuous_quantum_search(graph::Graph,
                                    time::Real;
                                    graphmatrixsymbol::Symbol = :adjacency,
                                    jumpingrate::Real = default_jumping_rate(graph, graphmatrixsymbol),
-                                   state::Bool = true)
+                                   measure::Bool = false)
    @assert marked ⊆ collect(vertices(graph)) && marked != [] "marked needs to be non-empty subset of graph vertices set"
    @assert time >= 0 "Time needs to be nonnegative"
    @assert graphmatrixsymbol ∈ [:adjacency, :laplacian] "graphmatrixsymbol parameter needs to be :adjacency or :laplacian"
@@ -89,13 +89,13 @@ function continuous_quantum_search(graph::Graph,
    end
    graphmatrix = jumpingrate * graphmatrix
 
-   continuous_quantum_search(graphmatrix, marked, time, state=state)
+   continuous_quantum_search(graphmatrix, marked, time, measure=measure)
 end
 
 function continuous_quantum_search(graphmatrix::SparseDenseMatrix,
                                    marked::Vector{S} where S<:Int,
                                    time::Real;
-                                   state::Bool = true)
+                                   measure::Bool = true)
    @assert time >= 0 "Time needs to be nonnegative"
    @assert size(graphmatrix, 1) == size(graphmatrix, 2) "graphmatrix needs to be square"
    graphorder = size(graphmatrix ,1)
@@ -106,10 +106,10 @@ function continuous_quantum_search(graphmatrix::SparseDenseMatrix,
    hamiltonian = graphmatrix + sum(map(x -> proj(x, graphorder), marked))
    resultstate = continuous_evolution(hamiltonian, time, initstate)
 
-   if state
-      resultstate
-   else
+   if measure
       abs.(resultstate .* conj(resultstate))
+   else
+      resultstate
    end
 end
 

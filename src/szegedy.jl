@@ -30,6 +30,7 @@ julia> QSpatialSearch.out_neighbors_looped(g, 2)
 """
 function out_neighbors_looped(graph::T where T<:AbstractGraph,
                               vertex::Int)
+   @assert vertex ∈ 1:nv(graph)
    outneighbors = out_neighbors(graph, vertex)
    if outneighbors == []
       return [vertex]
@@ -44,7 +45,7 @@ end
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
 
 """
-function isstochastic(stochastic::SparseDenseMatrix{T} where T<:Real)
+function isstochastic(stochastic::SparseDenseMatrix{Real})
    @assert size(stochastic, 1) == size(stochastic, 2) "Matrix is not square"
    @assert all(sum(stochastic[:,i]) ≈ 1 for i=1:size(stochastic, 1)) "Columns sums do not equal one"
    @assert all(findnz(stochastic)[3] .> 0 ) "Matrix elements are not nonnegative"
@@ -59,7 +60,7 @@ Checks whether `stochastic`  matrix presreves graph structure. Returns nothing.
 
 """
 function stochastic_preserves_graph_check(graph::T where T<:AbstractGraph,
-                                          stochastic::SparseDenseMatrix{T} where T<:Real)
+                                          stochastic::SparseDenseMatrix{Real})
    @assert size(stochastic, 1) == nv(graph) "Orders of matrix and graph do not match"
    @assert all([ i ∈ out_neighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
    return nothing
@@ -77,6 +78,8 @@ Function returns `nothing` if `stochastic` satisfies properties above, otherwise
 raise error.
 
 # Examples
+*Note* Example requires LightGraphs package.
+
 ```jldoctest
 julia> g = DiGraph(3)
 {3, 0} directed simple Int64 graph
@@ -105,7 +108,7 @@ julia> isgraphstochastic(g, stochastic)
 ```
 """
 function isgraphstochastic(graph::T where T<:AbstractGraph,
-                           stochastic::SparseDenseMatrix{T} where T<:Real)
+                           stochastic::SparseDenseMatrix{Real})
    isstochastic(stochastic)
    stochastic_preserves_graph_check(graph, stochastic)
    return nothing
@@ -155,6 +158,52 @@ function default_stochastic(digraph::T where T<:AbstractGraph)
    result
 end
 
+
+
+
+
+
+"""
+
+
+"""
+function szegedywalkoperators(graph::T where T<:AbstractGraph,
+                              sqrtstochastic::SparseDenseMatrix{Real})
+   order = size(sqrtstochastic, 1)
+
+   r1 = 2*sum(proj(kron(ket(x, order), sqrtstochastic[:,x])) for x=1:order)
+   r1 -= speye(Float64, order^2)
+   r2 = 2*sum(proj(kron(sqrtstochastic[:,x], ket(x, order))) for x=1:order)
+   r2 -= speye(Float64, order^2)
+
+   (r1, r2)
+end
+
+function szegedyoracleoperators(graph::T where T<:AbstractGraph,
+                                marked::Vector{T} where T<:Int)
+   order = nv(graph)
+
+   markedidentity = speye(Float64, order)
+   for v=marked
+      markedidentity[v,v] = -1.
+   end
+
+   q1 = kron(markedidentity, speye(order))
+   q2 = kron(speye(order), markedidentity)
+
+   (q1, q2)
+end
+
+function szegedyinitialstate(sqrtstochastic::SparseDenseMatrix{Real})
+   res(sqrtstochastic)/sqrt(size(sqrtstochastic, 1))
+end
+
+function szegedymeasurement(state::Vector{T} where T<:Number)
+   result = abs.(resultstate .* conj(resultstate))
+   result = unres(result)
+   [sum(result[:,x]) for x=1:size(result, 1)]
+end
+
 """
     szegedy_quantum_search(graph, marked, time[, stochastic][, state])
 
@@ -177,19 +226,41 @@ set to `false`. Note that checking may increase total run-time of the algorithm.
 ```
 
 """
-function szegedy_quantum_search(graph::AbstractGraph,
+function szegedy_quantum_search(graph::T where T<:AbstractGraph,
                                 marked::Vector{T} where T<:Int,
                                 time::Int64;
-                                stochastic::Matrix{T} where T<:Real = default_stochastic(graph),
+                                stochastic::SparseDenseMatrix{Real} = default_stochastic(graph),
                                 checkstochastic::Bool = false,
-                                state::Bool = true)
-   @assert time >= 0 && "Time needs to be  nonnegative"
+                                measure::Bool = false)
+   @assert time >= 0 "Time needs to be  nonnegative"
    @assert marked ⊆ collect(vertices(graph)) && marked != [] "marked needs to be non-empty subset of graph vertices set"
 
    if checkstochastic
       isgraphstochastic(graph, stochastic)
    end
 
-   n = nv(graph)
-   
+   sqrtstochastic = sqrt.(stochastic)
+
+   r1, r2 = szegedywalkoperators(graph, sqrtstochastic)
+   q1, q2 = szegedyoracleoperators(graph, marked)
+
+   state = szegedyinitialstate(sqrtstochastic)
+
+   w1 = r1*q1
+   w2 = r2*q2
+
+   for t=1:time
+      state = w1*state
+      state = w2*state
+   end
+
+   if measure
+      szegedymeasurement(state)
+   else
+      state
+   end
+
+
+
+
 end

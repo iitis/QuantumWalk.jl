@@ -10,7 +10,7 @@
   end
 
   @testset "CTQW search" begin
-    @test continuous_quantum_search(g, [1], π*sqrt(n)/2, graphmatrixsymbol=:adjacency, jumpingrate=1/n, state=false)[1] ≈ 1
+    @test continuous_quantum_search(g, [1], π*sqrt(n)/2, graphmatrixsymbol=:adjacency, jumpingrate=1/n, measure=true)[1] ≈ 1
   end
 
   @testset "Simple evolution" begin
