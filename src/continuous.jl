@@ -72,7 +72,7 @@ julia> continuous_quantum_search(CompleteGraph(5), [1], pi*sqrt(5)/2, jumpingrat
 ```
 """
 function continuous_quantum_search(graph::Graph,
-                                   marked::Vector{T} where T<:Int,
+                                   marked::Vector{Int},
                                    time::Real;
                                    graphmatrixsymbol::Symbol = :adjacency,
                                    jumpingrate::Real = default_jumping_rate(graph, graphmatrixsymbol),
@@ -92,8 +92,8 @@ function continuous_quantum_search(graph::Graph,
    continuous_quantum_search(graphmatrix, marked, time, measure=measure)
 end
 
-function continuous_quantum_search(graphmatrix::SparseDenseMatrix,
-                                   marked::Vector{S} where S<:Int,
+function continuous_quantum_search(graphmatrix::SparseDenseMatrix{Real},
+                                   marked::Vector{Int},
                                    time::Real;
                                    measure::Bool = true)
    @assert time >= 0 "Time needs to be nonnegative"

@@ -30,7 +30,8 @@ julia> QSpatialSearch.out_neighbors_looped(g, 2)
 """
 function out_neighbors_looped(graph::T where T<:AbstractGraph,
                               vertex::Int)
-   @assert vertex ∈ 1:nv(graph)
+   @assert 1 <= vertex <= nv(graph) "Vertex needs to be positive and at most order of the graph"
+
    outneighbors = out_neighbors(graph, vertex)
    if outneighbors == []
       return [vertex]
@@ -54,9 +55,10 @@ end
 
 
 """
-    isstochastic(stochastic)
+    stochastic_preserves_graph_check(graph, stochastic)
 
 Checks whether `stochastic`  matrix presreves graph structure. Returns nothing.
+Accepts both Graph and DiGraph.
 
 """
 function stochastic_preserves_graph_check(graph::T where T<:AbstractGraph,
@@ -158,11 +160,6 @@ function default_stochastic(digraph::T where T<:AbstractGraph)
    result
 end
 
-
-
-
-
-
 """
 
 
@@ -195,12 +192,12 @@ function szegedyoracleoperators(graph::T where T<:AbstractGraph,
 end
 
 function szegedyinitialstate(sqrtstochastic::SparseDenseMatrix{Real})
-   res(sqrtstochastic)/sqrt(size(sqrtstochastic, 1))
+   res(sqrtstochastic')/sqrt(size(sqrtstochastic, 1))
 end
 
 function szegedymeasurement(state::Vector{T} where T<:Number)
-   result = abs.(resultstate .* conj(resultstate))
-   result = unres(result)
+   result = abs.(state .* conj(state))
+   result = unres(result)'
    [sum(result[:,x]) for x=1:size(result, 1)]
 end
 
@@ -227,7 +224,7 @@ set to `false`. Note that checking may increase total run-time of the algorithm.
 
 """
 function szegedy_quantum_search(graph::T where T<:AbstractGraph,
-                                marked::Vector{T} where T<:Int,
+                                marked::Vector{Int},
                                 time::Int64;
                                 stochastic::SparseDenseMatrix{Real} = default_stochastic(graph),
                                 checkstochastic::Bool = false,
@@ -259,8 +256,4 @@ function szegedy_quantum_search(graph::T where T<:AbstractGraph,
    else
       state
    end
-
-
-
-
 end
