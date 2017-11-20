@@ -59,13 +59,16 @@
 
   @testset "Szegedy walk operators" begin
     g = erdos_renyi(5, 0.5, is_directed=true)
-    sqrtstochastic = sqrt.(QSpatialSearch.default_stochastic(g))
+    sqrtstochastic = sparse(sqrt.(QSpatialSearch.default_stochastic(g)))
 
     r1, r2 = QSpatialSearch.szegedywalkoperators(g, sqrtstochastic)
     @test isapprox(norm(r1*r1'-eye(r1), Inf), 0, atol=1e-8)
     @test isapprox(norm(r2*r2'-eye(r2), Inf), 0, atol=1e-8)
 
     q1, q2 = QSpatialSearch.szegedyoracleoperators(g, [2, 3])
+
+    @test all(typeof(m) == SparseMatrixCSC{Float64,Int64} for m = [r1, r2, q1, q2])
+
     @test isapprox(norm(q1*q1'-eye(q1), Inf), 0, atol=1e-8)
     @test isapprox(norm(q2*q2'-eye(q2), Inf), 0, atol=1e-8)
     @test isdiag(q1)
@@ -95,9 +98,6 @@
     @test QSpatialSearch.szegedymeasurement(state) ≈ [1., 0.]
 
   end
-
-
-
 
   @testset "Szegedy search test" begin
     graph = smallgraph(:bull)

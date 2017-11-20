@@ -17,15 +17,17 @@ julia> ket(1, 2)
 
 ```
 """
-function ket(index::Int, size::Int)
 
-  @assert size > 0 "vector size must be positive"
-  @assert 1 <=  index <=  size "index must be positive and not bigger than vector size"
+function ket(T::Type, index::Int, size::Int)
+   @assert size > 0 "vector size must be positive"
+   @assert 1 <=  index <=  size "index must be positive and not bigger than vector size"
 
-  ret = spzeros(Int, size)
-  ret[index] = 1
-  ret
+   result = spzeros(T, size)
+   result[index] = 1
+   result
 end
+
+ket(index::Int, size::Int) = ket(Float64, index, size)
 
 """
     bra(index, size)
@@ -41,9 +43,8 @@ julia> bra(1, 2)
  1  0
 ```
 """
-function bra(index::Int, size::Int)
-  ket(index, size)'
-end
+bra(T::Type, index::Int, size::Int) = ket(T, index, size)'
+bra(index::Int, size::Int) = ket(index, size)'
 
 """
     ketbra(irow, icol, size)
@@ -61,9 +62,16 @@ julia> ketbra(1, 2, 3)
 
 ```
 """
-function ketbra(irow::Int, icol::Int, size::Int)
-  ket(irow, size)*bra(icol, size)
+function ketbra(T::Type, irow::Int, icol::Int, size::Int)
+  @assert size > 0 "vector size must be positive"
+  @assert 1 <= irow <= size && 1 <= icol <= size "indexes must be positive and not bigger than vector size"
+
+  result = spzeros(T, size, size)
+  result[irow, icol] = 1
+  result
 end
+
+ketbra(irow::Int, icol::Int, size::Int) = ketbra(Float64, irow, icol, size)
 
 """
     proj(index, size)
@@ -95,9 +103,8 @@ julia> proj(v)
   [3, 3] = 0.5
 ```
 """
-function proj(index::Int, size::Int)
-  ketbra(index, index, size)
-end
+proj(T::Type, index::Int, size::Int) = ketbra(T, index, index, size)
+proj(index::Int, size::Int) = ketbra(index, index, size)
 
 function proj(vector::SparseDenseVector)
   vector*vector'
