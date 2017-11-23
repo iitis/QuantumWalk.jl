@@ -1,6 +1,7 @@
 module QSpatialSearch
 using Expokit
 using LightGraphs
+using Optim
 
 """
 TODO: Documentation for QSpatialSearch

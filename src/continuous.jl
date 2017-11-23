@@ -1,5 +1,6 @@
 export
-   continuous_quantum_search
+   continuous_quantum_search,
+   continuous_maximal_probability
 
 """
     default_jumping_rate(graph, graphmatrixsymbol)
@@ -101,7 +102,7 @@ function continuous_quantum_search(graphmatrix::SparseDenseMatrix{Real},
    graphorder = size(graphmatrix ,1)
    @assert marked ⊆ 1:graphorder && marked != [] "marked needs to be subset of 1:size(graphmatrix, 1)"
 
-   initstate = ones(Complex128, graphorder)/sqrt(graphorder)
+   initstate = fill((1.+0im)/sqrt(graphorder), graphorder)
 
    hamiltonian = graphmatrix + sum(map(x -> proj(x, graphorder), marked))
    resultstate = continuous_evolution(hamiltonian, time, initstate)
@@ -113,6 +114,38 @@ function continuous_quantum_search(graphmatrix::SparseDenseMatrix{Real},
    end
 end
 
+
+function continuous_maximal_probability(graph::T where T<:AbstractGraph,
+                                        marked::Vector{Int};
+                                        graphmatrixsymbol::Symbol = :adjacency,
+                                        jumpingrate::Real = default_jumping_rate(graph, graphmatrixsymbol),
+                                        tmax::Real = nv(graph), #best general upper-bound, above t=0 is best
+                                        which::Vector{Int} = marked)
+   @assert tmax >= 0 "Time needs to be nonnegative"
+   @assert marked ⊆ collect(vertices(graph)) && marked != [] "marked needs to be non-empty subset of graph vertices set"
+
+   local graphmatrix
+   if graphmatrixsymbol == :adjacency
+      graphmatrix = adjacency_matrix(graph)
+   elseif graphmatrixsymbol == :laplacian
+      graphmatrix = laplacian_matrix(graph)
+   end
+   graphmatrix *= jumpingrate
+
+   graphorder = nv(graph)
+   initstate = fill((1.+0im)/sqrt(graphorder), graphorder)
+   hamiltonian = graphmatrix + sum(map(x -> proj(x, graphorder), marked))
+
+   optimized_function(t::Real) = t/sum(abs.(continuous_evolution(hamiltonian, t, initstate)[marked]).^2)
+   optimal_t = Optim.minimizer(optimize(optimized_function, 0.01, tmax))::Real
+
+   result = Dict{Symbol, Any}()
+   result[:step] = optimal_t
+   result[:state] = continuous_evolution(hamiltonian, optimal_t, initstate)
+   result[:probability] = sum(abs.(result[:state][marked]).^2)
+
+   result
+end
 
 """
     continuous_evolution(hamiltonian, time, initstate)

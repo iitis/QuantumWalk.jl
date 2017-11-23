@@ -142,8 +142,12 @@ julia> res(unres(v)) ==  v
 true
 ```
 """
-function res(matrix::SparseDenseMatrix)
-  Base.vec(matrix.')
+function res(matrix::SparseDenseMatrix, flip::Bool = true)
+  if flip
+    Base.vec(matrix.')
+  else
+    Base.vec(matrix)
+  end
 end
 
 """
@@ -177,10 +181,14 @@ julia> res(unres(v)) ==  v
 true
 ```
 """
-function unres(vector::SparseDenseVector)
+function unres(vector::SparseDenseVector, flip::Bool = true)
 
   dim = floor(Int64, sqrt(length(vector)))
   @assert dim*dim ==  length(vector) "Expected vector with perfect square number of elements."
 
-  reshape(vector, (dim, dim)).'
+  if flip
+    reshape(vector, (dim, dim)).'
+  else
+    reshape(vector, (dim, dim))
+  end
 end

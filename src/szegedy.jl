@@ -168,17 +168,17 @@ end
 function szegedywalkoperators(graph::T where T<:AbstractGraph,
                               sqrtstochastic::SparseDenseMatrix)
    order = size(sqrtstochastic, 1)
+   projectors = map(x->2*proj(sqrtstochastic[:,x]), 1:order)
 
-   r1 = spzeros(eltype(sqrtstochastic), (size(sqrtstochastic).^2)...)
+   r1 = cat([1, 2], projectors...)
+
    r2 = spzeros(eltype(sqrtstochastic), (size(sqrtstochastic).^2)...)
    for x=1:order
-      a1 = 2*proj(eltype(sqrtstochastic), x, order)
-      a2 = proj(sqrtstochastic[:,x])
-      r1 += kron(a1, a2)
-      r2 += kron(a2, a1)
+      r2[(1:order:order^2)+x-1,(1:order:order^2)+x-1] = projectors[x]
    end
-   r1 -= speye(eltype(sqrtstochastic), order^2)
-   r2 -= speye(eltype(sqrtstochastic), order^2)
+
+   r1 -= speye(r1)
+   r2 -= speye(r2)
 
    (r1, r2)
 end
@@ -203,8 +203,7 @@ function szegedyinitialstate(sqrtstochastic::SparseDenseMatrix{Real})
 end
 
 function szegedymeasurement(state::Vector{T} where T<:Number)
-   result = abs.(state .* conj(state))
-   result = unres(result)'
+   result = unres((abs.(state)).^2, false) #faster than multiplying by conjugate
    [sum(result[:,x]) for x=1:size(result, 1)]
 end
 
@@ -261,13 +260,16 @@ function szegedy_quantum_search(graph::T where T<:AbstractGraph,
 
    for t=1:time
       state = w2*(w1*state)
-
       if all
          szegedy_update_results!(result, state, t, measure)
       end
    end
    if !all
-      result = state
+      if measure
+         result = szegedymeasurement(state)
+      else
+         result = state
+      end
    end
 
    result
@@ -367,6 +369,27 @@ function _szegedy_maxprob_update_firstmaxprob!(result::Dict{Symbol, Any},
    return false
 end
 
+function _szegedy_maxprob_update_maxeff!(result::Dict{Symbol, Any},
+                                         state::SparseDenseVector{Real},
+                                         time::Int,
+                                         marked::Vector{Int})
+
+   current_measurement = szegedymeasurement(state)
+   new_probability = sum(current_measurement[marked])
+   new_efficiency = time/new_probability
+
+   if result[:step] == 0 || new_efficiency < result[:step]/result[:probability]
+      _szegedy_update!(result, state, new_probability, time)
+      return true
+   end
+
+   if result[:step]/result[:probability] >= time
+      return true
+   else
+      return false
+   end
+end
+
 function _szegedy_maxprob_update_firstmaxeff!(result::Dict{Symbol, Any},
                                           state::SparseDenseVector{Real},
                                           time::Int,
@@ -405,15 +428,15 @@ function _continue_szegedy_maxprob_update!(result::Dict{Symbol, Any},
                                            marked::Vector{Int},
                                            mode::Symbol,
                                            tmax::Int)
-   @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtime] "Mode needs to be :firstmax, :firstmaxeff or :maxtime"
+   @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtime, :maxeff] "Mode needs to be :firstmax, :firstmaxeff or :maxtime"
 
    if mode == :firstmaxprob
       return _szegedy_maxprob_update_firstmaxprob!(result, state, time, marked)
-   end
-   if mode == :firstmaxeff
+   elseif mode == :firstmaxeff
       return _szegedy_maxprob_update_firstmaxeff!(result, state, time, marked)
-   end
-   if mode == :maxtime
+   elseif mode == :maxeff
+      return _szegedy_maxprob_update_maxeff!(result, state, time, marked)
+   elseif mode == :maxtime
       return _szegedy_maxprob_update_tmax!(result, state, time, marked, tmax)
    end
 end
