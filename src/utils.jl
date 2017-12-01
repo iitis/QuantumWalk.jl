@@ -1,6 +1,4 @@
 
-SparseDenseMatrix{T} = Union{SparseMatrixCSC{S}, Matrix{S}} where S<:T
-SparseDenseVector{T} = Union{SparseVector{S}, Vector{S}} where S<:T
 
 """
     ket(index, size)
@@ -106,7 +104,7 @@ julia> proj(v)
 proj(T::Type, index::Int, size::Int) = ketbra(T, index, index, size)
 proj(index::Int, size::Int) = ketbra(index, index, size)
 
-function proj(vector::SparseDenseVector)
+function proj(vector::SparseVector{T} where T<:Number)
   vector*vector'
 end
 
@@ -142,7 +140,7 @@ julia> res(unres(v)) ==  v
 true
 ```
 """
-function res(matrix::SparseDenseMatrix, flip::Bool = true)
+function res(matrix::SparseMatrixCSC{T} where T<:Number, flip::Bool = true)
   if flip
     Base.vec(matrix.')
   else
@@ -181,14 +179,18 @@ julia> res(unres(v)) ==  v
 true
 ```
 """
-function unres(vector::SparseDenseVector, flip::Bool = true)
+function unres(vector::SparseVector{T, Int}) where T<:Number
 
-  dim = floor(Int64, sqrt(length(vector)))
-  @assert dim*dim ==  length(vector) "Expected vector with perfect square number of elements."
+  dim = floor(Int, sqrt(length(vector)))
+  @assert dim*dim == length(vector) "Expected vector with perfect square number of elements."
 
-  if flip
-    reshape(vector, (dim, dim)).'
-  else
-    reshape(vector, (dim, dim))
-  end
+  reshape(vector, (dim, dim)).'
+end
+
+function unres_sym(vector::SparseVector{T, Int}) where T<:Number
+
+  dim = floor(Int, sqrt(length(vector)))
+  @assert dim*dim == length(vector) "Expected vector with perfect square number of elements."
+
+  reshape(vector, (dim, dim))
 end

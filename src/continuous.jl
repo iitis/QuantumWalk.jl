@@ -93,7 +93,7 @@ function continuous_quantum_search(graph::Graph,
    continuous_quantum_search(graphmatrix, marked, time, measure=measure)
 end
 
-function continuous_quantum_search(graphmatrix::SparseDenseMatrix{Real},
+function continuous_quantum_search(graphmatrix::SparseMatrixCSC{T} where T<:Number,
                                    marked::Vector{Int},
                                    time::Real;
                                    measure::Bool = true)
@@ -114,6 +114,28 @@ function continuous_quantum_search(graphmatrix::SparseDenseMatrix{Real},
    end
 end
 
+function my_optimize(f::Function,
+                     left::T where T<:Real,
+                     right::U where U<:Real,
+                     grid_step::S where S<:Real,
+                     greed_number::Int,
+                     abs_tol::Float64)
+   data_t = left:grid_step:right
+   ##optize data_t
+   current_y = f.(data_t[1:greed_number])
+   current_minimum = findmin(current_y)[1]+grid_step
+
+   data_t = left:grid_step:current_minimum
+
+   data_y = vcat([Inf], current_y, f.(data_t[(greed_number+1):end]), [Inf])
+   data_t = vcat([1], data_t, [Inf])
+
+   minimum_index = findmin(data_y)[2]
+   new_left = data_t[minimum_index - 1]
+   new_right = data_t[minimum_index + 1]
+
+   return optimize(f, new_left, new_right, abs_tol=abs_tol)
+end
 
 function continuous_maximal_probability(graph::T where T<:AbstractGraph,
                                         marked::Vector{Int};
@@ -137,7 +159,8 @@ function continuous_maximal_probability(graph::T where T<:AbstractGraph,
    hamiltonian = graphmatrix + sum(map(x -> proj(x, graphorder), marked))
 
    optimized_function(t::Real) = t/sum(abs.(continuous_evolution(hamiltonian, t, initstate)[marked]).^2)
-   optimal_t = Optim.minimizer(optimize(optimized_function, 0.01, tmax))::Real
+
+   optimal_t = Optim.minimizer(my_optimize(optimized_function, 1, graphorder, 0.2*sqrt(graphorder), 5, 0.1))::Real
 
    result = Dict{Symbol, Any}()
    result[:step] = optimal_t

@@ -47,7 +47,7 @@ end
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
 
 """
-function isstochastic(stochastic::SparseDenseMatrix{Real})
+function isstochastic(stochastic::SparseMatrixCSC{T} where T<:Real)
    @assert size(stochastic, 1) == size(stochastic, 2) "Matrix is not square"
    @assert all(sum(stochastic[:,i]) ≈ 1 for i=1:size(stochastic, 1)) "Columns sums do not equal one"
    @assert all(findnz(stochastic)[3] .> 0 ) "Matrix elements are not nonnegative"
@@ -63,7 +63,7 @@ Accepts both Graph and DiGraph.
 
 """
 function stochastic_preserves_graph_check(graph::T where T<:AbstractGraph,
-                                          stochastic::SparseDenseMatrix{Real})
+                                          stochastic::SparseMatrixCSC{T} where T<:Real)
    @assert size(stochastic, 1) == nv(graph) "Orders of matrix and graph do not match"
    @assert all([ i ∈ out_neighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
    return nothing
@@ -111,7 +111,7 @@ julia> isgraphstochastic(g, stochastic)
 ```
 """
 function isgraphstochastic(graph::T where T<:AbstractGraph,
-                           stochastic::SparseDenseMatrix{Real})
+                           stochastic::SparseMatrixCSC{T} where T<:Real)
    isstochastic(stochastic)
    stochastic_preserves_graph_check(graph, stochastic)
    return nothing
@@ -148,29 +148,28 @@ julia> QSpatialSearch.default_stochastic(g) |> full
  0.0  0.0       0.333333  0.0  0.0
 ```
 """
-function default_stochastic(digraph::T where T<:AbstractGraph)
+function default_stochastic(digraph::T where T<:Union{Graph,DiGraph})
    result = adjacency_matrix(digraph, Float64, dir=:in)
    outdegrees = outdegree(digraph)
    for i = 1:size(result, 1)
       if outdegrees[i] == 0
-         result[i,i] = 1
+         result[i,i] = 1.
       else
          result[:,i] /= outdegrees[i]
       end
    end
-   result
+   result::SparseMatrixCSC{Float64, Int}
 end
 
 """
 
 
 """
-function szegedywalkoperators(graph::T where T<:AbstractGraph,
-                              sqrtstochastic::SparseDenseMatrix)
+function szegedywalkoperators(sqrtstochastic::SparseMatrixCSC{S, Int}) where S<:Real
    order = size(sqrtstochastic, 1)
    projectors = map(x->2*proj(sqrtstochastic[:,x]), 1:order)
 
-   r1 = cat([1, 2], projectors...)
+   r1 = cat([1, 2], projectors...)::SparseMatrixCSC{S, Int}
 
    r2 = spzeros(eltype(sqrtstochastic), (size(sqrtstochastic).^2)...)
    for x=1:order
@@ -197,14 +196,14 @@ function szegedyoracleoperators(graph::T where T<:AbstractGraph,
 
    (q1, q2)
 end
-
-function szegedyinitialstate(sqrtstochastic::SparseDenseMatrix{Real})
-   full(res(sqrtstochastic')/sqrt(size(sqrtstochastic, 1)))
+function szegedyinitialstate(sqrtstochastic::SparseMatrixCSC{T} where T<:Real)
+   res(sqrtstochastic')/sqrt(size(sqrtstochastic, 1))
 end
 
-function szegedymeasurement(state::Vector{T} where T<:Number)
-   result = unres((abs.(state)).^2, false) #faster than multiplying by conjugate
-   [sum(result[:,x]) for x=1:size(result, 1)]
+function szegedymeasurement(state::SparseVector{T} where T<:Number,
+                            which::Vector{Int}=collect(1:ceil(Int, sqrt(length(state)))))
+   result = unres_sym((abs.(state)).^2) #faster than multiplying by conjugate
+   [sum(result[:,x]) for x=which]
 end
 
 """
@@ -232,7 +231,7 @@ set to `false`. Note that checking may increase total run-time of the algorithm.
 function szegedy_quantum_search(graph::T where T<:AbstractGraph,
                                 marked::Vector{Int},
                                 time::Int;
-                                stochastic::SparseDenseMatrix{Real} = default_stochastic(graph),
+                                stochastic::SparseMatrixCSC{T} where T<:Real = default_stochastic(graph),
                                 checkstochastic::Bool = false,
                                 all::Bool = false,
                                 measure::Bool = false)
@@ -245,7 +244,7 @@ function szegedy_quantum_search(graph::T where T<:AbstractGraph,
 
    sqrtstochastic = sqrt.(stochastic)
 
-   r1, r2 = szegedywalkoperators(graph, sqrtstochastic)
+   r1, r2 = szegedywalkoperators(sqrtstochastic)
    q1, q2 = szegedyoracleoperators(graph, marked)
 
    state = szegedyinitialstate(sqrtstochastic)
@@ -271,12 +270,10 @@ function szegedy_quantum_search(graph::T where T<:AbstractGraph,
          result = state
       end
    end
-
-   result
 end
 
-function szegedy_update_results!(result::Matrix{T} where T<:Real,
-                                 state::Vector{T} where T<:Real,
+function szegedy_update_results!(result::SparseMatrixCSC{T} where T<:Real,
+                                 state::SparseVector{T} where T<:Real,
                                  currenttime::Int,
                                  measure::Bool)
    if measure
@@ -304,40 +301,40 @@ function szegedy_prepare_for_results(graph::T where T<:AbstractGraph,
    end
 end
 
-function szegedy_maximal_probability(graph::T where T<:AbstractGraph,
+function szegedy_maximal_probability(graph::T where T<:Union{Graph,DiGraph},
                                      marked::Vector{Int},
                                      mode::Symbol=:firstmaxprob;
-                                     stochastic::SparseDenseMatrix{Real} = default_stochastic(graph),
-                                     checkstochastic::Bool = false,
                                      tmax::Int = nv(graph),
-                                     which::Vector{Int} = marked)
+                                     stochastic::SparseMatrixCSC{S, Int}
+                                             = default_stochastic(graph),
+                                     checkstochastic::Bool = false) where S<:Real
    @assert tmax >= 0 "Time needs to be  nonnegative"
    @assert marked ⊆ collect(vertices(graph)) && marked != [] "marked needs to be non-empty subset of graph vertices set"
 
    if checkstochastic
-    isgraphstochastic(graph, stochastic)
+      isgraphstochastic(graph, stochastic)
    end
 
-   sqrtstochastic = sqrt.(stochastic)
+   sqrtstochastic::SparseMatrixCSC{Float64,Int} = sqrt.(stochastic)
 
-   r1, r2 = szegedywalkoperators(graph, sqrtstochastic)
+   r1, r2 = szegedywalkoperators(sqrtstochastic)
    q1, q2 = szegedyoracleoperators(graph, marked)
-
-   state = szegedyinitialstate(sqrtstochastic)
-
    w1 = r1*q1
    w2 = r2*q2
 
-   best_probability = sum(szegedymeasurement(state)[which])
+   state = szegedyinitialstate(sqrtstochastic)
+
+   best_probability = sum(szegedymeasurement(state, marked))
+
    result = Dict{Symbol, Any}()
    result[:state] = state
    result[:probability] = best_probability
    result[:step] = 0
 
-   local result
-   for t=1:tmax
+
+   for t = 1:tmax
       state = w2*(w1*state)
-      if !_continue_szegedy_maxprob_update!(result, state, t, which, mode, tmax)
+      if !_continue_szegedy_maxprob_update!(result, state, t, marked, mode, tmax)
          break
       end
    end
@@ -346,7 +343,7 @@ function szegedy_maximal_probability(graph::T where T<:AbstractGraph,
 end
 
 function _szegedy_update!(result::Dict{Symbol, Any},
-                          state::SparseDenseVector{Real},
+                          state::SparseVector{T} where T<:Number,
                           probability::Real,
                           time::Int)
    result[:state] = state
@@ -356,12 +353,11 @@ end
 
 
 function _szegedy_maxprob_update_firstmaxprob!(result::Dict{Symbol, Any},
-                                          state::SparseDenseVector{Real},
+                                          state::SparseVector{T} where T<:Number,
                                           time::Int,
                                           marked::Vector{Int})
 
-   current_measurement = szegedymeasurement(state)
-   new_probability = sum(current_measurement[marked])
+   new_probability = sum(szegedymeasurement(state, marked))
    if  new_probability > result[:probability]
       _szegedy_update!(result, state, new_probability, time)
       return true
@@ -370,12 +366,11 @@ function _szegedy_maxprob_update_firstmaxprob!(result::Dict{Symbol, Any},
 end
 
 function _szegedy_maxprob_update_maxeff!(result::Dict{Symbol, Any},
-                                         state::SparseDenseVector{Real},
+                                         state::SparseVector{T} where T<:Number,
                                          time::Int,
                                          marked::Vector{Int})
 
-   current_measurement = szegedymeasurement(state)
-   new_probability = sum(current_measurement[marked])
+   new_probability = sum(szegedymeasurement(state, marked))
    new_efficiency = time/new_probability
 
    if result[:step] == 0 || new_efficiency < result[:step]/result[:probability]
@@ -391,12 +386,11 @@ function _szegedy_maxprob_update_maxeff!(result::Dict{Symbol, Any},
 end
 
 function _szegedy_maxprob_update_firstmaxeff!(result::Dict{Symbol, Any},
-                                          state::SparseDenseVector{Real},
+                                          state::SparseVector{T} where T<:Number,
                                           time::Int,
                                           marked::Vector{Int})
 
-   current_measurement = szegedymeasurement(state)
-   new_probability = sum(current_measurement[marked])
+   new_probability = sum(szegedymeasurement(state, marked))
    new_efficiency = time/new_probability
 
    if result[:step] == 0 || new_efficiency < result[:step]/result[:probability]
@@ -408,12 +402,11 @@ end
 
 
 function _szegedy_maxprob_update_tmax!(result::Dict{Symbol, Any},
-                                       state::SparseDenseVector{Real},
+                                       state::SparseVector{T} where T<:Number,
                                        time::Int,
                                        marked::Vector{Int},
                                        tmax::Int)
-   current_measurement = szegedymeasurement(state)
-   new_probability = sum(current_measurement[marked])
+   new_probability = sum(szegedymeasurement(state, marked))
    new_efficiency = time/new_probability
    if  result[:step] == 0 || new_efficiency < result[:step]/result[:probability]
       _szegedy_update!(result, state, new_probability, time)
@@ -423,7 +416,7 @@ end
 
 
 function _continue_szegedy_maxprob_update!(result::Dict{Symbol, Any},
-                                           state::SparseDenseVector{Real},
+                                           state::SparseVector{T} where T<:Number,
                                            time::Int,
                                            marked::Vector{Int},
                                            mode::Symbol,
@@ -439,4 +432,5 @@ function _continue_szegedy_maxprob_update!(result::Dict{Symbol, Any},
    elseif mode == :maxtime
       return _szegedy_maxprob_update_tmax!(result, state, time, marked, tmax)
    end
+   return false #never happens
 end
