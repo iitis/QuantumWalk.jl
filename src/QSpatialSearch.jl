@@ -10,11 +10,13 @@ TODO: Documentation for QSpatialSearch
 """
 QSpatialSearch
 
+include("type_hierarchy.jl")
+include("continuous_search.jl")
+include("decorating_search_functions.jl")
 include("utils.jl")
-include("continuous.jl")
-include("szegedy.jl")
-include("coined.jl")
-include("user.jl")
+
+include("ctqw/ctqw.jl")
+include("szegedy/szegedy.jl")
 
 
 
