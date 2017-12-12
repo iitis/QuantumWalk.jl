@@ -15,9 +15,9 @@ function quantum_search(qss::QSearch,
 end
 
 
-function maximize_quantum_search(qss::QSearch,
+function maximize_quantum_search(qss::QSearch{S} where S<:ContQWalk,
                                  maxtime::T = 1.*nv(graph(qss)),
-                                 tstep::U = 0.2*sqrt(nv(graph(qss)))) where {T<:Real, U<:Real}
+                                 tstep::T = 0.2*sqrt(nv(graph(qss)))) where {T<:Real}
    @assert maxtime >= 0. "Time needs to be nonnegative"
 
    state = initial_state(qss)

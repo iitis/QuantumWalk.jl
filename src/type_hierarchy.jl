@@ -3,11 +3,10 @@ export
   ContQWalk,
   DiscrQWalk,
   QSearch,
-  QSearch,
-  QSearch,
   graph,
   model,
-  marked
+  marked,
+  QSearchState
 
 abstract type QWalk end
 
@@ -40,10 +39,11 @@ Util functions
 
 """
 graph(qwalk::T where T<:QWalk) = qwalk.graph
-graph(qwalk::T where T<:QSearch) = graph(qwalk.model)
+graph(qsearch::T where T<:QSearch) = graph(qsearch.model)
 
-marked(qwalk::T where T<:QSearch) = qwalk.marked
-model(qwalk::T where T<:QSearch) = qwalk.model
+marked(qsearch::T where T<:QSearch) = qsearch.marked
+model(qsearch::T where T<:QSearch) = qsearch.model
+parameters(qsearch::T where T<:QSearch) = qsearch.parameters
 
 """
 Search result
