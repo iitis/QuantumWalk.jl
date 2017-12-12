@@ -1,4 +1,5 @@
 export
+   AbstractCTQW,
    CTQW
 
 abstract type AbstractCTQW <: ContQWalk end
@@ -16,31 +17,31 @@ CTQW(graph::Graph) = CTQW(graph, :adjacency)
 
 # type ContinuousQSpatialSearch{}
 
-function ContQSearch(::Type{T},
-                     ctqw::CTQW,
+function QSearch(::Type{T},
+                     ctqw::U,
                      marked::Array{Int},
-                     jumpingrate::T = jumping_rate(T, ctqw)) where T<:Number
+                     jumpingrate::T = jumping_rate(T, ctqw)) where {U<:AbstractCTQW,T<:Number}
    hamiltonian = jumpingrate*graph_hamlitonian(T, ctqw)
    hamiltonian += sum(proj(T, v, nv(ctqw.graph)) for v=marked)
 
    parameters = Dict{Symbol, Any}(:hamiltonian => hamiltonian)
 
-   ContQSearch(ctqw, marked, parameters)
+   QSearch(ctqw, marked, parameters)
 end
 
-function ContQSearch(ctqw::CTQW, marked::Array{Int})
-   ContQSearch(Complex128, ctqw, marked)
+function QSearch(ctqw::U, marked::Array{Int}) where U<:AbstractCTQW
+   QSearch(Complex128, ctqw, marked)
 end
-function ContQSearch(ctqw::CTQW,
-                                  marked::Array{Int},
-                                  jumpingrate::T) where T<:Number
-   ContQSearch(T, ctqw, marked, jumpingrate)
+function QSearch(ctqw::T,
+                     marked::Array{Int},
+                     jumpingrate::U) where {T<:AbstractCTQW,U<:Number}
+   QSearch(T, ctqw, marked, jumpingrate)
 end
 
 
-function check_qss(ctqw::CTQW,
+function check_qss(ctqw::U,
                    marked::Array{Int},
-                   parameters::Dict{Symbol, Any})
+                   parameters::Dict{Symbol, Any}) where U<:AbstractCTQW
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
    @assert isa(parameters[:hamiltonian], SparseMatrixCSC{<:Number}) || isa(hamiltonian, Matrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"

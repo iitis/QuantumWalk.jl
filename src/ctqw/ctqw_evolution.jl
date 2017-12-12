@@ -8,12 +8,12 @@
 ```
 """
 function initial_state(::Type{T},
-                       qss::ContQSearch{S}) where {T<:Number, S<:AbstractCTQW}
+                       qss::QSearch{S}) where {T<:Number, S<:AbstractCTQW}
    size = nv(graph(qss))
    fill(T(1/sqrt(size)), size)
 end
 
-function initial_state(qss::ContQSearch{S}) where S<:AbstractCTQW
+function initial_state(qss::QSearch{S}) where S<:AbstractCTQW
    initial_state(eltype(qss.parameters[:hamiltonian]), qss)
 end
 
@@ -21,7 +21,7 @@ end
 """
     evolve
 """
-function evolve(qss::ContQSearch{S},
+function evolve(qss::QSearch{S},
                 state::Vector{T},
                 runtime::U) where {S<:AbstractCTQW, T<:Number, U<:Real}
    hamiltonian_evolution(qss.parameters[:hamiltonian], state, runtime)
