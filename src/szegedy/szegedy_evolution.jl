@@ -50,7 +50,7 @@ function measure(szegedy::U where U<:AbstractSzegedy,
 end
 
 #probably not needed
-#=function measure(qss::QSearch{U} where U<:AbstractSzegedy,
+function measure(qss::QSearch{U} where U<:AbstractSzegedy,
                  state::SparseVector{T} where T<:Number)
    measure(U, state)
 end
@@ -65,4 +65,4 @@ function measure(qss::QSearch{U} where U<:AbstractSzegedy,
                  vertices::Vector{Int})
    dim = floor(Int, sqrt(length(state)))
    mapslices(sum, reshape((abs.(state)).^2, (dim, dim))[:,vertices], [1])
-end=#
+end
