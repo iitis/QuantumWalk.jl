@@ -13,7 +13,11 @@ end
 CTQW(graph::Graph) = CTQW(graph, :adjacency)
 
 
-
+function proj(::Type{T}, i::Int, n::Int) where T<:Number
+   result = spzeros(T, n, n)
+   result[i,i] = 1
+   result
+end
 
 # type ContinuousQSpatialSearch{}
 

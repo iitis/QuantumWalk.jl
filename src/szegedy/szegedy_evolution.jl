@@ -10,6 +10,7 @@ end
 ## Special Szegedy evolution
 function evolve_szegedy_special(operators::Vector{SparseMatrixCSC{T,Int}},
                                 state::SparseVector{T}) where T<:Real
+  #result =
    operators[2]*(operators[1]*state)
 end
 

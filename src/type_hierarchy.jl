@@ -49,28 +49,27 @@ parameters(qsearch::T where T<:QSearch) = qsearch.parameters
 Search result
 
 """
-struct QSearchState{S,T<:Real,Y<:Real}
+struct QSearchState{S,Y<:Real}
   state::S
-  probability::T
+  probability::Float64
   time::Y
 
-  function QSearchState{S,T,Y}(state::S,
-                               probability::T,
-                               runtime::Y) where {S,T<:Real,Y<:Real}
+  function QSearchState{S,Y}(state::S,
+                             probability::Float64,
+                             runtime::Y) where {S,Y<:Real}
      new(state, probability, runtime)
   end
 end
 
 function QSearchState(state::S,
-                      probability::T,
-                      runtime::Y) where {S,T<:Real,Y<:Real}
-   QSearchState{S,T,Y}(state, probability, runtime)
+                      probability::Float64,
+                      runtime::Y) where {S,Y<:Real}
+   QSearchState{S,Y}(state, probability, runtime)
 end
 
 
 function QSearchState(qss::QSearch,
                       state::S,
                       runtime::T) where {S,T<:Real}
-   probability = sum(measure(qss, state, qss.marked))
-   QSearchState{S,typeof(probability),T}(state, probability, runtime)
+   QSearchState{S,T}(state, sum(measure(qss, state, qss.marked)), runtime)
 end
