@@ -16,7 +16,6 @@ function walk(qws::QWalkSimulator{T},
 
    state = initstate
    for t=1:runtime
-      #println(state)
       state = evolve(qws, state)
    end
 

@@ -10,12 +10,7 @@ end
 ## Special Szegedy evolution
 function evolve_szegedy_special(operators::Vector{SparseMatrixCSC{T,Int}},
                                 state::SparseVector{T}) where T<:Real
-   println(norm.(operators, Inf))
-   result = operators[1]*state
-   println(norm(result-state))
-   result = operators[2]*result
-   println(norm(result-state))
-   result
+   operators[2]*(operators[1]*state)
 end
 
 #general szegdy evolution (more than two operators)
@@ -35,9 +30,7 @@ end
 
 function evolve(qws::QWalkSimulator{Szegedy{G,T}},
                 state::SparseVector{T}) where {G,T<:Number}
-   result = evolve_szegedy_special(qws.parameters[:operators], state)
-   #println(result)
-   result
+   evolve_szegedy_special(qws.parameters[:operators], state)
 end
 
 function evolve(qss::QSearch{S},
