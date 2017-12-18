@@ -21,15 +21,15 @@ function maximize_quantum_search(qss::QSearch{S} where S<:ContQWalk,
    @assert maxtime >= 0. "Time needs to be nonnegative"
 
    state = initial_state(qss)
-   efficiency_opt(runtime::T) where T<:Number = runtime/sum(measure(qss, evolve(qss, state, runtime)))
+   function efficiency_opt(runtime::T) where T<:Number
+      expected_runtime(runtime+qss.penalty, sum(measure(qss, evolve(qss, state, runtime))))
+   end
 
-   t = 0.
-   data_t = [0.01] #move from zero
-   data_y = [Inf]
-
-   max_efficiency = Inf
-   while t <= maxtime
-      t += tstep
+   t = zero(T)
+   data_t = [t]
+   data_y = [efficiency_opt(t)]
+   max_efficiency = data_y[end]
+   for t=tstep:tstep:maxtime
       push!(data_t, t)
       push!(data_y, efficiency_opt(t))
 
@@ -45,7 +45,10 @@ function maximize_quantum_search(qss::QSearch{S} where S<:ContQWalk,
    end
 
    minindex = findmin(data_y)[2]
-   optresult = optimize(efficiency_opt, data_t[minindex-1], data_t[minindex-1])
+   mint = max(zero(T), data_t[minindex-1])
+   maxt = min(maxtime, data_t[minindex+1])
+   optresult = optimize(efficiency_opt, mint, maxt)
 
-   quantum_search(qss, Optim.minimizer(optresult))
+   result = quantum_search(qss, Optim.minimizer(optresult))
+   QSearchState(result.state, result.probability, result.time+qss.penalty)
 end

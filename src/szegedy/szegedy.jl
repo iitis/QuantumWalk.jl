@@ -28,24 +28,38 @@ function Szegedy(graph::G) where G<:AbstractGraph
 end
 
 function QSearch(szegedy::U where U<:AbstractSzegedy,
-                 marked::Array{Int})
+                 marked::Array{Int},
+                 penalty::Int=0)
    r1, r2 = szegedywalkoperators(szegedy)
    q1, q2 = szegedyoracleoperators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1*q1, r2*q2]
 
-   QSearch(szegedy, marked, parameters)
+   QSearch(szegedy, marked, parameters, penalty)
 end
 
+function QWalkSimulator(szegedy::U where U<:AbstractSzegedy)
+   r1, r2 = szegedywalkoperators(szegedy)
+   parameters = Dict{Symbol,Any}()
+   parameters[:operators] = [r1, r2]
+
+   QWalkSimulator(szegedy, parameters)
+end
 
 function check_qss(szegedy::T where T<:AbstractSzegedy,
                    marked::Array{Int},
                    parameters::Dict{Symbol, Any})
+   check_qwalksimulator(szegedy, parameters)
+end
+
+function check_qwalksimulator(szegedy::T where T<:AbstractSzegedy,
+                              parameters::Dict{Symbol, Any})
    @assert :operators in keys(parameters) "Parameters should contain key operators"
    @assert all(typeof(i) <: SparseMatrixCSC{<:Number} for i=parameters[:operators]) "Parameters should be a list of SparseMatrixCSC{<:Number}"
    order = nv(szegedy.graph)
    @assert all(size(i) == (order, order).^2 for i=parameters[:operators]) "Operators sizes mismatch"
 end
+
 
 include("szegedy_stochastic.jl")
 include("szegedy_operators.jl")

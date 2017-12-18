@@ -5,22 +5,7 @@ export
    all_measured_quantum_search
 
 
-function evolve(qss::QSearch, state::QSearchState)
-   evolve(qss, state.state)
-end
 
-function expected_runtime(runtime::T,
-                          probability::S) where {T<:Real, S<:Real}
-   if runtime == 0
-      Inf
-   else
-      runtime/probability
-   end
-end
-
-function expected_runtime(state::QSearchState)
-   expected_runtime(state.time, state.probability)
-end
 
 function all_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                             runtime::Int)
@@ -71,9 +56,10 @@ function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "stopcondition not implemented"
 
 
-   best_result = QSearchState(qss, initial_state(qss), 0)
+   best_result = QSearchState(qss, initial_state(qss), qss.penalty)
+   state = QSearchState(qss, initial_state(qss), qss.penalty)
    for t=1:maxtime
-      state = QSearchState(qss, evolve(qss, best_result), t)
+      state = QSearchState(qss, evolve(qss, state), t+qss.penalty)
       stopsearchflag = stopsearch(best_result, state, mode)
       best_result = max(best_result, state, mode)
 
@@ -99,6 +85,8 @@ function stopsearch(previous_state::QSearchState,
       return false
    end
 end
+
+import Base.max
 
 function max(state1::QSearchState,
              state2::QSearchState,

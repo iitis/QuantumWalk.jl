@@ -27,6 +27,11 @@ function evolve(qss::QSearch{S},
    hamiltonian_evolution(qss.parameters[:hamiltonian], state, runtime)
 end
 
+function evolve(qws::QWalkSimulator{S},
+                state::Vector{T},
+                runtime::U) where {S<:AbstractCTQW, T<:Number, U<:Real}
+   hamiltonian_evolution(qws.parameters[:hamiltonian], state, runtime)
+end
 
 """
     measure_state(qss, state)

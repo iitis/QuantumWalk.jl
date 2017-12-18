@@ -10,13 +10,12 @@ end
 ## Special Szegedy evolution
 function evolve_szegedy_special(operators::Vector{SparseMatrixCSC{T,Int}},
                                 state::SparseVector{T}) where T<:Real
-  #result =
-   operators[2]*(operators[1]*state)
-end
-
-function evolve(qss::QSearch{Szegedy{G,T}},
-                state::SparseVector{T}) where {G,T<:Number}
-   evolve_szegedy_special(qss.parameters[:operators], state)
+   println(norm.(operators, Inf))
+   result = operators[1]*state
+   println(norm(result-state))
+   result = operators[2]*result
+   println(norm(result-state))
+   result
 end
 
 #general szegdy evolution (more than two operators)
@@ -28,16 +27,44 @@ function evolve_szegedy_general(operators::Vector{SparseMatrixCSC{T,Int}},
    state
 end
 
+#decorating for szegedy
+function evolve(qss::QSearch{Szegedy{G,T}},
+                state::SparseVector{T}) where {G,T<:Number}
+   evolve_szegedy_special(qss.parameters[:operators], state)
+end
+
+function evolve(qws::QWalkSimulator{Szegedy{G,T}},
+                state::SparseVector{T}) where {G,T<:Number}
+   result = evolve_szegedy_special(qws.parameters[:operators], state)
+   #println(result)
+   result
+end
+
 function evolve(qss::QSearch{S},
                 state::SparseVector{T}) where {S<:AbstractSzegedy, T<:Number}
    evolve_szegedy_general(qss.parameters[:operators], state)
 end
 
+function evolve(qws::QWalkSimulator{S},
+                state::SparseVector{T}) where {S<:AbstractSzegedy, T<:Number}
+   evolve_szegedy_general(qws.parameters[:operators], state)
+end
 
-function measure(qss::QSearch{U} where U<:AbstractSzegedy,
+function measure(szegedy::U where U<:AbstractSzegedy,
                  state::SparseVector{T} where T<:Number)
    dim = floor(Int, sqrt(length(state)))
    mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1])
+end
+
+#probably not needed
+#=function measure(qss::QSearch{U} where U<:AbstractSzegedy,
+                 state::SparseVector{T} where T<:Number)
+   measure(U, state)
+end
+
+function measure(qws::QWalkSimulator{U} where U<:AbstractSzegedy,
+                 state::SparseVector{T} where T<:Number)
+   measure(U, state)
 end
 
 function measure(qss::QSearch{U} where U<:AbstractSzegedy,
@@ -45,4 +72,4 @@ function measure(qss::QSearch{U} where U<:AbstractSzegedy,
                  vertices::Vector{Int})
    dim = floor(Int, sqrt(length(state)))
    mapslices(sum, reshape((abs.(state)).^2, (dim, dim))[:,vertices], [1])
-end
+end=#
