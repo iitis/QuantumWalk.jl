@@ -1,6 +1,6 @@
 
 function initial_state_szegedy(sqrtstochastic::SparseMatrixCSC{T}) where T<:Real
-   vec(sqrtstochastic')/sqrt(size(sqrtstochastic, 1))
+   vec(sqrtstochastic)/sqrt(size(sqrtstochastic, 1))
 end
 
 function initial_state(qss::QSearch{T}) where T<:AbstractSzegedy
@@ -50,14 +50,14 @@ function measure(szegedy::U where U<:AbstractSzegedy,
 end
 
 #probably not needed
-function measure(qss::QSearch{U} where U<:AbstractSzegedy,
-                 state::SparseVector{T} where T<:Number)
-   measure(U, state)
+function measure(qss::QSearch{U},
+                 state::SparseVector{T} where T<:Number) where U<:AbstractSzegedy
+   measure(qss.model, state)
 end
 
 function measure(qws::QWalkSimulator{U} where U<:AbstractSzegedy,
                  state::SparseVector{T} where T<:Number)
-   measure(U, state)
+   measure(qws.model, state)
 end
 
 function measure(qss::QSearch{U} where U<:AbstractSzegedy,
