@@ -1,3 +1,7 @@
+
+"""
+    proj
+"""
 function proj(v::SparseVector{T}) where T<:Number
    SparseMatrixCSC{T}(v*v')
 end
@@ -7,10 +11,9 @@ function proj(v::AbstractVector{T}) where T<:Number
 end
 
 """
-
-
+    szegedywalkoperators
 """
-function szegedywalkoperators(szegedy::Szegedy{G,S}) where {G,S<:Real}
+function szegedywalkoperators(szegedy::Szegedy{G,S}) where {G,S<:Number}
    order = nv(szegedy.graph)
    projectors = [2.*proj(szegedy.sqrtstochastic[:,v]) for v=1:order]
 
@@ -31,7 +34,6 @@ function szegedywalkoperators(szegedy::T where T<:AbstractSzegedy)
    order = nv(szegedy.graph)
    projectors = map(x->2.*proj(szegedy.sqrtstochastic[:,x]), 1:order)
 
-
    r1 = cat([1, 2], projectors...)
 
    r2 = spzeros(eltype(szegedy.sqrtstochastic), order^2, order^2)
@@ -45,6 +47,9 @@ function szegedywalkoperators(szegedy::T where T<:AbstractSzegedy)
    (r1, r2)
 end
 
+"""
+    szegedyoracleoperators
+"""
 function szegedyoracleoperators(szegedy::T where T<:AbstractSzegedy,
                                 marked::Vector{Int})
    order = nv(szegedy.graph)

@@ -9,87 +9,95 @@ export
   marked,
   QSearchState
 
+"""
+    QWalk
+"""
 abstract type QWalk end
 
+"""
+    ContQWalk
+"""
 abstract type ContQWalk <: QWalk end
+"""
+    DiscrQWalk
+"""
 abstract type DiscrQWalk <: QWalk end
 
+"""
+    QSearch
+"""
 struct QSearch{T<:QWalk}
   model::T
   marked::Array{Int}
   parameters::Dict{Symbol, S} where S
   penalty::W where W
 
-  function QSearch{T}(model::T ,
-                      marked::Array{Int},
-                      parameters::Dict{Symbol, X},
-                      penalty::U) where {T<:QWalk, X<:Any, U<:Number}
+  function QSearch(model::T ,
+                   marked::Array{Int},
+                   parameters::Dict{Symbol, X},
+                   penalty::U) where {T<:QWalk, X<:Any, U<:Number}
     @assert all(1 <= v <= nv(model.graph) for v=marked) && marked != [] "marked needs to be non-empty subset of graph vertices set"
 
     check_qss(model, marked, parameters)
-    new(model, marked, parameters, penalty)
+    new{T}(model, marked, parameters, penalty)
   end
 end
 
-function QSearch(model::T,
-                 marked::Array{Int},
-                 parameters::Dict{Symbol, S},
-                 penalty::U) where {T<:QWalk, S<:Any, U<:Number}
-   QSearch{T}(model, marked, parameters, penalty)
-end
-
+"""
+    QWalkSimulator
+"""
 struct QWalkSimulator{T<:QWalk}
   model::T
   parameters::Dict{Symbol, S} where S
 
-  function QWalkSimulator{T}(model::T,
-                             parameters::Dict{Symbol, X}) where {T<:QWalk, X<:Any}
+  function QWalkSimulator(model::T,
+                          parameters::Dict{Symbol, X}) where {T<:QWalk, X<:Any}
     check_qwalksimulator(model, parameters)
-    new(model, parameters)
+    new{T}(model, parameters)
   end
 end
 
-function QWalkSimulator(model::T,
-                        parameters::Dict{Symbol, X}) where {T<:QWalk, X<:Any}
-  QWalkSimulator{T}(model, parameters)
-end
-
 """
-Util functions
-
+    graph
 """
 graph(qwalk::T where T<:QWalk) = qwalk.graph
 graph(qsearch::T where T<:QSearch) = graph(qsearch.model)
 
-marked(qsearch::T where T<:QSearch) = qsearch.marked
+"""
+    model
+"""
 model(qsearch::T where T<:QSearch) = qsearch.model
+model(qwalk::T where T<:QWalkSimulator) = qwalk.model
+
+"""
+    parameters
+"""
 parameters(qsearch::T where T<:QSearch) = qsearch.parameters
+parameters(qwalk::T where T<:QWalkSimulator) = qwalk.parameters
 
 """
-Search result
+    marked
+"""
+marked(qsearch::T where T<:QSearch) = qsearch.marked
+
 
 """
-struct QSearchState{S,Y<:Real}
+    QSearchState
+"""
+struct QSearchState{S,P<:Real,Y<:Real}
   state::S
-  probability::Float64
+  probability::Array{P}
   time::Y
 
-  function QSearchState{S,Y}(state::S,
-                             probability::Float64,
-                             runtime::Y) where {S,Y<:Real}
-     new(state, probability, runtime)
+  function QSearchState(state::S,
+                        probability::Array{P},
+                        runtime::Y) where {S,P<:Real,Y<:Real}
+     new{S,P,Y}(state, probability, runtime)
   end
 end
-
-function QSearchState(state::S,
-                      probability::Float64,
-                      runtime::Y) where {S,Y<:Real}
-   QSearchState{S,Y}(state, probability, runtime)
-end
-
 
 function QSearchState(qss::QSearch,
                       state::S,
                       runtime::T) where {S,T<:Real}
-   QSearchState{S,T}(state, sum(measure(qss, state, qss.marked)), runtime)
+   QSearchState(state, measure(qss, state), runtime)
 end

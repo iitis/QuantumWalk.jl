@@ -39,7 +39,7 @@ end
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
 
 """
-function stochasticcheck(stochastic::SparseMatrixCSC{T} where T<:Real)
+function stochasticcheck(stochastic::SparseMatrixCSC{T} where T<:Number)
    @assert size(stochastic, 1) == size(stochastic, 2) "Matrix is not square"
    @assert all(sum(stochastic[:,i]) ≈ 1 for i=1:size(stochastic, 1)) "Columns sums do not equal one"
    @assert all(findnz(stochastic)[3] .> 0 ) "Matrix elements are not nonnegative"
@@ -55,7 +55,7 @@ Accepts both Graph and DiGraph.
 
 """
 function graphpreservationcheck(graph::T where T<:AbstractGraph,
-                                stochastic::SparseMatrixCSC{T} where T<:Real)
+                                stochastic::SparseMatrixCSC{T} where T<:Number)
    @assert size(stochastic, 1) == nv(graph) "Orders of matrix and graph do not match"
    @assert all([ i ∈ out_neighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
    nothing
@@ -103,14 +103,14 @@ julia> isgraphstochastic(g, stochastic)
 ```
 """
 function isgraphstochastic(graph::T where T<:AbstractGraph,
-                           stochastic::SparseMatrixCSC{T} where T<:Real)
+                           stochastic::SparseMatrixCSC{T} where T<:Number)
    stochasticcheck(stochastic)
    graphpreservationcheck(graph, stochastic)
    nothing
 end
 
 """
-    default_stochastic(digraph)
+    default_stochastic(graph)
 
 Generates default column-stochastic matrix, which represents random walk with
 uniform spreading. Function accepts both `DiGraph` and `Graph` types. If outdegree
@@ -140,9 +140,9 @@ julia> QSpatialSearch.default_stochastic(g) |> full
  0.0  0.0       0.333333  0.0  0.0
 ```
 """
-function default_stochastic(digraph::T where T<:AbstractGraph)
-   result = adjacency_matrix(digraph, Float64, dir=:in)
-   outdegrees = outdegree(digraph)
+function default_stochastic(graph::T where T<:AbstractGraph)
+   result = adjacency_matrix(graph, Float64, dir=:in)
+   outdegrees = outdegree(graph)
    for i = 1:size(result, 1)
       if outdegrees[i] == 0
          result[i,i] = 1.

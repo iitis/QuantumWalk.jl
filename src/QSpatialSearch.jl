@@ -3,12 +3,35 @@ using Expokit
 using LightGraphs
 using Optim
 
+export
+    initial_state,
+    evolve,
+    measure
+
+
 """
 TODO: Documentation for QSpatialSearch
 
 
+
 """
 QSpatialSearch
+
+"""
+    initial_state
+"""
+initial_state
+
+"""
+    measure
+"""
+measure
+
+"""
+    evolve
+"""
+evolve
+
 
 include("type_hierarchy.jl")
 include("general_search_util.jl")

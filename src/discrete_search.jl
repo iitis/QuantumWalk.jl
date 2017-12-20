@@ -4,9 +4,9 @@ export
    all_quantum_search,
    all_measured_quantum_search
 
-
-
-
+"""
+    all_quantum_search
+"""
 function all_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                             runtime::Int)
    @assert runtime >= 0 "Time needs to be nonnegative"
@@ -21,6 +21,9 @@ function all_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
    result
 end
 
+"""
+    all_measured_quantum_search
+"""
 function all_measured_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                                      runtime::Int)
    @assert runtime >= 0 "Time needs to be nonnegative"
@@ -37,6 +40,9 @@ function all_measured_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
    result
 end
 
+"""
+    quantum_search
+"""
 function quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                         runtime::Int)
    @assert runtime >= 0 "Time needs to be nonnegative"
@@ -49,6 +55,9 @@ function quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
    QSearchState(qss, state, runtime)
 end
 
+"""
+    maximize_quantum_search
+"""
 function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
                                  maxtime::Int = nv(graph(qss)),
                                  mode::Symbol = :maxeff)
@@ -61,7 +70,7 @@ function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
    for t=1:maxtime
       state = QSearchState(qss, evolve(qss, state), t+qss.penalty)
       stopsearchflag = stopsearch(best_result, state, mode)
-      best_result = max(best_result, state, mode)
+      best_result = best(best_result, state, mode)
 
       if stopsearchflag
          break
@@ -71,6 +80,9 @@ function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
    best_result
 end
 
+"""
+    stopsearch
+"""
 function stopsearch(previous_state::QSearchState,
                     state::QSearchState,
                     mode::Symbol)
@@ -86,11 +98,12 @@ function stopsearch(previous_state::QSearchState,
    end
 end
 
-import Base.max
-
-function max(state1::QSearchState,
-             state2::QSearchState,
-             mode::Symbol)
+"""
+    best
+"""
+function best(state1::QSearchState,
+              state2::QSearchState,
+              mode::Symbol)
    if mode ∈ [:firstmaxprob,:maxtimeprob]
       state1.probability > state2.probability ? state1 : state2
    else
