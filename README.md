@@ -8,9 +8,10 @@
 'QSpatialSearch' is a package for Julia programming language implementing models
 of quantum continuous and discrete) walks used for performing quantum spatial
 search.  Currently the package provides implementation of
-* coined quantum walks
 * Szegedy quantum walks
 * continuous quantum walks
+
+QSpatialSearch is currently under construcion.
 
 ## Installation
 
