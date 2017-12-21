@@ -9,7 +9,7 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.clone("git://github.com/acroy/Expokit.jl.git")'
+  - julia -e 'Pkg.add("Expokit")'
   - julia -e 'Pkg.add("LightGraphs")'
   - julia -e 'Pkg.clone("https://github.com/ZKSI/QSpatialSearch.jl.git")'
   - julia -e 'Pkg.build("QSpatialSearch")'
