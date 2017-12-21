@@ -9,7 +9,7 @@ export
 """
 function all_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                             runtime::Int)
-   @assert runtime >= 0 "Time needs to be nonnegative"
+   @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
 
    result = QSearchState[]
    push!(result, QSearchState(qss, initial_state(qss), 0))
@@ -26,7 +26,7 @@ end
 """
 function all_measured_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                                      runtime::Int)
-   @assert runtime >= 0 "Time needs to be nonnegative"
+   @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    result = zeros(Float64, (nv(graph(qss)), runtime+1)) # +1 to include 0
 
    state = initial_state(qss)
@@ -45,7 +45,7 @@ end
 """
 function quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
                         runtime::Int)
-   @assert runtime >= 0 "Time needs to be nonnegative"
+   @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
 
    state = initial_state(qss)
    for t=1:runtime
@@ -61,9 +61,8 @@ end
 function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
                                  maxtime::Int = nv(graph(qss)),
                                  mode::Symbol = :maxeff)
-   @assert maxtime >= 0 "Time needs to be nonnegative"
-   @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "stopcondition not implemented"
-
+   @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
+   @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
 
    best_result = QSearchState(qss, initial_state(qss), qss.penalty)
    state = QSearchState(qss, initial_state(qss), qss.penalty)
