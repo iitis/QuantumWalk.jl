@@ -33,9 +33,17 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "special_models.html#",
-    "page": "Examplary models",
-    "title": "Examplary models",
+    "location": "ctqw.html#",
+    "page": "CTQW model",
+    "title": "CTQW model",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "szegedy.html#",
+    "page": "Szegedy model",
+    "title": "Szegedy model",
     "category": "page",
     "text": ""
 },
