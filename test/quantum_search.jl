@@ -26,7 +26,6 @@ end
     @test_throws AssertionError all_quantum_search(qss, -1)
     @test_throws AssertionError all_measured_quantum_search(qss, -1)
     @test_throws AssertionError maximize_quantum_search(qss, -1)
-    @test_throws AssertionError maximize_quantum_search(qss, 1, :unknown)
   end
   
   @testset "Evolution" begin

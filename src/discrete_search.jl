@@ -59,14 +59,14 @@ end
     maximize_quantum_search
 """
 function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
-                                 maxtime::Int = nv(graph(qss)),
+                                 runtime::Int = nv(graph(qss)),
                                  mode::Symbol = :maxeff)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
 
    best_result = QSearchState(qss, initial_state(qss), qss.penalty)
    state = QSearchState(qss, initial_state(qss), qss.penalty)
-   for t=1:maxtime
+   for t=1:runtime
       state = QSearchState(qss, evolve(qss, state), t+qss.penalty)
       stopsearchflag = stopsearch(best_result, state, mode)
       best_result = best(best_result, state, mode)
