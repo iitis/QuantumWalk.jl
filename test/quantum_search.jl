@@ -1,7 +1,8 @@
-@testset "Continuous search check" begin
+@testset "Continuous search" begin
 
-  @testset "norm test" begin
-    qss = QSearch(CTQW(smallgraph(:bull)), [1])
+  @testset "Norm preservation" begin
+    g = smallgraph(:bull)
+    qss = QSearch(CTQW(g), [1])
     @test norm(quantum_search(qss, 10).state) ≈ 1
   end
 
@@ -13,10 +14,23 @@
   end
 end
 
-@testset "Discrete search test" begin
-
-  @testset "norm test" begin
-    graph = smallgraph(:bull)
-    @test norm(quantum_search(QSearch(Szegedy(graph), [1]), 10).state) ≈ 1
+@testset "Discrete search" begin
+  g = smallgraph(:bull)
+  qss = QSearch(Szegedy(g), [1])
+  
+  @testset "Norm preservation" begin
+    @test norm(quantum_search(qss, 10).state) ≈ 1
+  end
+  
+  @testset "Arguments" begin
+    @test_throws AssertionError all_quantum_search(qss, -1)
+    @test_throws AssertionError all_measured_quantum_search(qss, -1)
+    @test_throws AssertionError maximize_quantum_search(qss, -1)
+    @test_throws AssertionError maximize_quantum_search(qss, 1, :unknown)
+  end
+  
+  @testset "Evolution" begin
+    res = all_quantum_search(qss,10)
+    @test res[2].state == QSearchState(qss,evolve(qss,res[1].state),1).state
   end
 end
