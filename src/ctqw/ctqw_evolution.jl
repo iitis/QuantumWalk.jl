@@ -6,7 +6,7 @@ function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
 end
 
 function initial_state(qss::QSearch{S} where S<:AbstractCTQW)
-   initial_state_ctqw(eltype(qss.parameters[:hamiltonian]), size(qss.parameters[:hamiltonian]))
+   initial_state_ctqw(eltype(qss.parameters[:hamiltonian]), size(qss.parameters[:hamiltonian],1))
 end
 
 """

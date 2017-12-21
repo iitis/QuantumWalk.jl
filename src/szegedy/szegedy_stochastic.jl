@@ -62,7 +62,7 @@ function graphpreservationcheck(graph::T where T<:AbstractGraph,
 end
 
 """
-    isgraphstochastic(graph, stochastic)
+    graphstochasticcheck(graph, stochastic)
 
 Check, whether `stochastic` is a column-stochatsic matrix preserving `graph`
 structure. Three properties are verified:
@@ -88,22 +88,22 @@ julia> stochastic = [0. 0. 0.; 1./3 1. 0.; 2./3 0. 1.]
  0.333333  1.0  0.0
  0.666667  0.0  1.0
 
-julia> isgraphstochastic(g, stochastic)
+julia> graphstochasticcheck(g, stochastic)
 ERROR: AssertionError: Nonzero elements of stochastic do not coincide with graph edges
 Stacktrace:
  [1]
 stochastic_preserves_graph_check(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QSpatialSearch/src/szegedy.jl:64
- [2] isgraphstochastic(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QSpatialSearch/src/szegedy.jl:87
+ [2] graphstochasticcheck(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QSpatialSearch/src/szegedy.jl:87
 
 julia> add_edge!(g, 1, 3)
 true
 
-julia> isgraphstochastic(g, stochastic)
+julia> graphstochasticcheck(g, stochastic)
 
 ```
 """
-function isgraphstochastic(graph::T where T<:AbstractGraph,
-                           stochastic::SparseMatrixCSC{T} where T<:Number)
+function graphstochasticcheck(graph::T where T<:AbstractGraph,
+                              stochastic::SparseMatrixCSC{T} where T<:Number)
    stochasticcheck(stochastic)
    graphpreservationcheck(graph, stochastic)
    nothing

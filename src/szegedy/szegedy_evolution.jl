@@ -15,7 +15,7 @@ end
 """
     evolve_szegedy_special
 """
-function evolve_szegedy_special(operators::Vector{SparseMatrixCSC{T}},
+function evolve_szegedy_special(operators::Vector{SparseMatrixCSC{T, Int}},
                                 state::SparseVector{T}) where T<:Number
    operators[2]*(operators[1]*state)
 end
@@ -58,13 +58,13 @@ end
 """
 function measure_szegedy(state::SparseVector{T} where T<:Number)
    dim = floor(Int, sqrt(length(state)))
-   mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1])
+   vec(mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1]))
 end
 
 function measure_szegedy(state::SparseVector{T} where T<:Number,
                          vertices::Vector{Int})
    dim = floor(Int, sqrt(length(state)))
-   mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1])
+   vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1]))
 end
 
 function measure(qss::U where U<:AbstractSzegedy,

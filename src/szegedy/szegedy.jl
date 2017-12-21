@@ -19,7 +19,7 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
                     stochastic::SparseMatrixCSC{T},
                     checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
       if checkstochastic
-         isgraphstochastic(stochastic)
+         graphstochasticcheck(g, stochastic)
       end
       new{G, T}(graph, sqrt.(stochastic))
    end

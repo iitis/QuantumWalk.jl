@@ -55,7 +55,7 @@ function QSearch(ctqw::T where T<:AbstractCTQW,
                  marked::Array{Int},
                  jumpingrate::U = jumping_rate(Float64, ctqw),
                  penalty::S where S<:Real=0.) where U<:Real
-   QSearch(U, ctqw, marked, jumpingrate, penalty)
+   QSearch(Complex128, ctqw, marked, Complex128(jumpingrate), penalty)
 end
 
 function check_qss(ctqw::U where U<:AbstractCTQW,
