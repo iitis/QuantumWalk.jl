@@ -12,7 +12,7 @@ makedocs(
     sitename    = "QSpatialSearch",
     doctest     = true,
     checkdocs   = :all,
-    assets 	= ["assets/favicon.ico"],
+    assets 	= ["assets/logo.ico"],
     pages       = Any[
         "Basics"                       => "index.md",
         "Quantum walk evolution types" => "type_hierarchy.md",
