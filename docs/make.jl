@@ -1,6 +1,6 @@
 using Documenter
 include("../src/QSpatialSearch.jl")
-using QSpatialSearch
+using QSpatialSearch, LightGraphs	
 
 # same for contributing and license
 println(pwd())
@@ -11,7 +11,7 @@ makedocs(
     format      = :html,
     sitename    = "QSpatialSearch",
     doctest     = true,
-    checkdocs   = :all,
+    checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[
         "Basics"                       => "index.md",

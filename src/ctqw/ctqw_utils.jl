@@ -1,7 +1,11 @@
 """
-    jumping_rate
+    jumping_rate([type, ] ctqw)
+
+Return default jumping rate for adjacency matrix. Not implemented for :laplacian,
+as there is no typical good value for general graph. In :adjacency case the greatest
+eigenvalue is returned. `type` defaults to `Complex128`.
 """
-function jumping_rate(::Type{T}, ctqw::S where S<:AbstractCTQW) where T<:Number
+function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    @assert ctqw.matrix == :adjacency "Default jumping rate known for adjacency matrix only"
 
    if ne(ctqw.graph) == 0 # if graph is empty
@@ -11,36 +15,42 @@ function jumping_rate(::Type{T}, ctqw::S where S<:AbstractCTQW) where T<:Number
    end
 end
 
-jumping_rate(ctqw::S where S<:AbstractCTQW) = jumping_rate(Complex128, ctqw)
+jumping_rate(ctqw::AbstractCTQW) = jumping_rate(Complex128, ctqw)
 
 """
-    graph_hamlitonian
+    graph_hamiltonian([type, ]ctqw)
+
+Returns default evolution matrix, adjacency or laplacian matrix depending on
+`ctqw` parametrization. `type` deafults to Complex128.
 """
-function graph_hamlitonian(::Type{T},
-                           ctqw::S where S<:AbstractCTQW) where T<:Number
+function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    if ctqw.matrix == :adjacency
       return adjacency_matrix(ctqw.graph, T)
    elseif ctqw.matrix == :laplacian
       return laplacian_matrix(ctqw.graph, T)
    else
-      throw(ErrorException("Something wrong with model: $ctqw"))
+      throw(ErrorException("Model $ctqw poorly parametrized"))
    end
 end
 
-graph_hamlitonian(ctqw::S where S<:AbstractCTQW) = graph_hamlitonian(Complex128, ctqw)
+graph_hamlitonian(ctqw::AbstractCTQW) = graph_hamlitonian(Complex128, ctqw)
 
 """
-    hamiltonian_evolution
+    hamiltonian_evolution(hamiltonian, initstate, runtime)
+
+Evolve `initstate` according to `hamiltonian` for time `runtime` according to
+Schrödinger equation. For dense matrices matrix exponantation is calculated. For
+sparse matrices `expmv` from Expokit package is used.
 """
-function hamiltonian_evolution(hamiltonian::DenseMatrix{T} where T<:Number,
-                               initstate::Array{U} where U<:Number,
-                               time::S where S<:Real)
-   expm(1im*hamiltonian*time)*initstate
+function hamiltonian_evolution(hamiltonian::DenseMatrix{<:Number},
+                               initstate::Array{<:Number},
+                               runtime::Real)
+   expm(1im*hamiltonian*runtime)*initstate
 end
 
 
-function hamiltonian_evolution(hamiltonian::SparseMatrixCSC{T} where T<:Number,
-                               initstate::Array{U} where U<:Number,
-                               time::S where S<:Real)
-   expmv(time, 1im*hamiltonian, initstate)
+function hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number},
+                               initstate::Array{<:Number},
+                               runtime::Real)
+   expmv(runtime, 1im*hamiltonian, initstate)
 end

@@ -1,58 +1,50 @@
+"""
+    QSearchState
+"""
+struct QSearchState{S,Y<:Real}
+  state::S
+  probability::Array{Float64}
+  time::Y
+
+  function QSearchState(state::S,
+                        probability::Array{Float64},
+                        runtime::Y) where {S,Y<:Real}
+     new{S,Y}(state, probability, runtime)
+  end
+end
+
+function QSearchState(qss::QSearch, state, runtime::Real)
+   QSearchState(state, measure(qss, state, qss.marked), runtime)
+end
+
+
 #measure decorating functions
-function measure(qss::QSearch, state)
-   measure(qss.model, state, qss.marked)
+function measure(qwe::QWalkEvolution, state::QSearchState)
+   measure(qwe, state.state, qss.marked)
 end
 
-function measure(qss::QSearch, state::QSearchState)
-   measure(qss, state.state)
+function measure(qwe::QWalkEvolution, state::QSearchState, vertices::Array{Int})
+   measure(qwe, state.state, vertices)
 end
-
-function measure(model::T where T<:QWalk,
-                 state::QSearchState)
-   measure(model, state.state)
-end
-
-function measure(model::T where T<:QWalk,
-                 state::QSearchState,
-                 vertices::Array{Int})
-   measure(model, state.state, vertices)
-end
-
-function measure(qws::QWalkSimulator, state)
-   measure(qws.model, state)
-end
-
-function measure(qws::QWalkSimulator, state::QSearchState)
-   measure(qws.model, state)
-end
-
-function measure(qws::QWalkSimulator, state, vertices::Array{Int})
-   measure(qws.model, state, vertices)
-end
-
-function measure(qws::QWalkSimulator, state::QSearchState, vertices::Array{Int})
-   measure(qws, state.state, vertices)
-end
-
 
 #Evolve decorating function
-function evolve(qss::QSearch, state::QSearchState)
-   evolve(qss, state.state)
+function evolve(qwe::QWalkEvolution, state::QSearchState)
+   evolve(qwe, state.state)
 end
 
-function evolve(qss::QSearch, state::QSearchState, runtime::T) where T<:Real
-   evolve(qss, state.state, runtime)
+function evolve(qwe::QWalkEvolution, state::QSearchState, runtime::T) where T<:Real
+   evolve(qwe, state.state, runtime)
 end
 
 #Expected runtime
 """
     expected_runtime
 """
-function expected_runtime(runtime::T,
-                          probability::S) where {T<:Real, S<:Real}
+function expected_runtime(runtime::Real,
+                          probability::Real)
    runtime/probability
 end
 
 function expected_runtime(state::QSearchState)
-   expected_runtime(state.time, state.probability)
+   expected_runtime(state.time, sum(state.probability))
 end

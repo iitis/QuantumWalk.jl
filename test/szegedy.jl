@@ -77,8 +77,7 @@
     g = smallgraph(:bull)
     n = nv(g)
     qss = QSearch(Szegedy(g), [1])
-    
-    @test measure(qss, initial_state(qss)) ≈ [1/n]
-    @test measure(Szegedy(g), initial_state(qss), collect(1:n)) ≈ fill(1/n, (n))
+
+    @test measure(qss, initial_state(qss), collect(1:n)) ≈ fill(1/n, (n))
   end
 end

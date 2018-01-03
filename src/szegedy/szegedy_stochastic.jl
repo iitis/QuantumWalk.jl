@@ -23,8 +23,7 @@ julia> QSpatialSearch.out_neighbors_looped(g, 2)
  2
 ```
 """
-function out_neighbors_looped(graph::T where T<:AbstractGraph,
-                              vertex::Int)
+function out_neighbors_looped(graph::AbstractGraph, vertex::Int)
    outneighbors = out_neighbors(graph, vertex)
    if outneighbors == []
       return [vertex]
@@ -39,7 +38,7 @@ end
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
 
 """
-function stochasticcheck(stochastic::SparseMatrixCSC{T} where T<:Number)
+function stochasticcheck(stochastic::SparseMatrixCSC{<:Number})
    @assert size(stochastic, 1) == size(stochastic, 2) "Matrix is not square"
    @assert all(sum(stochastic[:,i]) ≈ 1 for i=1:size(stochastic, 1)) "Columns sums do not equal one"
    @assert all(findnz(stochastic)[3] .> 0 ) "Matrix elements are not nonnegative"
@@ -54,8 +53,8 @@ Checks whether `stochastic`  matrix presreves graph structure. Returns nothing.
 Accepts both Graph and DiGraph.
 
 """
-function graphpreservationcheck(graph::T where T<:AbstractGraph,
-                                stochastic::SparseMatrixCSC{T} where T<:Number)
+function graphpreservationcheck(graph::AbstractGraph,
+                                stochastic::SparseMatrixCSC{<:Number})
    @assert size(stochastic, 1) == nv(graph) "Orders of matrix and graph do not match"
    @assert all([ i ∈ out_neighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
    nothing
@@ -102,8 +101,8 @@ julia> graphstochasticcheck(g, stochastic)
 
 ```
 """
-function graphstochasticcheck(graph::T where T<:AbstractGraph,
-                              stochastic::SparseMatrixCSC{T} where T<:Number)
+function graphstochasticcheck(graph::AbstractGraph,
+                              stochastic::SparseMatrixCSC{<:Number})
    stochasticcheck(stochastic)
    graphpreservationcheck(graph, stochastic)
    nothing
@@ -140,7 +139,7 @@ julia> QSpatialSearch.default_stochastic(g) |> full
  0.0  0.0       0.333333  0.0  0.0
 ```
 """
-function default_stochastic(graph::T where T<:AbstractGraph)
+function default_stochastic(graph::AbstractGraph)
    result = adjacency_matrix(graph, Float64, dir=:in)
    outdegrees = outdegree(graph)
    for i = 1:size(result, 1)
@@ -150,5 +149,5 @@ function default_stochastic(graph::T where T<:AbstractGraph)
          result[:,i] /= outdegrees[i]
       end
    end
-   result::SparseMatrixCSC{Float64, Int}
+   result
 end

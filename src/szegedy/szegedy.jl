@@ -31,13 +31,13 @@ end
 
 
 
-function Szegedy(graph::G where G<:AbstractGraph)
+function Szegedy(graph::AbstractGraph)
    Szegedy(graph, default_stochastic(graph), false)
 end
 
-function QSearch(szegedy::U where U<:AbstractSzegedy,
+function QSearch(szegedy::AbstractSzegedy,
                  marked::Array{Int},
-                 penalty::T where T<:Real=0)
+                 penalty::Real=0)
    r1, r2 = szegedywalkoperators(szegedy)
    q1, q2 = szegedyoracleoperators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
@@ -46,7 +46,7 @@ function QSearch(szegedy::U where U<:AbstractSzegedy,
    QSearch(szegedy, marked, parameters, penalty)
 end
 
-function QWalkSimulator(szegedy::U where U<:AbstractSzegedy)
+function QWalkSimulator(szegedy::AbstractSzegedy)
    r1, r2 = szegedywalkoperators(szegedy)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1, r2]
@@ -57,22 +57,22 @@ end
 """
     check_szegedy
 """
-function check_szegedy(szegedy::T where T<:AbstractSzegedy,
-                       parameters::Dict{Symbol, Any})
+function check_szegedy(szegedy::AbstractSzegedy,
+                       parameters::Dict{Symbol})
    @assert :operators in keys(parameters) "Parameters should contain key operators"
    @assert all(typeof(i) <: SparseMatrixCSC{<:Number} for i=parameters[:operators]) "Parameters should be a list of SparseMatrixCSC{<:Number}"
    order = nv(szegedy.graph)
    @assert all(size(i) == (order, order).^2 for i=parameters[:operators]) "Operators sizes mismatch"
 end
 
-function check_qss(szegedy::T where T<:AbstractSzegedy,
+function check_qss(szegedy::AbstractSzegedy,
                    marked::Array{Int},
-                   parameters::Dict{Symbol, Any})
+                   parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 
-function check_qwalksimulator(szegedy::T where T<:AbstractSzegedy,
-                              parameters::Dict{Symbol, Any})
+function check_qwalksimulator(szegedy::AbstractSzegedy,
+                              parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 

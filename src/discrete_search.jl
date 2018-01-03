@@ -7,8 +7,7 @@ export
 """
     all_quantum_search
 """
-function all_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
-                            runtime::Int)
+function all_quantum_search(qss::QSearch{<:DiscrQWalk}, runtime::Int)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
 
    result = QSearchState[]
@@ -24,8 +23,7 @@ end
 """
     all_measured_quantum_search
 """
-function all_measured_quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
-                                     runtime::Int)
+function all_measured_quantum_search(qss::QSearch{<:DiscrQWalk}, runtime::Int)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    result = zeros(Float64, (nv(graph(qss)), runtime+1)) # +1 to include 0
 
@@ -43,8 +41,7 @@ end
 """
     quantum_search
 """
-function quantum_search(qss::QSearch{T} where T<:DiscrQWalk,
-                        runtime::Int)
+function quantum_search(qss::QSearch{<:DiscrQWalk}, runtime::Int)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
 
    state = initial_state(qss)
@@ -58,7 +55,7 @@ end
 """
     maximize_quantum_search
 """
-function maximize_quantum_search(qss::QSearch{S} where S<:DiscrQWalk,
+function maximize_quantum_search(qss::QSearch{<:DiscrQWalk},
                                  runtime::Int = nv(graph(qss)),
                                  mode::Symbol = :maxeff)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
@@ -85,11 +82,10 @@ end
 function stopsearch(previous_state::QSearchState,
                     state::QSearchState,
                     mode::Symbol)
-
    if mode == :maxeff
       return expected_runtime(previous_state) < state.time
    elseif mode == :firstmaxprob
-      return previous_state.probability > state.probability
+      return sum(previous_state.probability) > sum(state.probability)
    elseif mode == :firstmaxeff
       return expected_runtime(previous_state) < expected_runtime(state)
    else # include :maxtime case, should be considered by outside loop (hack?)

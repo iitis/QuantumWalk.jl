@@ -5,8 +5,7 @@ export
 """
     quantum_search
 """
-function quantum_search(qss::QSearch{S} where S<:ContQWalk,
-                        runtime::T) where T<:Real
+function quantum_search(qss::QSearch{<:ContQWalk}, runtime::Real)
    @assert runtime >= 0 "Time needs to be nonnegative"
 
    state = evolve(qss, initial_state(qss), runtime)
@@ -16,13 +15,13 @@ end
 """
     maximize_quantum_search
 """
-function maximize_quantum_search(qss::QSearch{S} where S<:ContQWalk,
+function maximize_quantum_search(qss::QSearch{<:ContQWalk},
                                  maxtime::T = Float64(nv(graph(qss))),
-                                 tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where {T<:Real}
+                                 tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where T<:Real
    @assert maxtime >= 0. "Time needs to be nonnegative"
 
    state = initial_state(qss)
-   function efficiency_opt(runtime::T) where T<:Number
+   function efficiency_opt(runtime::Number) 
       expected_runtime(runtime+qss.penalty, sum(measure(qss, evolve(qss, state, runtime))))
    end
 

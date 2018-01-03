@@ -2,6 +2,7 @@ export
   QWalk,
   ContQWalk,
   DiscrQWalk,
+  QWalkEvolution,
   QSearch,
   QWalkSimulator,
   graph,
@@ -24,34 +25,39 @@ abstract type ContQWalk <: QWalk end
 abstract type DiscrQWalk <: QWalk end
 
 """
+    QWalkEvolution
+"""
+abstract type QWalkEvolution{T<:QWalk} end
+
+"""
     QSearch
 """
-struct QSearch{T<:QWalk}
+struct QSearch{T,W<:Real} <: QWalkEvolution{T}
   model::T
   marked::Array{Int}
-  parameters::Dict{Symbol, S} where S
-  penalty::W where W
+  parameters::Dict{Symbol}
+  penalty::W
 
-  function QSearch(model::T ,
+  function QSearch(model::T,
                    marked::Array{Int},
-                   parameters::Dict{Symbol, X},
-                   penalty::U) where {T<:QWalk, X<:Any, U<:Number}
+                   parameters::Dict{Symbol},
+                   penalty::W) where {T<:QWalk, W<:Real}
     @assert all(1 <= v <= nv(model.graph) for v=marked) && marked != [] "marked needs to be non-empty subset of graph vertices set"
 
     check_qss(model, marked, parameters)
-    new{T}(model, marked, parameters, penalty)
+    new{T,W}(model, marked, parameters, penalty)
   end
 end
 
 """
     QWalkSimulator
 """
-struct QWalkSimulator{T<:QWalk}
+struct QWalkSimulator{T} <: QWalkEvolution{T}
   model::T
-  parameters::Dict{Symbol, S} where S
+  parameters::Dict{Symbol}
 
   function QWalkSimulator(model::T,
-                          parameters::Dict{Symbol, X}) where {T<:QWalk, X<:Any}
+                          parameters::Dict{Symbol}) where T<:QWalk
     check_qwalksimulator(model, parameters)
     new{T}(model, parameters)
   end
@@ -60,44 +66,24 @@ end
 """
     graph
 """
-graph(qwalk::T where T<:QWalk) = qwalk.graph
-graph(qsearch::T where T<:QSearch) = graph(qsearch.model)
+graph(qwe::QWalkEvolution) = qwe.graph
 
 """
     model
 """
-model(qsearch::T where T<:QSearch) = qsearch.model
-model(qwalk::T where T<:QWalkSimulator) = qwalk.model
+model(qwe::QWalkEvolution) = qwe.model
 
 """
     parameters
 """
-parameters(qsearch::T where T<:QSearch) = qsearch.parameters
-parameters(qwalk::T where T<:QWalkSimulator) = qwalk.parameters
+parameters(qwe::QWalkEvolution) = qwe.parameters
 
 """
     marked
 """
-marked(qsearch::T where T<:QSearch) = qsearch.marked
-
+marked(qss::QSearch) = qss.marked
 
 """
-    QSearchState
+    penalty
 """
-struct QSearchState{S,P<:Real,Y<:Real}
-  state::S
-  probability::Array{P}
-  time::Y
-
-  function QSearchState(state::S,
-                        probability::Array{P},
-                        runtime::Y) where {S,P<:Real,Y<:Real}
-     new{S,P,Y}(state, probability, runtime)
-  end
-end
-
-function QSearchState(qss::QSearch,
-                      state::S,
-                      runtime::T) where {S,T<:Real}
-   QSearchState(state, measure(qss, state), runtime)
-end
+penalty(qss::QSearch) = qss.penalty
