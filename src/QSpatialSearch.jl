@@ -10,6 +10,9 @@ export
     check_qss,
     check_qwalksimulator
 
+```@meta
+CurrentModule = QSpatialSearch
+```
 
 """
     QSpatialSearch

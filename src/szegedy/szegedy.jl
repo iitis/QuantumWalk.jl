@@ -1,14 +1,28 @@
 export
    AbstractSzegedy,
-   Szegedy
+   Szegedy,
+   sqrtstochastic
 
 """
     AbstractSzegedy
+
+Abstract Szegedy model. Description of default can be found in
+https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen. Default
+representation of `AbstractSzegedy` is `Szegedy`.
 """
 abstract type AbstractSzegedy <: DiscrQWalk end
 
 """
-    Szegedy
+    Szegedy(graph[, stochastic, checkstochastic])
+
+ Default representation of `AbstractSzegedy`. `graph` needs to be a subtype of
+ `AbstractGraph` from
+ LightGraphs module, `stochastic` needs to be a Real column stochastic matrix,
+ checkstochastic is a flag which decides about checking the `stochastic` properties.
+ `stochastic` defaults to uniform walk operator, `checkstochastic` deafults to `false`
+ in case of default `stochastic` and `false` in case of user `stochastic` provided.
+
+ `stochatsic` is changed into `sqrtstochastic` by element-wise square root.
 """
 struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
    graph::G
@@ -23,18 +37,53 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
       end
       new{G, T}(graph, sqrt.(stochastic))
    end
-   #=function Szegedy(graph::G,
-                    stochastic::SparseMatrixCSC{T}) where {G<:AbstractGraph,T<:Number}
-      new{G,T}(graph, sqrt.(stochastic))
-   end=#
 end
-
-
 
 function Szegedy(graph::AbstractGraph)
    Szegedy(graph, default_stochastic(graph), false)
 end
 
+"""
+    sqrtstochastic(szegedy::AbstractSzegedy)
+
+Returns the `sqrtstochastic` element of `szegedy`. After element-wise squaring
+a column-stochastic matrix is obtained.
+
+```@docs
+julia> szegedy = Szegedy(CompleteGraph(4));
+
+julia> sqrtstochastic(szegedy)
+4×4 SparseMatrixCSC{Float64,Int64} with 12 stored entries:
+  [2, 1]  =  0.57735
+  [3, 1]  =  0.57735
+  [4, 1]  =  0.57735
+  [1, 2]  =  0.57735
+  [3, 2]  =  0.57735
+  [4, 2]  =  0.57735
+  [1, 3]  =  0.57735
+  [2, 3]  =  0.57735
+  [4, 3]  =  0.57735
+  [1, 4]  =  0.57735
+  [2, 4]  =  0.57735
+  [3, 4]  =  0.57735
+
+julia> full(sqrtstochastic(szegedy).^2)
+4×4 Array{Float64,2}:
+ 0.0       0.333333  0.333333  0.333333
+ 0.333333  0.0       0.333333  0.333333
+ 0.333333  0.333333  0.0       0.333333
+ 0.333333  0.333333  0.333333  0.0
+```
+"""
+sqrtstochastic(szegedy::AbstractSzegedy) = szegedy.sqrtstochastic
+
+"""
+    QSearch(szegedy::AbstractSzegedy, marked [, penalty])
+
+Creates `QSearch` according to `AbstractSzegedy` model. `penalty` equals 0.
+It constructs evolution operators according to definition from
+https://arxiv.org/abs/1611.02238.
+"""
 function QSearch(szegedy::AbstractSzegedy,
                  marked::Array{Int},
                  penalty::Real=0)
@@ -46,6 +95,12 @@ function QSearch(szegedy::AbstractSzegedy,
    QSearch(szegedy, marked, parameters, penalty)
 end
 
+"""
+    QWalkSimulator(szegedy::AbstractSzegedy)
+
+Creates `QWalkSimulator` according to `AbstractSzegedy` model. By default
+constructed operators is `SparseMatrixCSC`.
+"""
 function QWalkSimulator(szegedy::AbstractSzegedy)
    r1, r2 = szegedywalkoperators(szegedy)
    parameters = Dict{Symbol,Any}()
@@ -55,7 +110,10 @@ function QWalkSimulator(szegedy::AbstractSzegedy)
 end
 
 """
-    check_szegedy
+    check_szegedy(szegedy, parameters)
+
+Private functions which checks the existance of `:operators`, its type and
+dimensionality of its elements. Returns nothing.
 """
 function check_szegedy(szegedy::AbstractSzegedy,
                        parameters::Dict{Symbol})
@@ -65,12 +123,28 @@ function check_szegedy(szegedy::AbstractSzegedy,
    @assert all(size(i) == (order, order).^2 for i=parameters[:operators]) "Operators sizes mismatch"
 end
 
+"""
+    check_qss(szegedy::AbstractSzegedy, marked, parameters)
+
+Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
+`QSearch` object. It checks where `parameters` consists of key `:operators` with
+corresponding value being list of `SparseMatrixCSC`. Furthermore operators
+needs to be square of size equals to square of `graph(szegedy).` order.
+"""
 function check_qss(szegedy::AbstractSzegedy,
                    marked::Array{Int},
                    parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 
+"""
+    check_qwalksimulator(szegedy::AbstractSzegedy, marked, parameters)
+
+Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
+`QWalkSimulator` object. It checks where `parameters` consists of key `:operators` with
+corresponding value being list of `SparseMatrixCSC`. Furthermore operators
+needs to be square of size equals to square of `graph(szegedy).` order.
+"""
 function check_qwalksimulator(szegedy::AbstractSzegedy,
                               parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)

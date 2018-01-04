@@ -1,7 +1,3 @@
-```@meta
-CurrentModule = QSpatialSearch
-```
-
 function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
    fill(T(1/sqrt(size)), size)
 end

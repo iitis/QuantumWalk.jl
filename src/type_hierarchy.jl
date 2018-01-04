@@ -8,7 +8,8 @@ export
   graph,
   model,
   marked,
-  QSearchState
+  parameters,
+  penalty
 
 """
     QWalk
@@ -66,7 +67,8 @@ end
 """
     graph
 """
-graph(qwe::QWalkEvolution) = qwe.graph
+graph(model::QWalk) = model.graph
+graph(qwe::QWalkEvolution) = graph(qwe.model)
 
 """
     model

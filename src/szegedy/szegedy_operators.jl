@@ -1,6 +1,8 @@
 
 """
-    proj
+    proj(v)
+
+Returns a projector onto subspace spanned by `v`.
 """
 function proj(v::SparseVector{T}) where T<:Number
    SparseMatrixCSC{T}(v*v')
@@ -11,7 +13,14 @@ function proj(v::AbstractVector{<:Number})
 end
 
 """
-    szegedywalkoperators
+    szegedywalkoperators(szegedy)
+
+Return pair of Szegedy walk operators based on `sqrtstochastic` from `szegedy`.
+Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 4.
+The operators should be applied in given order.
+
+`sqrtstochastic` after
+elementwise square should be a column stochastic matrix.
 """
 function szegedywalkoperators(szegedy::Szegedy{<:Any,S}) where S<:Number
    order = nv(szegedy.graph)
@@ -48,7 +57,16 @@ function szegedywalkoperators(szegedy::AbstractSzegedy)
 end
 
 """
-    szegedyoracleoperators
+    szegedyoracleoperators(szegedy, marked)
+
+Return a Szegedy oracle operators based on `sqrtstochastic` from `szegedy` and
+collection of `marked` vertices.
+Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 6.
+The operators should be applied in given order.
+
+`sqrtstochastic` after
+elementwise square should be a column stochastic matrix.
+
 """
 function szegedyoracleoperators(szegedy::AbstractSzegedy,
                                 marked::Vector{Int})

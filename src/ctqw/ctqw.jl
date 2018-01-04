@@ -54,7 +54,7 @@ function proj(::Type{T}, i::Int, n::Int) where T<:Number
 end
 
 """
-    check_ctqw
+    check_ctqw(ctqw, parameters)
 
 Private functions which checks the existance of `:hamiltonian`, its type and
 dimensionality. Returns nothing.
