@@ -69,7 +69,7 @@ end
 
 #decorating for szegedy
 """
-    evolve(qwe, state)
+    evolve(qwe::QWSearch{AbstractSzegedy}, state)
 
 Multiplies `state` be each `operator` from `operators` from quatnum walk
 evolution `qwe`. Elements of operators and state should be of the same type.

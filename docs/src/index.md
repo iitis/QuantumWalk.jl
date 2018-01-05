@@ -1,1 +1,1 @@
-Welcom to QuantumWalk.jl package.
+Welcome to QuantumWalk.jl package.

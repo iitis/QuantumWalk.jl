@@ -44,7 +44,7 @@ function Szegedy(graph::AbstractGraph)
 end
 
 """
-    sqrtstochastic(szegedy::AbstractSzegedy)
+    sqrtstochastic(szegedy)
 
 Returns the `sqrtstochastic` element of `szegedy`. After element-wise squaring
 a column-stochastic matrix is obtained.
@@ -85,8 +85,8 @@ It constructs evolution operators according to definition from
 https://arxiv.org/abs/1611.02238.
 """
 function QWSearch(szegedy::AbstractSzegedy,
-                 marked::Array{Int},
-                 penalty::Real=0)
+                  marked::Array{Int},
+                  penalty::Real=0)
    r1, r2 = szegedywalkoperators(szegedy)
    q1, q2 = szegedyoracleoperators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
@@ -132,8 +132,8 @@ corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
 function check_qwsearch(szegedy::AbstractSzegedy,
-                   marked::Array{Int},
-                   parameters::Dict{Symbol})
+                        marked::Array{Int},
+                        parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 

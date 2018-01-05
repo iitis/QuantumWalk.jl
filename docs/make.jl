@@ -14,24 +14,27 @@ makedocs(
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[
-        "Basics"                       => "index.md",
-        "Quantum walk evolution types" => "type_hierarchy.md",
-        "Quantum search"               => "quantum_search.md",
-        "Quantum walk simulator"       => "quantum_walk.md",
-        "Examplary models"             => Any[
-		"CTQW model" => "ctqw.md",
-		"Szegedy model" => "szegedy.md"],
-        "How to make your own model?"  => "own_model.md",
-        "Licence"                      => "license.md",
-        "Citing"                       => "citing.md",
-        "Contributing"                 => "contributing.md"
+		"Home"				=> "index.md",
+		"Type hierarchy" 		=> "type_hierarchy.md",
+		"Exemplary dynamics"		=> Any[
+						"Quantum walk simulator"=> "quantum_walk.md",
+						"Quantum search"        => "quantum_search.md"],
+		"Examplary models"             	=> Any[
+						"CTQW model" 		=> "ctqw.md",
+						"Szegedy model" 	=> "szegedy.md"],
+		"How to make your own types?"	=> Any[
+						"New model" 	=> "new_model.md",		
+						"New dynamics" 	=> "new_dynamics.md"],
+		"Licence"			=> "license.md",
+#		"Citing"			=> "citing.md",
+#		"Contributing"	                => "contributing.md"
     ]
 )
 
 deploydocs(
     deps        = nothing,
     make        = nothing,
-    repo        = "github.com/ZKSI/QuantumWalk.jl",
+    repo        = "github.com/QuantumWalks/QuantumWalk.jl",
     target      = "build",
     julia       = "0.6",
     osname      = "linux"
