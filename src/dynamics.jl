@@ -7,7 +7,7 @@ export
 
 
 """
-    execute(qwd, initstate, runtime, all, measure)
+    execute(qwd, initstate, runtime[, all, measure])
 
 Run proper execution function depending on given keywords. `all` and `measure` keywords
 defaults to `false`. For detailed description please see documentation of
@@ -34,7 +34,7 @@ end
     execute_single(qwd, initstate, runtime)
 
 Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
-`runtime` needs to be nonnegative. If `qwd` is based on on `QWModelDiscr`, it
+`runtime` needs to be nonnegative. If `qwd` is based on on `QWModelDiscr`, `runtime`
 needs to be `Int`.
 
 ```@docs
@@ -85,7 +85,7 @@ end
 
 Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative, and measure it in the end.
-If `qwd` is based on on `QWModelDiscr`, it needs to be `Int`.
+If `qwd` is based on on `QWModelDiscr`, `runtime` needs to be `Int`.
 
 ```@docs
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
