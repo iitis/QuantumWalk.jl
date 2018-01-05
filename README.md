@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/ZKSI/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/ZKSI/QuantumWalk.jl)
-[![Coverage Status](https://coveralls.io/repos/github/ZKSI/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/ZKSI/QuantumWalk.jl?branch=master)
+[![Build Status](https://travis-ci.org/QuantumWalks/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/ZKSI/QuantumWalk.jl)
+[![Coverage Status](https://coveralls.io/repos/github/QuantumWalks/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/QuantumWalks/QuantumWalk.jl?branch=master)
 
 # QuantumWalk
 
