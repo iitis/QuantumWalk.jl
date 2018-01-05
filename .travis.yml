@@ -11,7 +11,7 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("Expokit")'
   - julia -e 'Pkg.add("LightGraphs")'
-  - julia -e 'Pkg.clone("https://github.com/ZKSI/QuantumWalk.jl.git")'
+  - julia -e 'Pkg.clone("https://github.com/QuantumWalks/QuantumWalk.jl.git")'
   - julia -e 'Pkg.build("QuantumWalk")'
   - julia -e 'Pkg.test("QuantumWalk"; coverage=true)'
 after_success:
