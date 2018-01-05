@@ -4,7 +4,7 @@ function initial_state_szegedy(sqrtstochastic::SparseMatrixCSC{<:Number})
 end
 
 """
-    initial_state_szegedy(qss::QWSearch{<:AbstractSzegedy})
+    initial_state(qss::QWSearch{<:AbstractSzegedy})
 
 Generates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238.
 Vectorizes and normalizes obtained `sqrtstochastic` matrix from `model(qss)`.
@@ -94,18 +94,30 @@ julia> evolve(qss, initial_state(qss))
 
 ```
 """
-function evolve(qwe::QWDynamics{Szegedy{<:Any,T}},
+function evolve(qwd::QWDynamics{Szegedy{<:Any,T}},
                 state::SparseVector{T}) where T<:Number
-   evolve_szegedy_special((qwe.parameters[:operators])..., state)
+   evolve_szegedy_special((qwd.parameters[:operators])..., state)
 end
 
-function evolve(qwe::QWDynamics{<:AbstractSzegedy},
+function evolve(qwd::QWDynamics{<:AbstractSzegedy},
                 state::SparseVector{<:Number})
-   evolve_szegedy_general(qwe.parameters[:operators], state)
+   evolve_szegedy_general(qwd.parameters[:operators], state)
+end
+
+
+function measure_szegedy(state::SparseVector{<:Number})
+   dim = floor(Int, sqrt(length(state)))
+   vec(mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1]))
+end
+
+function measure_szegedy(state::SparseVector{<:Number},
+                         vertices::Vector{Int})
+   dim = floor(Int, sqrt(length(state)))
+   vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1]))
 end
 
 """
-    measure_szegedy(state[, vertices])
+    measure(qwd::AbstractSzegedy, state[, vertices])
 
 Performes a measurement on `state` on `vertices`. `vertices` defaults to list of
 all vertices. It is defined as the measurement of partially traced on second system state
@@ -130,23 +142,12 @@ julia> measure(qss, state, [1,3])
 
 ```
 """
-function measure_szegedy(state::SparseVector{<:Number})
-   dim = floor(Int, sqrt(length(state)))
-   vec(mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1]))
-end
-
-function measure_szegedy(state::SparseVector{<:Number},
-                         vertices::Vector{Int})
-   dim = floor(Int, sqrt(length(state)))
-   vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1]))
-end
-
-function measure(qss::QWDynamics{<:AbstractSzegedy},
+function measure(::QWDynamics{<:AbstractSzegedy},
                  state::SparseVector{<:Number})
    measure_szegedy(state)
 end
 
-function measure(qss::QWDynamics{<:AbstractSzegedy},
+function measure(::QWDynamics{<:AbstractSzegedy},
                  state::SparseVector{<:Number},
                  vertices::Vector{Int})
    measure_szegedy(state, vertices)

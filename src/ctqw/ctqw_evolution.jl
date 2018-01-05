@@ -1,3 +1,4 @@
+
 function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
    fill(T(1/sqrt(size)), size)
 end
@@ -24,15 +25,15 @@ function initial_state(qss::QWSearch{<:AbstractCTQW})
 end
 
 """
-    evolve(qss, state, runtime)
+    evolve(qwd, state, runtime)
 
-Returnes new state creates by evolving `state` by `qss.parameters[:hamiltonian]`
+Returnes new state creates by evolving `state` by `qwd.parameters[:hamiltonian]`
 for time `runtime` according to Schrödinger equation.
 
 ```@docs
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
+julia> qwd = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
-julia> evolve(qss, initial_state(qss), 1.)
+julia> evolve(qwd, initial_state(qss), 1.)
 4-element Array{Complex{Float64},1}:
  -0.128942+0.67431im
   0.219272+0.357976im
@@ -41,10 +42,10 @@ julia> evolve(qss, initial_state(qss), 1.)
 
 ```
 """
-function evolve(qwe::QWDynamics{<:AbstractCTQW},
+function evolve(qwd::QWDynamics{<:AbstractCTQW},
                 state::Vector{<:Number},
                 runtime::Real)
-   hamiltonian_evolution(qwe.parameters[:hamiltonian], state, runtime)
+   hamiltonian_evolution(qwd.parameters[:hamiltonian], state, runtime)
 end
 
 function measure_ctqw(state::Vector{<:Number})
@@ -57,7 +58,7 @@ function measure_ctqw(state::Vector{<:Number},
 end
 
 """
-    measure(::QWDynamics{<:AbstractCTQW}, state [, vertices])
+    measure(qwd::QWDynamics{<:AbstractCTQW}, state [, vertices])
 
 Returns the probability of measuring each vertex from `vertices` from `state`
 according to AbstractCTQW model. If `vertices` is not provided, full measurement is made.

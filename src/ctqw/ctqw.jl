@@ -95,14 +95,14 @@ function QWSearch(ctqw::AbstractCTQW,
 end
 
 """
-    check_qss(ctqw::AbstractCTQW, marked, parameters)
+    check_qwsearch(ctqw::AbstractCTQW, marked, parameters)
 
 Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """
-function check_qss(ctqw::AbstractCTQW,
+function check_qwsearch(ctqw::AbstractCTQW,
                    marked::Array{Int},
                    parameters::Dict{Symbol})
    check_ctqw(ctqw, parameters)
@@ -125,14 +125,14 @@ function QWEvolution(ctqw::AbstractCTQW)
 end
 
 """
-    check_qwalksimulator(ctqw::AbstractCTQW, parameters)
+    check_qwevolution(ctqw::AbstractCTQW, parameters)
 
 Checks whetver combination of `ctqw` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """
-function check_qwalksimulator(ctqw::AbstractCTQW,
+function check_qwevolution(ctqw::AbstractCTQW,
                               parameters::Dict{Symbol})
    check_ctqw(ctqw, parameters)
 end

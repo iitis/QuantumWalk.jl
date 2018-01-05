@@ -7,8 +7,8 @@ export
     initial_state,
     evolve,
     measure,
-    check_qss,
-    check_qwalksimulator
+    check_qwsearch,
+    check_qwevolution
 
 ```@meta
 CurrentModule = QuantumWalk
@@ -32,17 +32,6 @@ Full documentation is available in GitHub pages.
 
 """
 QuantumWalk
-
-"""
-    initial_state(qss)
-
-Generates initial state for QWSearch `qss`. The type and value strongly depends on
-model of `qss`. For concrete `model` description please type `?initial_state(QWSearch{model})`,
-for example for `CTQW` write `?initial_state(QWSearch{CTQW})`.
-
-Details concerning implementing `initial_state` for own models can be found in GitHub pages.
-"""
-initial_state
 
 """
     measure(qwevolution, state[, vertices])
@@ -76,19 +65,9 @@ Details concerning implementing `evolve` for own models can be found in GitHub p
 """
 evolve
 
-"""
-    check_qss(model, marked, parameters)
-
-Checks whetver combination of `model`, `marked` and `parameters` creates valid
-quantum search evolution. Note that whetver list of vertices `marked` are a subset
-of vertices of `graph` from `model` is checked seperately in `QWSearch` constructor.
-
-Details concerning implementing `check_qss` for own models can be found in GitHub pages.
-"""
-check_qss
 
 """
-    check_qwalksimulator(model, parameters)
+    check_qwevolution(model, parameters)
 
 Checks whetver combination of `model` and `parameters` creates valid
 quantum walk simulator.
@@ -96,15 +75,18 @@ quantum walk simulator.
 Details concerning implementing `check_qws` for own models can be found in GitHub pages.
 
 """
-check_qwalksimulator
+check_qwevolution
 
 include("type_hierarchy.jl")
 include("dynamics.jl")
 
+# dynamics
+include("qwsearch/qwsearch.jl")
+include("qwevolution/qwevolution.jl")
+
+# models
 include("ctqw/ctqw.jl")
 include("szegedy/szegedy.jl")
-include("qwevolution/qwevolution.jl")
-include("qwsearch/qwsearch.jl")
 
 
 

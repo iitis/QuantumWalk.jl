@@ -124,28 +124,28 @@ function check_szegedy(szegedy::AbstractSzegedy,
 end
 
 """
-    check_qss(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwsearch(szegedy::AbstractSzegedy, marked, parameters)
 
 Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:operators` with
 corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
-function check_qss(szegedy::AbstractSzegedy,
+function check_qwsearch(szegedy::AbstractSzegedy,
                    marked::Array{Int},
                    parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 
 """
-    check_qwalksimulator(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwevolution(szegedy::AbstractSzegedy, marked, parameters)
 
 Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWEvolution` object. It checks where `parameters` consists of key `:operators` with
 corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
-function check_qwalksimulator(szegedy::AbstractSzegedy,
+function check_qwevolution(szegedy::AbstractSzegedy,
                               parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
