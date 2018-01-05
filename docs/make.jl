@@ -1,15 +1,15 @@
 using Documenter
-include("../src/QSpatialSearch.jl")
-using QSpatialSearch, LightGraphs	
+include("../src/QuantumWalk.jl")
+using QuantumWalk, LightGraphs	
 
 # same for contributing and license
 println(pwd())
 cp(normpath(@__FILE__, "../../LICENSE.md"), normpath(@__FILE__, "../src/license.md"); remove_destination=true)
 
 makedocs(
-    modules     = [QSpatialSearch],
+    modules     = [QuantumWalk],
     format      = :html,
-    sitename    = "QSpatialSearch",
+    sitename    = "QuantumWalk",
     doctest     = true,
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
@@ -31,7 +31,7 @@ makedocs(
 deploydocs(
     deps        = nothing,
     make        = nothing,
-    repo        = "github.com/ZKSI/QSpatialSearch.jl",
+    repo        = "github.com/ZKSI/QuantumWalk.jl",
     target      = "build",
     julia       = "0.6",
     osname      = "linux"

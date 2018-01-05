@@ -10,7 +10,7 @@ Abstract CTQW model. By default evolve according to Schrödinger equation and
 performs measurmenet by taking square of absolute values of its elements. Default
 representation of `AbstractCTQW` is `CTQW`.
 """
-abstract type AbstractCTQW <: ContQWalk end
+abstract type AbstractCTQW <: QWModelCont end
 
 """
     CTQW(graph[, matrix])
@@ -67,14 +67,14 @@ function check_ctqw(ctqw::AbstractCTQW,
 end
 
 """
-    QSearch([type, ]ctqw::AbstractCTQW, marked [, jumpingrate, penalty])
+    QWSearch([type, ]ctqw::AbstractCTQW, marked [, jumpingrate, penalty])
 
-Creates `QSearch` according to `AbstractCTQW` model. By default `type` equals
+Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
 `Complex128`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
 By default hamiltonian is `SparseMatrixCSC`.
 """
-function QSearch(::Type{T},
+function QWSearch(::Type{T},
                  ctqw::AbstractCTQW,
                  marked::Array{Int},
                  jumpingrate::T = jumping_rate(T, ctqw),
@@ -84,21 +84,21 @@ function QSearch(::Type{T},
 
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
 
-   QSearch(ctqw, marked, parameters, penalty)
+   QWSearch(ctqw, marked, parameters, penalty)
 end
 
-function QSearch(ctqw::AbstractCTQW,
+function QWSearch(ctqw::AbstractCTQW,
                  marked::Array{Int},
                  jumpingrate::Real = jumping_rate(Float64, ctqw),
                  penalty::Real=0.)
-   QSearch(Complex128, ctqw, marked, Complex128(jumpingrate), penalty)
+   QWSearch(Complex128, ctqw, marked, Complex128(jumpingrate), penalty)
 end
 
 """
     check_qss(ctqw::AbstractCTQW, marked, parameters)
 
 Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
-`QSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
+`QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """
@@ -109,26 +109,26 @@ function check_qss(ctqw::AbstractCTQW,
 end
 
 """
-    QWalkSimulator([type, ]ctqw::AbstractCTQW)
+    QWEvolution([type, ]ctqw::AbstractCTQW)
 
-Creates `QWalkSimulator` according to `AbstractCTQW` model. By default `type` equals
+Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equals
 `Complex128`. By default constructed hamiltonian is `SparseMatrixCSC`.
 """
-function QWalkSimulator(::Type{U},
+function QWEvolution(::Type{U},
                         ctqw::AbstractCTQW) where U<:Number
    parameters = Dict{Symbol,Any}(:hamiltonian => graph_hamiltonian(U, ctqw))
-   QWalkSimulator(ctqw, parameters)
+   QWEvolution(ctqw, parameters)
 end
 
-function QWalkSimulator(ctqw::AbstractCTQW)
-   QWalkSimulator(Complex128, ctqw)
+function QWEvolution(ctqw::AbstractCTQW)
+   QWEvolution(Complex128, ctqw)
 end
 
 """
     check_qwalksimulator(ctqw::AbstractCTQW, parameters)
 
 Checks whetver combination of `ctqw` and `parameters` produces valid
-`QSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
+`QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """

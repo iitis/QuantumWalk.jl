@@ -1,4 +1,4 @@
-using QSpatialSearch
+using QuantumWalk
 using LightGraphs
 using Base.Test
 

@@ -10,7 +10,7 @@ Abstract Szegedy model. Description of default can be found in
 https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen. Default
 representation of `AbstractSzegedy` is `Szegedy`.
 """
-abstract type AbstractSzegedy <: DiscrQWalk end
+abstract type AbstractSzegedy <: QWModelDiscr end
 
 """
     Szegedy(graph[, stochastic, checkstochastic])
@@ -78,13 +78,13 @@ julia> full(sqrtstochastic(szegedy).^2)
 sqrtstochastic(szegedy::AbstractSzegedy) = szegedy.sqrtstochastic
 
 """
-    QSearch(szegedy::AbstractSzegedy, marked [, penalty])
+    QWSearch(szegedy::AbstractSzegedy, marked [, penalty])
 
-Creates `QSearch` according to `AbstractSzegedy` model. `penalty` equals 0.
+Creates `QWSearch` according to `AbstractSzegedy` model. `penalty` equals 0.
 It constructs evolution operators according to definition from
 https://arxiv.org/abs/1611.02238.
 """
-function QSearch(szegedy::AbstractSzegedy,
+function QWSearch(szegedy::AbstractSzegedy,
                  marked::Array{Int},
                  penalty::Real=0)
    r1, r2 = szegedywalkoperators(szegedy)
@@ -92,21 +92,21 @@ function QSearch(szegedy::AbstractSzegedy,
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1*q1, r2*q2]
 
-   QSearch(szegedy, marked, parameters, penalty)
+   QWSearch(szegedy, marked, parameters, penalty)
 end
 
 """
-    QWalkSimulator(szegedy::AbstractSzegedy)
+    QWEvolution(szegedy::AbstractSzegedy)
 
-Creates `QWalkSimulator` according to `AbstractSzegedy` model. By default
+Creates `QWEvolution` according to `AbstractSzegedy` model. By default
 constructed operators is `SparseMatrixCSC`.
 """
-function QWalkSimulator(szegedy::AbstractSzegedy)
+function QWEvolution(szegedy::AbstractSzegedy)
    r1, r2 = szegedywalkoperators(szegedy)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1, r2]
 
-   QWalkSimulator(szegedy, parameters)
+   QWEvolution(szegedy, parameters)
 end
 
 """
@@ -127,7 +127,7 @@ end
     check_qss(szegedy::AbstractSzegedy, marked, parameters)
 
 Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
-`QSearch` object. It checks where `parameters` consists of key `:operators` with
+`QWSearch` object. It checks where `parameters` consists of key `:operators` with
 corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
@@ -141,7 +141,7 @@ end
     check_qwalksimulator(szegedy::AbstractSzegedy, marked, parameters)
 
 Checks whetver combination of `szegedy`, `marked` and `parameters` produces valid
-`QWalkSimulator` object. It checks where `parameters` consists of key `:operators` with
+`QWEvolution` object. It checks where `parameters` consists of key `:operators` with
 corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """

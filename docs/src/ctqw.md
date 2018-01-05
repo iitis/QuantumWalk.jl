@@ -9,20 +9,20 @@ Exemplary implementation of continuous quantum walk model. The model is defined 
 
 ### Model functions
 ```@docs
-initial_state(::QSearch{<:AbstractCTQW})
-evolve(::QWalkEvolution{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
-measure(::QWalkEvolution{<:AbstractCTQW}, ::Any)
+initial_state(::QWSearch{<:AbstractCTQW})
+evolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
+measure(::QWDynamics{<:AbstractCTQW}, ::Any)
 matrix(::AbstractCTQW)
 ```
 
 ### Quantum search constructor
 ```@docs 
-QSearch(::Type{T}, ::AbstractCTQW, ::Array{Int}, ::T, ::Real = 0.) where T<:Number
+QWSearch(::Type{T}, ::AbstractCTQW, ::Array{Int}, ::T, ::Real = 0.) where T<:Number
 check_qss
 ```
 
 ### Quantum walk constructor
 ```@docs 
-QWalkSimulator
+QWEvolution
 check_qwalksimulator
 ```

@@ -14,11 +14,11 @@ julia> g = DiGraph(3)
 julia> add_edge!(g, 1, 3)
 true
 
-julia> QSpatialSearch.out_neighbors_looped(g, 1)
+julia> QuantumWalk.out_neighbors_looped(g, 1)
 1-element Array{Int64,1}:
  3
 
-julia> QSpatialSearch.out_neighbors_looped(g, 2)
+julia> QuantumWalk.out_neighbors_looped(g, 2)
 1-element Array{Int64,1}:
  2
 ```
@@ -91,8 +91,8 @@ julia> graphstochasticcheck(g, stochastic)
 ERROR: AssertionError: Nonzero elements of stochastic do not coincide with graph edges
 Stacktrace:
  [1]
-stochastic_preserves_graph_check(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QSpatialSearch/src/szegedy.jl:64
- [2] graphstochasticcheck(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QSpatialSearch/src/szegedy.jl:87
+stochastic_preserves_graph_check(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QuantumWalk/src/szegedy.jl:64
+ [2] graphstochasticcheck(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QuantumWalk/src/szegedy.jl:87
 
 julia> add_edge!(g, 1, 3)
 true
@@ -130,7 +130,7 @@ julia> adjacency_matrix(g, dir=:in) |> full
  0  1  0  0  0
  0  0  1  0  0
 
-julia> QSpatialSearch.default_stochastic(g) |> full
+julia> QuantumWalk.default_stochastic(g) |> full
 5×5 Array{Float64,2}:
  0.0  0.333333  0.333333  0.0  0.0
  0.5  0.0       0.333333  1.0  0.0

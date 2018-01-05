@@ -1,1 +1,1 @@
-Welcom to QSpatialSearch.jl package.
+Welcom to QuantumWalk.jl package.

@@ -4,7 +4,7 @@ function initial_state_szegedy(sqrtstochastic::SparseMatrixCSC{<:Number})
 end
 
 """
-    initial_state_szegedy(qss::QSearch{<:AbstractSzegedy})
+    initial_state_szegedy(qss::QWSearch{<:AbstractSzegedy})
 
 Generates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238.
 Vectorizes and normalizes obtained `sqrtstochastic` matrix from `model(qss)`.
@@ -13,7 +13,7 @@ may not be uniform supersposition in general, but it gives uniform superposition
 after partial tracing second system.
 
 ```@docs
-julia> qss = QSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> initial_state(qss)
 16-element SparseVector{Float64,Int64} with 12 stored entries:
@@ -32,7 +32,7 @@ julia> initial_state(qss)
 
 ```
 """
-function initial_state(qss::QSearch{<:AbstractSzegedy})
+function initial_state(qss::QWSearch{<:AbstractSzegedy})
    initial_state_szegedy(qss.model.sqrtstochastic)
 end
 
@@ -75,7 +75,7 @@ Multiplies `state` be each `operator` from `operators` from quatnum walk
 evolution `qwe`. Elements of operators and state should be of the same type.
 
 ```@docs
-julia> qss = QSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> evolve(qss, initial_state(qss))
 16-element SparseVector{Float64,Int64} with 12 stored entries:
@@ -94,12 +94,12 @@ julia> evolve(qss, initial_state(qss))
 
 ```
 """
-function evolve(qwe::QWalkEvolution{Szegedy{<:Any,T}},
+function evolve(qwe::QWDynamics{Szegedy{<:Any,T}},
                 state::SparseVector{T}) where T<:Number
    evolve_szegedy_special((qwe.parameters[:operators])..., state)
 end
 
-function evolve(qwe::QWalkEvolution{<:AbstractSzegedy},
+function evolve(qwe::QWDynamics{<:AbstractSzegedy},
                 state::SparseVector{<:Number})
    evolve_szegedy_general(qwe.parameters[:operators], state)
 end
@@ -112,7 +112,7 @@ all vertices. It is defined as the measurement of partially traced on second sys
 https://arxiv.org/abs/1611.02238.
 
 ```@docs
-julia> qss = QSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> state = evolve(qss, initial_state(qss));
 
@@ -141,12 +141,12 @@ function measure_szegedy(state::SparseVector{<:Number},
    vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1]))
 end
 
-function measure(qss::QWalkEvolution{<:AbstractSzegedy},
+function measure(qss::QWDynamics{<:AbstractSzegedy},
                  state::SparseVector{<:Number})
    measure_szegedy(state)
 end
 
-function measure(qss::QWalkEvolution{<:AbstractSzegedy},
+function measure(qss::QWDynamics{<:AbstractSzegedy},
                  state::SparseVector{<:Number},
                  vertices::Vector{Int})
    measure_szegedy(state, vertices)

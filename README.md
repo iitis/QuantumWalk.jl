@@ -1,21 +1,21 @@
-[![Build Status](https://travis-ci.org/ZKSI/QSpatialSearch.jl.svg?branch=master)](https://travis-ci.org/ZKSI/QSpatialSearch.jl)
-[![Coverage Status](https://coveralls.io/repos/github/ZKSI/QSpatialSearch.jl/badge.svg?branch=master)](https://coveralls.io/github/ZKSI/QSpatialSearch.jl?branch=master)
+[![Build Status](https://travis-ci.org/ZKSI/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/ZKSI/QuantumWalk.jl)
+[![Coverage Status](https://coveralls.io/repos/github/ZKSI/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/ZKSI/QuantumWalk.jl?branch=master)
 
-# QSpatialSearch
+# QuantumWalk
 
 ## Description
 
-'QSpatialSearch' is a package for Julia programming language implementing models
+'QuantumWalk' is a package for Julia programming language implementing models
 of quantum continuous and discrete) walks used for performing quantum spatial
 search.  Currently the package provides implementation of
 * Szegedy quantum walks
 * continuous quantum walks
 
-QSpatialSearch is currently under construcion.
+QuantumWalk is currently under construcion.
 
 ## Installation
 
 The package can be installed using 'Pkg.clone' command as
 ```julia 
-Pkg.clone("git@github.com:ZKSI/QSpatialSearch.jl.git")
+Pkg.clone("git@github.com:ZKSI/QuantumWalk.jl.git")
 ```

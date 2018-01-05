@@ -11,10 +11,10 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("Expokit")'
   - julia -e 'Pkg.add("LightGraphs")'
-  - julia -e 'Pkg.clone("https://github.com/ZKSI/QSpatialSearch.jl.git")'
-  - julia -e 'Pkg.build("QSpatialSearch")'
-  - julia -e 'Pkg.test("QSpatialSearch"; coverage=true)'
+  - julia -e 'Pkg.clone("https://github.com/ZKSI/QuantumWalk.jl.git")'
+  - julia -e 'Pkg.build("QuantumWalk")'
+  - julia -e 'Pkg.test("QuantumWalk"; coverage=true)'
 after_success:
-  - julia --depwarn=no -e 'cd(Pkg.dir("QSpatialSearch")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia --depwarn=no -e 'cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
   - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("QSpatialSearch")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'cd(Pkg.dir("QuantumWalk")); include(joinpath("docs", "make.jl"))'
