@@ -20,7 +20,7 @@ abstract type AbstractSzegedy <: QWModelDiscr end
  LightGraphs module, `stochastic` needs to be a Real column stochastic matrix,
  checkstochastic is a flag which decides about checking the `stochastic` properties.
  `stochastic` defaults to uniform walk operator, `checkstochastic` deafults to `false`
- in case of default `stochastic` and `false` in case of user `stochastic` provided.
+ in case of default `stochastic` and `true` in case of user `stochastic` provided.
 
  `stochatsic` is changed into `sqrtstochastic` by element-wise square root.
 """
@@ -33,7 +33,7 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
                     stochastic::SparseMatrixCSC{T},
                     checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
       if checkstochastic
-         graphstochasticcheck(g, stochastic)
+         graphstochasticcheck(graph, stochastic)
       end
       new{G, T}(graph, sqrt.(stochastic))
    end
