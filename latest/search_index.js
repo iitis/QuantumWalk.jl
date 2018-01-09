@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.Szegedy",
     "category": "Type",
-    "text": "Szegedy(graph[, stochastic, checkstochastic])\n\nDefault representation of AbstractSzegedy. graph needs to be a subtype of  AbstractGraph from  LightGraphs module, stochastic needs to be a Real column stochastic matrix,  checkstochastic is a flag which decides about checking the stochastic properties.  stochastic defaults to uniform walk operator, checkstochastic deafults to false  in case of default stochastic and false in case of user stochastic provided.\n\nstochatsic is changed into sqrtstochastic by element-wise square root.\n\n\n\n"
+    "text": "Szegedy(graph[, stochastic, checkstochastic])\n\nDefault representation of AbstractSzegedy. graph needs to be a subtype of  AbstractGraph from  LightGraphs module, stochastic needs to be a Real column stochastic matrix,  checkstochastic is a flag which decides about checking the stochastic properties.  stochastic defaults to uniform walk operator, checkstochastic deafults to false  in case of default stochastic and true in case of user stochastic provided.\n\nstochatsic is changed into sqrtstochastic by element-wise square root.\n\n\n\n"
 },
 
 {
