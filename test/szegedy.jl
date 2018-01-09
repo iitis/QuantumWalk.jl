@@ -58,12 +58,15 @@
 
   @testset "Szegedy walk operators" begin
     g = smallgraph(:bull)
+    sz = Szegedy(g)
 
-    r1, r2 = QuantumWalk.szegedywalkoperators(Szegedy(g))
+    @test sqrtstochastic(sz) == sz.sqrtstochastic
+
+    r1, r2 = QuantumWalk.szegedywalkoperators(sz)
     @test isapprox(norm(r1*r1'-eye(r1), Inf), 0, atol=1e-8)
     @test isapprox(norm(r2*r2'-eye(r2), Inf), 0, atol=1e-8)
 
-    q1, q2 = QuantumWalk.szegedyoracleoperators(Szegedy(g), [2, 3])
+    q1, q2 = QuantumWalk.szegedyoracleoperators(sz, [2, 3])
 
     @test all(typeof(m) == SparseMatrixCSC{Float64,Int} for m = [r1, r2, q1, q2])
 
