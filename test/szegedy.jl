@@ -58,7 +58,7 @@
 
   @testset "Szegedy walk operators" begin
     g = smallgraph(:bull)
-    sz = Szegedy(g)
+    sz = Szegedy(g, QuantumWalk.default_stochastic(g), true)
 
     @test sqrtstochastic(sz) == sz.sqrtstochastic
 
