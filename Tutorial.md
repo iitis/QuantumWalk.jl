@@ -23,9 +23,10 @@ used to represent the flavor of quantum walk used in the dynamic.
 
 Let us assume that we need to simulate the continuous-time evolution on a
 complete graph of dimension
+
 ```julia
 n = 5
-```.
+```
 
 The first step is to construct the graph using ```LightGraphs``` package.
 
