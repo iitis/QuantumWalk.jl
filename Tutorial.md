@@ -67,4 +67,5 @@ Here the last argument is used to describe the set of marked elements.
 
 The search procedure is executed as
 ```julia
+evolve(ctqw_qss, initial_state(ctqw_qss), 2.0)
 ```
