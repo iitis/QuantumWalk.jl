@@ -37,7 +37,7 @@ Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative. If `qwd` is based on on `QWModelDiscr`, `runtime`
 needs to be `Int`.
 
-```@docs
+```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);
@@ -87,7 +87,7 @@ Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative, and measure it in the end.
 If `qwd` is based on on `QWModelDiscr`, `runtime` needs to be `Int`.
 
-```@docs
+```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);
@@ -115,7 +115,7 @@ Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative. Quantum walk model needs to be discrete.
 Returns list of all states including `initstate` and last state.
 
-```@docs
+```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);
@@ -173,7 +173,7 @@ Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 As a result return matrix of type `Matrix{Float64}` for which `i`-th column  is
 measurement probability distribution in `i-1`-th step.
 
-```@docs
+```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);

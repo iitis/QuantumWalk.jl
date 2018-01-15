@@ -37,7 +37,7 @@ julia> probability(result)
 1-element Array{Float64,1}:
  0.869767
 
-julia> probability(quantum_search(qss, pi*sqrt(100)/2))
+julia> probability(execute_single(qss, pi*sqrt(100)/2))
 1-element Array{Float64,1}:
  1.0
 ```
@@ -77,7 +77,7 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
    maxt = min(maxtime, data_t[min(length(data_t), minindex+1)])
    optresult = optimize(efficiency_opt, mint, maxt)
 
-   result = quantum_search(qss, Optim.minimizer(optresult))
+   result = execute_single(qss, Optim.minimizer(optresult))
    QSearchState(result.state, result.probability, result.runtime+qss.penalty)
 end
 
@@ -103,7 +103,7 @@ Note last three modes always returns optimal time within the interval.
 `maxtime` defaults to graph order n, `mode` defaults to `:maxeff`. `QSearchState`
 is returned by deafult without `penalty`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
 
 julia> result = maximize_quantum_search(qss);

@@ -54,7 +54,7 @@ end
 
 Returns `marked` element of `qss`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
 QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
   [1, 1]  =  1.0+0.0im
@@ -80,10 +80,10 @@ marked(qss::QWSearch) = qss.marked
 
 """
     penalty(qss)
-    
+
 Returns `penalty` element of `qss`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
 QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
   [1, 1]  =  1.0+0.0im
@@ -116,7 +116,10 @@ and running time `runtime`. Validity of `probability` and `runtime` is not check
 
 In second case `state` is measured according to `qss` is made.
 
-```@docs
+```jldoctest
+julia?> 2+2
+5
+
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qss, initial_state(qss), 0)
@@ -155,7 +158,7 @@ end
 
 Returns the state of qsearchstate.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qss, initial_state(qss), 0);
@@ -183,7 +186,7 @@ state(qsearchstate::QSearchState) = qsearchstate.state
 
 Returns the list of probabilities of finding marked vertices.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qss, initial_state(qss), 0);
@@ -201,7 +204,7 @@ probability(qsearchstate::QSearchState) = qsearchstate.probability
 
 Returns the time for which the state was calulated.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qss, initial_state(qss), 0);

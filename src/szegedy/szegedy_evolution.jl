@@ -12,7 +12,7 @@ Note that the state
 may not be uniform supersposition in general, but it gives uniform superposition
 after partial tracing second system.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> initial_state(qss)
@@ -74,7 +74,7 @@ end
 Multiplies `state` be each `operator` from `operators` from quatnum walk
 evolution `qwe`. Elements of operators and state should be of the same type.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> evolve(qss, initial_state(qss))
@@ -123,7 +123,7 @@ Performes a measurement on `state` on `vertices`. `vertices` defaults to list of
 all vertices. It is defined as the measurement of partially traced on second system state
 https://arxiv.org/abs/1611.02238.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> state = evolve(qss, initial_state(qss));

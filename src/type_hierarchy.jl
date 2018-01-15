@@ -19,7 +19,7 @@ abstract type QWModel end
 
 Returns `graph` element of `model`.
 
-```@docs
+```jldoctest
 julia> ctqw = CTQW(CompleteGraph(4))
 QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency)
 
@@ -56,7 +56,7 @@ abstract type QWDynamics{T<:QWModel} end
 Returns `graph` element of `model` from `qwd`. Equivalent to
 `graph(model(qwd))`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
 QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
   [1, 1]  =  1.0+0.0im
@@ -84,7 +84,7 @@ graph(qwd::QWDynamics) = graph(qwd.model)
 
 Returns `model` element of `qwd`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
 QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
   [1, 1]  =  1.0+0.0im
@@ -112,7 +112,7 @@ model(qwd::QWDynamics) = qwd.model
 
 Returns `parameters` element of `qwd`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
 QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
   [1, 1]  =  1.0+0.0im

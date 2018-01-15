@@ -10,7 +10,7 @@ makedocs(
     modules     = [QuantumWalk],
     format      = :html,
     sitename    = "QuantumWalk",
-    doctest     = true,
+    doctest     = false,
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[

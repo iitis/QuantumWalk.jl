@@ -1,3 +1,7 @@
+```@meta
+CurrentModule = QuantumWalk
+```
+
 
 function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
    fill(T(1/sqrt(size)), size)
@@ -8,7 +12,7 @@ end
 
 Returns equal superposition of size `size` and type of `qss.parameters[:hamiltonian]`.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> initial_state(qss)
@@ -30,10 +34,10 @@ end
 Returnes new state creates by evolving `state` by `qwd.parameters[:hamiltonian]`
 for time `runtime` according to Schrödinger equation.
 
-```@docs
-julia> qwd = QWSearch(CTQW(CompleteGraph(4)), [1]);
+```jldoctest
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
-julia> evolve(qwd, initial_state(qss), 1.)
+julia> evolve(qss, initial_state(qss), 1.)
 4-element Array{Complex{Float64},1}:
  -0.128942+0.67431im
   0.219272+0.357976im
@@ -65,7 +69,7 @@ according to AbstractCTQW model. If `vertices` is not provided, full measurement
 For AbstractCTQW model measurement is done by taking square of absolute value of all elements
 of state.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)])

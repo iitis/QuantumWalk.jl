@@ -28,10 +28,10 @@ Returns the expected runtime needed for quantum walk, considering it as Bernoull
 process. It equals to `runtime/probability`. In the case of `state` provided the
 measurement is made.
 
-```@docs
+```jldoctest
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
-julia> result = quantum_search(qss, 4);
+julia> result = execute(qss, 4);
 
 julia> expected_runtime(result)
 6.930377097077988

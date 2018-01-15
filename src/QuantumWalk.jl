@@ -10,9 +10,7 @@ export
     check_qwsearch,
     check_qwevolution
 
-```@meta
-CurrentModule = QuantumWalk
-```
+
 
 """
     QuantumWalk

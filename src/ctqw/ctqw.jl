@@ -32,7 +32,7 @@ CTQW(graph::Graph) = CTQW(graph, :adjacency)
 
 Returns the matrix symbol defining matrix graph used.
 
-```@docs
+```jldoctest
 julia> matrix(CTQW(CompleteGraph(4)))
 :adjacency
 

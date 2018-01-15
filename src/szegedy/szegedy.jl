@@ -49,7 +49,7 @@ end
 Returns the `sqrtstochastic` element of `szegedy`. After element-wise squaring
 a column-stochastic matrix is obtained.
 
-```@docs
+```jldoctest
 julia> szegedy = Szegedy(CompleteGraph(4));
 
 julia> sqrtstochastic(szegedy)
