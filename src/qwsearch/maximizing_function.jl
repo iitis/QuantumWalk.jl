@@ -46,6 +46,9 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
                                  maxtime::T = Float64(nv(graph(qss))),
                                  tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where T<:Real
    @assert maxtime >= 0. "Time needs to be nonnegative"
+   if penalty(qss) == 0
+      warn("It is recommended for penalty to be nonzero, otherwise time close is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.")
+   end
 
    state = initial_state(qss)
    function efficiency_opt(runtime::Number)
@@ -130,6 +133,10 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelDiscr},
                                  mode::Symbol = :maxeff)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
+   if penalty(qss) == 0
+      warn("It is recommended for penalty to be nonzero, otherwise time close is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.")
+   end
+
 
    best_result = QSearchState(qss, initial_state(qss), qss.penalty)
    state = QSearchState(qss, initial_state(qss), qss.penalty)
