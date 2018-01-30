@@ -35,5 +35,7 @@ end
     # more straightforward tests
     @test execute_all_measured(qss,steps) == execute(qss,steps,all=true,measure=true)
     @test execute_single_measured(qss,steps) == execute(qss,steps,measure=true)
+    @test probability(res3) == res1[steps+1].probability
+    @test state(res3) == res1[steps+1].state
   end
 end
