@@ -37,5 +37,6 @@ end
     @test execute_single_measured(qss,steps) == execute(qss,steps,measure=true)
     @test probability(res3) == res1[steps+1].probability
     @test state(res3) == res1[steps+1].state
+    @test state(execute_single(qss,1)) == execute_single(qss,1).state
   end
 end
