@@ -45,9 +45,10 @@ julia> probability(execute_single(qss, pi*sqrt(100)/2))
 function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
                                  maxtime::T = Float64(nv(graph(qss))),
                                  tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where T<:Real
-   @assert maxtime >= 0. "Time needs to be nonnegative"
+   @assert maxtime >= 0. "Parameter 'maxtime' needs to be nonnegative"
    if penalty(qss) == 0
-      warn("It is recommended for penalty to be nonzero, otherwise time close is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.")
+      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned.")
+      warn("Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
    state = initial_state(qss)
