@@ -135,7 +135,8 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelDiscr},
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
    if penalty(qss) == 0
-      warn("It is recommended for penalty to be nonzero, otherwise time close is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.")
+      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned.")
+      warn("Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
 
