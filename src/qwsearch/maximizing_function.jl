@@ -46,9 +46,11 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
                                  maxtime::T = Float64(nv(graph(qss))),
                                  tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where T<:Real
    @assert maxtime >= 0. "Parameter 'maxtime' needs to be nonnegative"
+   @assert tstep >= 0. "Parameter 'tstep' needs to be nonnegative"
+
    if penalty(qss) == 0
-      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned.")
-      warn("Typically penalty should be approximately log(n), but this might by case-dependant.")
+      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
+      "Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
    state = initial_state(qss)
@@ -70,7 +72,7 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
       end
    end
 
-   if t > maxtime
+   if t > maxtime-tstep
       push!(data_t, maxtime)
       push!(data_y, efficiency_opt(maxtime))
    end
@@ -135,8 +137,8 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelDiscr},
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
    if penalty(qss) == 0
-      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned.")
-      warn("Typically penalty should be approximately log(n), but this might by case-dependant.")
+      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
+      "Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
 
