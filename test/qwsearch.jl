@@ -24,6 +24,7 @@ end
 
   @testset "Evolution" begin
     steps = 10
+    res0 = execute(qss,steps)
     res1 = execute(qss,steps,all=true)
     res2 = execute_all(qss,steps)
     res3 = execute_single(qss,steps)
@@ -31,6 +32,7 @@ end
     @test res1[2].state == QSearchState(qss,evolve(qss,res2[1].state),1).state
     @test res1[10].probability == res2[10].probability
     @test res3.state == res1[11].state
+    @test res0.state == res1[11].state
     @test length(res1) == steps+1
     # more straightforward tests
     @test execute_all_measured(qss,steps) == execute(qss,steps,all=true,measure=true)
