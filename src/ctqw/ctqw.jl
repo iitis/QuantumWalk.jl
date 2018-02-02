@@ -94,6 +94,26 @@ function QWSearch(ctqw::AbstractCTQW,
    QWSearch(Complex128, ctqw, marked, Complex128(jumpingrate), penalty)
 end
 
+
+"""
+    QWSearch(qss::QWSearch{<:CTQW}; marked, penalty)
+
+Updates quantum walk search to new subset of marked elements and new penalty. By
+default marked and penalty are the same as in qss.
+"""
+function QWSearch(qss::QWSearch{<:CTQW};
+                  marked::Vector{Int}=qss.marked,
+                  penalty::Real=qss.penalty)
+   oldmarked = qss.marked
+
+   hamiltonian = copy(parameters(qss)[:hamiltonian])
+   hamiltonian += sum(proj(eltype(hamiltonian), v, nv(graph(qss))) for v=marked)
+   hamiltonian -= sum(proj(eltype(hamiltonian), v, nv(graph(qss))) for v=oldmarked)
+
+   QWSearch(model(qss), marked, Dict(:hamiltonian => hamiltonian), penalty)
+end
+
+
 """
     check_qwsearch(ctqw::AbstractCTQW, marked, parameters)
 

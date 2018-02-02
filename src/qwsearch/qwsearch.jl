@@ -39,9 +39,9 @@ struct QWSearch{T,W<:Real} <: QWDynamics{T}
   penalty::W
 
   function QWSearch(model::T,
-                   marked::Array{Int},
-                   parameters::Dict{Symbol},
-                   penalty::W) where {T<:QWModel, W<:Real}
+                    marked::Array{Int},
+                    parameters::Dict{Symbol},
+                    penalty::W) where {T<:QWModel, W<:Real}
     @assert all(1 <= v <= nv(model.graph) for v=marked) && marked != [] "marked needs to be non-empty subset of graph vertices set"
 
     check_qwsearch(model, marked, parameters)

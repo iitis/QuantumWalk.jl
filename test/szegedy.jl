@@ -83,4 +83,37 @@
 
     @test measure(qss, initial_state(qss), collect(1:n)) ≈ fill(1/n, (n))
   end
+
+  @testset "Szegedy conversion" begin
+    szegedy = Szegedy(smallgraph(:bull))
+    qss = QWSearch(szegedy, [1], 0.5)
+
+    function is_equal_mine(q1::QWSearch, q2::QWSearch)
+      model(q1) == model(q2) &&
+      parameters(q1) == parameters(q2) &&
+      penalty(q1) == penalty(q2) &&
+      marked(q1) == marked(q2)
+    end
+
+    qss1 = QWSearch(qss, marked = [1])
+    qss2 = QWSearch(qss, penalty = 0.5)
+    qss3 = QWSearch(qss, marked = [2])
+    qss4 = QWSearch(qss, penalty = 1.)
+    qss5 = QWSearch(qss, marked = [2], penalty = 1.)
+    qss6 = QWSearch(qss, marked = [2], penalty = 2.)
+
+    qss1_ref = QWSearch(szegedy, [1], 0.5)
+    qss2_ref = QWSearch(szegedy, [1], 0.5)
+    qss3_ref = QWSearch(szegedy, [2], 0.5)
+    qss4_ref = QWSearch(szegedy, [1], 1.)
+    qss5_ref = QWSearch(szegedy, [2], 1.)
+
+    @test is_equal_mine(qss1, qss1_ref)
+    @test is_equal_mine(qss2, qss2_ref)
+    @test is_equal_mine(qss3, qss3_ref)
+    @test is_equal_mine(qss4, qss4_ref)
+    @test is_equal_mine(qss5, qss5_ref)
+    @test !is_equal_mine(qss6, qss5_ref)
+  end
+
 end

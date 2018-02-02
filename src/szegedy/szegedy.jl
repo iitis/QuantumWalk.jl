@@ -28,15 +28,20 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
    graph::G
    sqrtstochastic::SparseMatrixCSC{T,Int}
 
-
-   function Szegedy(graph::G,
-                    stochastic::SparseMatrixCSC{T},
-                    checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
-      if checkstochastic
-         graphstochasticcheck(graph, stochastic)
-      end
-      new{G, T}(graph, sqrt.(stochastic))
+   function Szegedy{G, T}(graph::G,
+                          sqrtstochastic::SparseMatrixCSC{T}) where {G<:AbstractGraph, T<:Number}
+      new{G, T}(graph, sqrtstochastic)
    end
+
+end
+
+function Szegedy(graph::G,
+                 stochastic::SparseMatrixCSC{T},
+                 checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
+   if checkstochastic
+      graphstochasticcheck(graph, stochastic)
+   end
+   Szegedy{G, T}(graph, sqrt.(stochastic))
 end
 
 function Szegedy(graph::AbstractGraph)
@@ -93,6 +98,30 @@ function QWSearch(szegedy::AbstractSzegedy,
    parameters[:operators] = [r1*q1, r2*q2]
 
    QWSearch(szegedy, marked, parameters, penalty)
+end
+
+"""
+    QWSearch(qss::QWSearch[; marked , penalty])
+
+Updates quantum walk search to new subset of marked elements and new penalty. By
+default marked and penalty are the same as in qss.
+
+"""
+function QWSearch(qss::QWSearch{<:Szegedy};
+                  marked::Vector{Int}=qss.marked,
+                  penalty::Real=qss.penalty)
+   oldmarked = qss.marked
+   local corr_oracles
+   if Set(marked) != Set(oldmarked)
+    corr_oracles = szegedyoracleoperators(model(qss), oldmarked) .*
+                   szegedyoracleoperators(model(qss), marked)
+   else
+      corr_oracles = speye.(parameters(qss)[:operators])
+   end
+   QWSearch(model(qss),
+            marked,
+            Dict(:operators => parameters(qss)[:operators].*corr_oracles),
+            penalty)
 end
 
 """
