@@ -137,7 +137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "type_hierarchy.html#QuantumWalk.execute_single-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.QWModelDiscr,Any,Int64}",
+    "location": "type_hierarchy.html#QuantumWalk.execute_single-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.QWModelDiscr,Any,Int64}",
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_single",
     "category": "Method",
@@ -145,7 +145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "type_hierarchy.html#QuantumWalk.execute_single_measured-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.QWModelDiscr,Any,Int64}",
+    "location": "type_hierarchy.html#QuantumWalk.execute_single_measured-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.QWModelDiscr,Any,Int64}",
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_single_measured",
     "category": "Method",
@@ -153,7 +153,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "type_hierarchy.html#QuantumWalk.execute_all-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.QWModelDiscr,Any,Int64}",
+    "location": "type_hierarchy.html#QuantumWalk.execute_all-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.QWModelDiscr,Any,Int64}",
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_all",
     "category": "Method",
@@ -161,7 +161,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "type_hierarchy.html#QuantumWalk.execute_all_measured-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.QWModelDiscr,Any,Int64}",
+    "location": "type_hierarchy.html#QuantumWalk.execute_all_measured-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.QWModelDiscr,Any,Int64}",
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_all_measured",
     "category": "Method",
@@ -289,7 +289,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quantum_search.html#QuantumWalk.execute_single-Tuple{QuantumWalk.QWSearch{#s10,W} where W<:Real where #s10<:QuantumWalk.QWModelDiscr,Any,Int64}",
+    "location": "quantum_search.html#QuantumWalk.execute_single-Tuple{QuantumWalk.QWSearch{#s16,W} where W<:Real where #s16<:QuantumWalk.QWModelDiscr,Any,Int64}",
     "page": "Quantum search",
     "title": "QuantumWalk.execute_single",
     "category": "Method",
@@ -297,7 +297,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quantum_search.html#QuantumWalk.execute_single_measured-Tuple{QuantumWalk.QWSearch{#s10,W} where W<:Real where #s10<:QuantumWalk.QWModelDiscr,Int64}",
+    "location": "quantum_search.html#QuantumWalk.execute_single_measured-Tuple{QuantumWalk.QWSearch{#s16,W} where W<:Real where #s16<:QuantumWalk.QWModelDiscr,Int64}",
     "page": "Quantum search",
     "title": "QuantumWalk.execute_single_measured",
     "category": "Method",
@@ -305,7 +305,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quantum_search.html#QuantumWalk.execute_all-Union{Tuple{QuantumWalk.QWSearch{#s10,W} where W<:Real where #s10<:QuantumWalk.QWModelDiscr,S,Int64}, Tuple{S}} where S",
+    "location": "quantum_search.html#QuantumWalk.execute_all-Union{Tuple{QuantumWalk.QWSearch{#s16,W} where W<:Real where #s16<:QuantumWalk.QWModelDiscr,S,Int64}, Tuple{S}} where S",
     "page": "Quantum search",
     "title": "QuantumWalk.execute_all",
     "category": "Method",
@@ -313,7 +313,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "quantum_search.html#QuantumWalk.execute_all_measured-Tuple{QuantumWalk.QWSearch{#s10,W} where W<:Real where #s10<:QuantumWalk.QWModelDiscr,Int64}",
+    "location": "quantum_search.html#QuantumWalk.execute_all_measured-Tuple{QuantumWalk.QWSearch{#s16,W} where W<:Real where #s16<:QuantumWalk.QWModelDiscr,Int64}",
     "page": "Quantum search",
     "title": "QuantumWalk.execute_all_measured",
     "category": "Method",
@@ -433,7 +433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "ctqw.html#QuantumWalk.evolve-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.AbstractCTQW,Array{#s9,1} where #s9<:Number,Real}",
+    "location": "ctqw.html#QuantumWalk.evolve-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.AbstractCTQW,Array{#s15,1} where #s15<:Number,Real}",
     "page": "CTQW model",
     "title": "QuantumWalk.evolve",
     "category": "Method",
@@ -441,7 +441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "ctqw.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.AbstractCTQW,Any}",
+    "location": "ctqw.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.AbstractCTQW,Any}",
     "page": "CTQW model",
     "title": "QuantumWalk.measure",
     "category": "Method",
@@ -473,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "ctqw.html#QuantumWalk.initial_state-Tuple{QuantumWalk.QWSearch{#s10,W} where W<:Real where #s10<:QuantumWalk.AbstractCTQW}",
+    "location": "ctqw.html#QuantumWalk.initial_state-Tuple{QuantumWalk.QWSearch{#s16,W} where W<:Real where #s16<:QuantumWalk.AbstractCTQW}",
     "page": "CTQW model",
     "title": "QuantumWalk.initial_state",
     "category": "Method",
@@ -577,7 +577,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "szegedy.html#QuantumWalk.evolve-Union{Tuple{QuantumWalk.QWDynamics{QuantumWalk.Szegedy{#s10,T} where #s10},SparseVector{T,Ti} where Ti<:Integer}, Tuple{T}} where T<:Number",
+    "location": "szegedy.html#QuantumWalk.evolve-Union{Tuple{QuantumWalk.QWDynamics{QuantumWalk.Szegedy{#s16,T} where #s16},SparseVector{T,Ti} where Ti<:Integer}, Tuple{T}} where T<:Number",
     "page": "Szegedy model",
     "title": "QuantumWalk.evolve",
     "category": "Method",
@@ -585,7 +585,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "szegedy.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{#s10} where #s10<:QuantumWalk.AbstractSzegedy,SparseVector{#s9,Ti} where Ti<:Integer where #s9<:Number}",
+    "location": "szegedy.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{#s16} where #s16<:QuantumWalk.AbstractSzegedy,SparseVector{#s15,Ti} where Ti<:Integer where #s15<:Number}",
     "page": "Szegedy model",
     "title": "QuantumWalk.measure",
     "category": "Method",
