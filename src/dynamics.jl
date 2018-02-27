@@ -9,10 +9,11 @@ export
 """
     execute(qwd, initstate, runtime[, all, measure])
 
-Run proper execution function depending on given keywords. `all` and `measure` keywords
-defaults to `false`. For detailed description please see documentation of
-corresponding function. Note that for `all` equal to `true` model in `qwd` needs
-to be disrete.
+Run proper execution function depending on given keywords. `all` and `measure`
+keywords defaults to `false`. For detailed description please see documentation
+of the corresponding function. Note that for `all` equal to `true`, the model
+specified by `qwd` needs to be disrete.
+
 """
 function execute(qwd::QWDynamics,
                  initstate,
@@ -33,9 +34,9 @@ end
 """
     execute_single(qwd, initstate, runtime)
 
-Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
-`runtime` needs to be nonnegative. If `qwd` is based on on `QWModelDiscr`, `runtime`
-needs to be `Int`.
+Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`. Parameter
+`runtime` needs to be nonnegative. If `qwd` subtype of `QWModelDiscr`, `runtime`
+needs to be of type `Int`.
 
 ```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
@@ -83,9 +84,9 @@ end
 """
     execute_single_measured(qwd, initstate, runtime)
 
-Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
-`runtime` needs to be nonnegative, and measure it in the end.
-If `qwd` is based on on `QWModelDiscr`, `runtime` needs to be `Int`.
+Evolve `initstate` acording to QWDynamics `qwd` for time `runtime` and measure
+it in the end. Parameter `runtime` needs to be nonnegative. If `qwd` is subtype
+of `QWModelDiscr`, `runtime` needs to be `Int`.
 
 ```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
@@ -111,9 +112,9 @@ end
 """
     execute_all(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)
 
-Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
-`runtime` needs to be nonnegative. Quantum walk model needs to be discrete.
-Returns list of all states including `initstate` and last state.
+Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`. Parameter
+`runtime` needs to be nonnegative and wqantum walk model needs to be discrete.
+Returns list of all states including the `initstate` and the final state.
 
 ```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
@@ -168,10 +169,10 @@ end
 """
     execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)
 
-Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
-`runtime` needs to be nonnegative. Quantum walk model needs to be discrete.
-As a result return matrix of type `Matrix{Float64}` for which `i`-th column  is
-measurement probability distribution in `i-1`-th step.
+Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`. Parameter
+`runtime` needs to be nonnegative and quantum walk model needs to be discrete.
+Returns matrix of type `Matrix{Float64}` for which `i`-th column  is the
+probability distribution obtained from the measurement in `i-1`-th step.
 
 ```jldoctest
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
