@@ -62,7 +62,7 @@
 
     @test sqrtstochastic(sz) == sz.sqrtstochastic
 
-    r1, r2 = QuantumWalk.szegedywalkoperators(sz)
+    r1, r2 = QuantumWalk.szegedy_walk_operators(sz)
     @test isapprox(norm(r1*r1'-eye(r1), Inf), 0, atol=1e-8)
     @test isapprox(norm(r2*r2'-eye(r2), Inf), 0, atol=1e-8)
 
@@ -74,6 +74,11 @@
     @test isapprox(norm(q2*q2'-eye(q2), Inf), 0, atol=1e-8)
     @test isdiag(q1)
     @test isdiag(q2)
+
+    # is this the right place for this functions
+    v = [1/3,1/3,1/3]
+    @test QuantumWalk.proj(v) == v*v'
+
   end
 
   @testset "Szegedy initial state and measurement" begin
