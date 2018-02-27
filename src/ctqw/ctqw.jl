@@ -22,7 +22,7 @@ to `:adjacency`.
 struct CTQW <: AbstractCTQW
    graph::Graph
    matrix::Symbol
-   CTQW(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw("Only :laplacian and :adjacency is implemented")
+   CTQW(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw(ErrorException("Only :laplacian and :adjacency is implemented"))
 end
 
 CTQW(graph::Graph) = CTQW(graph, :adjacency)
