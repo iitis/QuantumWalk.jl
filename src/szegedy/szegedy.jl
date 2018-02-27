@@ -96,7 +96,7 @@ definition from https://arxiv.org/abs/1611.02238.
 function QWSearch(szegedy::AbstractSzegedy,
                   marked::Array{Int},
                   penalty::Real=0)
-   r1, r2 = szegedywalkoperators(szegedy)
+   r1, r2 = szegedy_walk_operators(szegedy)
    q1, q2 = szegedyoracleoperators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1*q1, r2*q2]
@@ -135,7 +135,7 @@ Create `QWEvolution` according to `AbstractSzegedy` model. By default, the
 constructed operator is of type `SparseMatrixCSC`.
 """
 function QWEvolution(szegedy::AbstractSzegedy)
-   r1, r2 = szegedywalkoperators(szegedy)
+   r1, r2 = szegedy_walk_operators(szegedy)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1, r2]
 

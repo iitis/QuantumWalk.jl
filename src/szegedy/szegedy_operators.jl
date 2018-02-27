@@ -13,7 +13,7 @@ function proj(v::AbstractVector{<:Number})
 end
 
 """
-    szegedywalkoperators(szegedy)
+    szegedy_walk_operators(szegedy)
 
 Return pair of Szegedy walk operators based on `sqrtstochastic` from `szegedy`.
 Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 4.
@@ -22,7 +22,7 @@ The operators should be applied in given order.
 `sqrtstochastic` after
 elementwise square should be a column stochastic matrix.
 """
-function szegedywalkoperators(szegedy::Szegedy{<:Any,S}) where S<:Number
+function szegedy_walk_operators(szegedy::Szegedy{<:Any,S}) where S<:Number
    order = nv(szegedy.graph)
    projectors = [2.*proj(szegedy.sqrtstochastic[:,v]) for v=1:order]
 
@@ -39,7 +39,7 @@ function szegedywalkoperators(szegedy::Szegedy{<:Any,S}) where S<:Number
    (r1, r2)
 end
 
-function szegedywalkoperators(szegedy::AbstractSzegedy)
+function szegedy_walk_operators(szegedy::AbstractSzegedy)
    order = nv(szegedy.graph)
    projectors = map(x->2.*proj(szegedy.sqrtstochastic[:,x]), 1:order)
 
