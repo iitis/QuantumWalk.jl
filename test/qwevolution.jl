@@ -3,19 +3,27 @@
   n = 5
   g = CompleteGraph(n)
 
-
   @testset "Quantum walks simulator for CTQW" begin
     init = fill(Complex128(1/sqrt(n)), n)
-    qwe = QWEvolution(CTQW(g, :adjacency))
+    ctqwAdj = CTQW(g, :adjacency)
+    ctqwLap = CTQW(g, :laplacian)
+    qweAdj = QWEvolution(ctqwAdj)
+    qweLap = QWEvolution(ctqwLap)
 
-    @test_throws AssertionError execute(qwe, init , -1.0)
-    @test execute(qwe, init, 1) ≈ execute(qwe, execute(qwe, init, 0.5), 0.5)
+    @test_throws AssertionError execute(qweAdj, init , -1.0)
+    @test execute(qweAdj, init, 1) ≈ execute(qweAdj, execute(qweAdj, init, 0.5), 0.5)
+
+    @test_throws AssertionError execute(qweLap, init , -1.0)
+    @test execute(qweLap, init, 1) ≈ execute(qweLap, execute(qweLap, init, 0.5), 0.5)
+
+    @test_throws ErrorException CTQW(g, :notimplemented)
   end
 
   @testset "Quantum walks simulator for Szegedy" begin
     qwe = QWEvolution(Szegedy(g))
     init = spzeros(n*n)
     init[1] = init[n] = init[n*n] = 1/sqrt(3.)
+
     steps = 10
 
     @test_throws AssertionError execute(qwe, init, -1)
