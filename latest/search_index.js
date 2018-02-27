@@ -133,7 +133,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute",
     "category": "Method",
-    "text": "execute(qwd, initstate, runtime[, all, measure])\n\nRun proper execution function depending on given keywords. all and measure keywords defaults to false. For detailed description please see documentation of corresponding function. Note that for all equal to true model in qwd needs to be disrete.\n\n\n\n"
+    "text": "execute(qwd, initstate, runtime[, all, measure])\n\nRun proper execution function depending on given keywords. all and measure keywords defaults to false. For detailed description please see documentation of the corresponding function. Note that for all equal to true, the model specified by qwd needs to be disrete.\n\n\n\n"
 },
 
 {
@@ -141,7 +141,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_single",
     "category": "Method",
-    "text": "execute_single(qwd, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative. If qwd is based on on QWModelDiscr, runtime needs to be Int.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_single(qwe, initstate, 10)\n16-element SparseVector{Float64,Int64} with 13 stored entries:\n  [1 ]  =  0.707107\n  [2 ]  =  0.6615\n  [3 ]  =  -0.0114017\n  [4 ]  =  -0.0114017\n  [5 ]  =  -1.21431e-16\n  [7 ]  =  -0.111417\n  [8 ]  =  -0.111417\n  [9 ]  =  0.13422\n  [10]  =  -0.0114017\n  [12]  =  0.0228034\n  [13]  =  0.13422\n  [14]  =  -0.0114017\n  [15]  =  0.0228034\n\n\n\n"
+    "text": "execute_single(qwd, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. Parameter runtime needs to be nonnegative. If qwd subtype of QWModelDiscr, runtime needs to be of type Int.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_single(qwe, initstate, 10)\n16-element SparseVector{Float64,Int64} with 13 stored entries:\n  [1 ]  =  0.707107\n  [2 ]  =  0.6615\n  [3 ]  =  -0.0114017\n  [4 ]  =  -0.0114017\n  [5 ]  =  -1.21431e-16\n  [7 ]  =  -0.111417\n  [8 ]  =  -0.111417\n  [9 ]  =  0.13422\n  [10]  =  -0.0114017\n  [12]  =  0.0228034\n  [13]  =  0.13422\n  [14]  =  -0.0114017\n  [15]  =  0.0228034\n\n\n\n"
 },
 
 {
@@ -149,7 +149,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_single_measured",
     "category": "Method",
-    "text": "execute_single_measured(qwd, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative, and measure it in the end. If qwd is based on on QWModelDiscr, runtime needs to be Int.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_single_measured(qwe, initstate, 10)\n4-element Array{Float64,1}:\n 0.937842\n 0.0248275\n 0.0186651\n 0.0186651\n\n\n\n\n"
+    "text": "execute_single_measured(qwd, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime and measure it in the end. Parameter runtime needs to be nonnegative. If qwd is subtype of QWModelDiscr, runtime needs to be Int.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_single_measured(qwe, initstate, 10)\n4-element Array{Float64,1}:\n 0.937842\n 0.0248275\n 0.0186651\n 0.0186651\n\n\n\n\n"
 },
 
 {
@@ -157,7 +157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_all",
     "category": "Method",
-    "text": "execute_all(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative. Quantum walk model needs to be discrete. Returns list of all states including initstate and last state.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_all(qwe, initstate, 2)\n3-element Array{SparseVector{Float64,Int64},1}:\n   [1 ]  =  0.707107\n  [2 ]  =  0.707107\n   [1 ]  =  0.707107\n  [2 ]  =  0.0785674\n  [3 ]  =  -0.157135\n  [4 ]  =  -0.157135\n  [7 ]  =  0.31427\n  [8 ]  =  0.31427\n  [10]  =  -0.157135\n  [12]  =  0.31427\n  [14]  =  -0.157135\n  [15]  =  0.31427\n   [1 ]  =  0.707107\n  [2 ]  =  0.427756\n  [3 ]  =  -0.0698377\n  [4 ]  =  -0.0698377\n  [5 ]  =  -5.55112e-17\n  [7 ]  =  -0.174594\n  [8 ]  =  -0.174594\n  [9 ]  =  0.31427\n  [10]  =  -0.0698377\n  [12]  =  0.139675\n  [13]  =  0.31427\n  [14]  =  -0.0698377\n  [15]  =  0.139675\n\n\n\n\n"
+    "text": "execute_all(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. Parameter runtime needs to be nonnegative and wqantum walk model needs to be discrete. Returns list of all states including the initstate and the final state.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_all(qwe, initstate, 2)\n3-element Array{SparseVector{Float64,Int64},1}:\n   [1 ]  =  0.707107\n  [2 ]  =  0.707107\n   [1 ]  =  0.707107\n  [2 ]  =  0.0785674\n  [3 ]  =  -0.157135\n  [4 ]  =  -0.157135\n  [7 ]  =  0.31427\n  [8 ]  =  0.31427\n  [10]  =  -0.157135\n  [12]  =  0.31427\n  [14]  =  -0.157135\n  [15]  =  0.31427\n   [1 ]  =  0.707107\n  [2 ]  =  0.427756\n  [3 ]  =  -0.0698377\n  [4 ]  =  -0.0698377\n  [5 ]  =  -5.55112e-17\n  [7 ]  =  -0.174594\n  [8 ]  =  -0.174594\n  [9 ]  =  0.31427\n  [10]  =  -0.0698377\n  [12]  =  0.139675\n  [13]  =  0.31427\n  [14]  =  -0.0698377\n  [15]  =  0.139675\n\n\n\n\n"
 },
 
 {
@@ -165,7 +165,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "QuantumWalk.execute_all_measured",
     "category": "Method",
-    "text": "execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative. Quantum walk model needs to be discrete. As a result return matrix of type Matrix{Float64} for which i-th column  is measurement probability distribution in i-1-th step.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_all_measured(qwe, initstate, 2)\n4×3 Array{Float64,2}:\n 1.0  0.555556  0.69273\n 0.0  0.197531  0.0609663\n 0.0  0.123457  0.123152\n 0.0  0.123457  0.123152\n\n\n\n\n"
+    "text": "execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. Parameter runtime needs to be nonnegative and quantum walk model needs to be discrete. Returns matrix of type Matrix{Float64} for which i-th column  is the probability distribution obtained from the measurement in i-1-th step.\n\njulia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));\n\njulia> initstate = spzeros(16); initstate[1] = initstate[2] = 1/sqrt(2.);\n\njulia> execute_all_measured(qwe, initstate, 2)\n4×3 Array{Float64,2}:\n 1.0  0.555556  0.69273\n 0.0  0.197531  0.0609663\n 0.0  0.123457  0.123152\n 0.0  0.123457  0.123152\n\n\n\n\n"
 },
 
 {
@@ -549,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.AbstractSzegedy",
     "category": "Type",
-    "text": "AbstractSzegedy\n\nAbstract Szegedy model. Description of default can be found in https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen. Default representation of AbstractSzegedy is Szegedy.\n\n\n\n"
+    "text": "AbstractSzegedy\n\nAbstract Szegedy model. Description of the default parameter can be found in https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen. Default representation of AbstractSzegedy is Szegedy.\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.Szegedy",
     "category": "Type",
-    "text": "Szegedy(graph[, stochastic, checkstochastic])\n\nDefault representation of AbstractSzegedy. graph needs to be a subtype of  AbstractGraph from  LightGraphs module, stochastic needs to be a Real column stochastic matrix,  checkstochastic is a flag which decides about checking the stochastic properties.  stochastic defaults to uniform walk operator, checkstochastic deafults to false  in case of default stochastic and true in case of user stochastic provided.\n\nstochatsic is changed into sqrtstochastic by element-wise square root.\n\n\n\n"
+    "text": "Szegedy(graph[, stochastic, checkstochastic])\n\nDefault representation of AbstractSzegedy. Parameter graph needs to be a  subtype of AbstractGraph from LightGraphs module, and parameter stochastic  needs to be a Real column stochastic matrix. Flag checkstochastic decides  about checking the stochastic properties.\n\nMatrix stochastic defaults to the uniform walk operator, and  checkstochastic deafults to false in case of default stochastic. If  matrix stochastic is provided by the user, the default value of stochastic  is true.\n\nMatrix stochastic is changed into sqrtstochastic by taking element-wise  square root.\n\n\n\n"
 },
 
 {
@@ -565,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.sqrtstochastic",
     "category": "Function",
-    "text": "sqrtstochastic(szegedy)\n\nReturns the sqrtstochastic element of szegedy. After element-wise squaring a column-stochastic matrix is obtained.\n\njulia> szegedy = Szegedy(CompleteGraph(4));\n\njulia> sqrtstochastic(szegedy)\n4×4 SparseMatrixCSC{Float64,Int64} with 12 stored entries:\n  [2, 1]  =  0.57735\n  [3, 1]  =  0.57735\n  [4, 1]  =  0.57735\n  [1, 2]  =  0.57735\n  [3, 2]  =  0.57735\n  [4, 2]  =  0.57735\n  [1, 3]  =  0.57735\n  [2, 3]  =  0.57735\n  [4, 3]  =  0.57735\n  [1, 4]  =  0.57735\n  [2, 4]  =  0.57735\n  [3, 4]  =  0.57735\n\njulia> full(sqrtstochastic(szegedy).^2)\n4×4 Array{Float64,2}:\n 0.0       0.333333  0.333333  0.333333\n 0.333333  0.0       0.333333  0.333333\n 0.333333  0.333333  0.0       0.333333\n 0.333333  0.333333  0.333333  0.0\n\n\n\n"
+    "text": "sqrtstochastic(szegedy)\n\nReturn the sqrtstochastic element of szegedy. After element-wise squaring a column-stochastic matrix is obtained.\n\njulia> szegedy = Szegedy(CompleteGraph(4));\n\njulia> sqrtstochastic(szegedy)\n4×4 SparseMatrixCSC{Float64,Int64} with 12 stored entries:\n  [2, 1]  =  0.57735\n  [3, 1]  =  0.57735\n  [4, 1]  =  0.57735\n  [1, 2]  =  0.57735\n  [3, 2]  =  0.57735\n  [4, 2]  =  0.57735\n  [1, 3]  =  0.57735\n  [2, 3]  =  0.57735\n  [4, 3]  =  0.57735\n  [1, 4]  =  0.57735\n  [2, 4]  =  0.57735\n  [3, 4]  =  0.57735\n\njulia> full(sqrtstochastic(szegedy).^2)\n4×4 Array{Float64,2}:\n 0.0       0.333333  0.333333  0.333333\n 0.333333  0.0       0.333333  0.333333\n 0.333333  0.333333  0.0       0.333333\n 0.333333  0.333333  0.333333  0.0\n\n\n\n"
 },
 
 {
@@ -605,7 +605,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.QWSearch",
     "category": "Method",
-    "text": "QWSearch(szegedy::AbstractSzegedy, marked [, penalty])\n\nCreates QWSearch according to AbstractSzegedy model. penalty equals 0. It constructs evolution operators according to definition from https://arxiv.org/abs/1611.02238.\n\n\n\n"
+    "text": "QWSearch(szegedy::AbstractSzegedy, marked [, penalty])\n\nCreates QWSearch according to AbstractSzegedy model. By default parameter penalty is set to 0. Evolution operators are constructed according to the definition from https://arxiv.org/abs/1611.02238.\n\n\n\n"
 },
 
 {
@@ -613,7 +613,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.check_qwsearch",
     "category": "Method",
-    "text": "check_qwsearch(szegedy::AbstractSzegedy, marked, parameters)\n\nChecks whetver combination of szegedy, marked and parameters produces valid QWSearch object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
+    "text": "check_qwsearch(szegedy::AbstractSzegedy, marked, parameters)\n\nCheck whetver combination of szegedy, marked and parameters produces valid QWSearch object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
 },
 
 {
@@ -629,7 +629,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.QWEvolution",
     "category": "Method",
-    "text": "QWEvolution(szegedy::AbstractSzegedy)\n\nCreates QWEvolution according to AbstractSzegedy model. By default constructed operators is SparseMatrixCSC.\n\n\n\n"
+    "text": "QWEvolution(szegedy::AbstractSzegedy)\n\nCreate QWEvolution according to AbstractSzegedy model. By default, the constructed operator is of type SparseMatrixCSC.\n\n\n\n"
 },
 
 {
@@ -637,7 +637,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.check_qwevolution",
     "category": "Method",
-    "text": "check_qwevolution(szegedy::AbstractSzegedy, marked, parameters)\n\nChecks whetver combination of szegedy, marked and parameters produces valid QWEvolution object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
+    "text": "check_qwevolution(szegedy::AbstractSzegedy, marked, parameters)\n\nCheck whetver combination of szegedy, marked and parameters produces a valid QWEvolution object. It checks where parameters consists of key :operators with corresponding value being a list of SparseMatrixCSC objects. Furthermore operators need to be square of size equals to square of the order of graph(szegedy).\n\n\n\n"
 },
 
 {
