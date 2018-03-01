@@ -34,7 +34,7 @@ function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    end
 end
 
-graph_hamlitonian(ctqw::AbstractCTQW) = graph_hamlitonian(Complex128, ctqw)
+graph_hamiltonian(ctqw::AbstractCTQW) = graph_hamiltonian(Complex128, ctqw)
 
 """
     hamiltonian_evolution(hamiltonian, initstate, runtime)
