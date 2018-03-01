@@ -69,3 +69,19 @@ The search procedure is executed as
 ```julia
 evolve(ctqw_qss, initial_state(ctqw_qss), 2.0)
 ```
+
+# Custom types
+
+It is possible to extend the package functionality by constructing data types
+derived from abstract types, which represent basic models of quantum walks. For
+example, the following declaration could be used to introduce quantum stochastic
+walks
+
+```julia
+structure StochasticCTQW <: AbstractCTQW
+  graph::Graph
+  matrix::Symbol
+  regime::Symbol
+end
+
+```   
