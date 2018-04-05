@@ -5,17 +5,43 @@
 
 ## Description
 
-'QuantumWalk' is a package for Julia programming language implementing models
-of quantum continuous and discrete) walks used for performing quantum spatial
-search.  Currently the package provides implementation of
-* Szegedy quantum walks
-* continuous quantum walks
+*QuantumWalk.jl* is a package for Julia programming language implementing models
+of quantum continuous and discrete walks used for performing quantum spatial
+search. It's main purpose is to provide general functionalities by crossing usage
+of quantum models and applications implementations. 
 
-QuantumWalk is currently under construcion.
+Currently the package provides implementation of
+* Szegedy quantum walks `Szegedy` with abstract supertype `AbstractSzegedy`,
+* continuous-time quantum walks `CTQW`  with abstract supertype `AbstractCTQW`,
 
+and dynamics
+* pure quantum walk `QWEvolution`,
+* quantum spatial search `QWSearch`.
+
+In particular for the last dynamic algorithm `maximize_quantum_search` finding optimal measure time are implemeneted. Note the function works in general for arbitrarily discrete-time quantum walk. The results are not guaranteed for continuous-time quantum walk, as times is not discretized.
+
+The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl), [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) and [Expokit.jl](https://github.com/acroy/Expokit.jl). 
+
+*QuantumWalk.jl* is currently under construction. First release is planned for June 2018.
 ## Installation
 
-The package can be installed using 'Pkg.clone' command as
+The package can be installed using `Pkg.clone` command as
 ```julia 
-Pkg.clone("git@github.com:QuantumWalks/QuantumWalk.jl.git")
+Pkg.clone("https://github.com/QuantumWalks/QuantumWalk.jl.git")
+```
+All of the required modules will be installed automatically.
+
+## Exemplare usage nad citing
+Our package was already used in papers concerning quantum attacks
+* Adam Glos, Jarosław Adam Miszczak. `Impact of the malicious input data modification on the efficiency of quantum algorithms.' arXiv preprint arXiv:[1802.10041](https://arxiv.org/abs/1802.10041) (2018).
+
+In case of citing, please use the following BibTeX form:
+
+```tex
+@misc{glos2018quantumwalkjl,
+  author       = {Adam Glos and Jaros{\l}aw Adam Miszczak},
+  title        = {{QuantumWalks/QuantumWalk.jl}},
+  year         = {2018},
+  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}
+}
 ```
