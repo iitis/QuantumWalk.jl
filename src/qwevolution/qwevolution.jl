@@ -22,7 +22,7 @@ struct QWEvolution{T} <: QWDynamics{T}
 
   function QWEvolution(model::T,
                        parameters::Dict{Symbol}) where T<:QWModel
-    check_qwevolution(model, parameters)
+    check_qwdynamics(QWEvolution, model, parameters)
     new{T}(model, parameters)
   end
 end

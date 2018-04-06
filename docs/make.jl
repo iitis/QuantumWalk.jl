@@ -1,6 +1,6 @@
 using Documenter
 include("../src/QuantumWalk.jl")
-using QuantumWalk, LightGraphs	
+using QuantumWalk, LightGraphs
 
 # same for contributing and license
 println(pwd())
@@ -16,15 +16,17 @@ makedocs(
     pages       = Any[
 		"Home"				=> "index.md",
 		"Type hierarchy" 		=> "type_hierarchy.md",
-		"Exemplary dynamics"		=> Any[
-						"Quantum walk simulator"=> "quantum_walk.md",
+		"Examplary dynamics"		=> Any[
+						"Quantum walk evolution"=> "quantum_walk.md",
 						"Quantum search"        => "quantum_search.md"],
 		"Examplary models"             	=> Any[
 						"CTQW model" 		=> "ctqw.md",
 						"Szegedy model" 	=> "szegedy.md"],
 		"How to make your own types?"	=> Any[
-						"New model" 	=> "new_model.md",		
+						"New model" 	=> "new_model.md",
 						"New dynamics" 	=> "new_dynamics.md"],
+        "Contributing"		=> "contributing.md",
+        "Citing"	       	=> "citing.md",
 		"Licence"			=> "license.md",
 #		"Citing"			=> "citing.md",
 #		"Contributing"	                => "contributing.md"

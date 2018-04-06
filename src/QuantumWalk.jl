@@ -7,9 +7,7 @@ export
     initial_state,
     evolve,
     measure,
-    check_qwsearch,
-    check_qwevolution
-
+    check_qwdynamics
 
 
 """
@@ -40,13 +38,9 @@ probabilities of given vertices should be provided. Otherwise full probability
 distribution should be provided. Output should be always
 of type Array{Float64}.
 The behaviour strongly depends on
-model of `qwe`. For concrete `model` and `qwevolution` description please type
-`?measure(qwevolution{model})`,
-for example for `CTQW` and `QWSearch` write `?measure(QWSearch{CTQW})`.
-
-Details concerning implementing `measure` for own models can be found in GitHub pages.
+arguments
 """
-measure
+measure(::Any)
 
 """
     evolve(qwevolution{<:QWModelDiscr}, state)
@@ -55,25 +49,18 @@ measure
 Evolve `state` according to `qwevolution`. `time` should be provided
 if model is continuous, otherwise one-step evolution should be performed. Type returned
 should be the same as type of `state`. The behaviour strongly depends on
-`model` of `qwevolution`. For concrete `model` description please type
-`?evolve(qwevolution{model})`,
-for example for `CTQW` and `QWSearch` write `?evolve(QWSearch{CTQW})`.
-
-Details concerning implementing `evolve` for own models can be found in GitHub pages.
+arguments.
 """
-evolve
+evolve(::Any)
 
 
 """
-    check_qwevolution(model, parameters)
+    check_qwevolution(dynamictype, model, ..., parameters)
 
-Checks whetver combination of `model` and `parameters` creates valid
-quantum walk simulator.
-
-Details concerning implementing `check_qws` for own models can be found in GitHub pages.
-
+Checks whetver combination of the arguments creates valid quantum walk dynamics.
+The behaviour strongly depends on arguments.
 """
-check_qwevolution
+check_qwdynamics(::Any)
 
 include("type_hierarchy.jl")
 include("dynamics.jl")

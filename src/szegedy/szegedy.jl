@@ -164,9 +164,10 @@ Check whetver combination of `szegedy`, `marked` and `parameters` produces valid
 corresponding value being list of `SparseMatrixCSC`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
-function check_qwsearch(szegedy::AbstractSzegedy,
-                        marked::Array{Int},
-                        parameters::Dict{Symbol})
+function check_qwdynamics(::Type{QWSearch},
+                          szegedy::AbstractSzegedy,
+                          marked::Array{Int},
+                          parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 
@@ -179,8 +180,9 @@ valid `QWEvolution` object. It checks where `parameters` consists of key
 Furthermore operators need to be square of size equals to square of the order of
 `graph(szegedy)`.
 """
-function check_qwevolution(szegedy::AbstractSzegedy,
-                              parameters::Dict{Symbol})
+function check_qwdynamics(::Type{QWEvolution},
+                          szegedy::AbstractSzegedy,
+                          parameters::Dict{Symbol})
    check_szegedy(szegedy, parameters)
 end
 

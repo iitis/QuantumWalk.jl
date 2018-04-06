@@ -60,7 +60,7 @@ Private functions which checks the existance of `:hamiltonian`, its type and
 dimensionality. Returns nothing.
 """
 function check_ctqw(ctqw::AbstractCTQW,
-                    parameters::Dict{Symbol})
+                       parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
    @assert isa(parameters[:hamiltonian], SparseMatrixCSC{<:Number}) || isa(hamiltonian, Matrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
@@ -122,9 +122,10 @@ Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """
-function check_qwsearch(ctqw::AbstractCTQW,
-                   marked::Array{Int},
-                   parameters::Dict{Symbol})
+function check_qwdynamics(::Type{QWSearch},
+                          ctqw::AbstractCTQW,
+                          marked::Array{Int},
+                          parameters::Dict{Symbol})
    check_ctqw(ctqw, parameters)
 end
 
@@ -135,7 +136,7 @@ Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equal
 `Complex128`. By default constructed hamiltonian is `SparseMatrixCSC`.
 """
 function QWEvolution(::Type{U},
-                        ctqw::AbstractCTQW) where U<:Number
+                     ctqw::AbstractCTQW) where U<:Number
    parameters = Dict{Symbol,Any}(:hamiltonian => graph_hamiltonian(U, ctqw))
    QWEvolution(ctqw, parameters)
 end
@@ -152,8 +153,9 @@ Checks whetver combination of `ctqw` and `parameters` produces valid
 corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order.
 """
-function check_qwevolution(ctqw::AbstractCTQW,
-                              parameters::Dict{Symbol})
+function check_qwdynamics(::Type{QWEvolution},
+                          ctqw::AbstractCTQW,
+                          parameters::Dict{Symbol})
    check_ctqw(ctqw, parameters)
 end
 
