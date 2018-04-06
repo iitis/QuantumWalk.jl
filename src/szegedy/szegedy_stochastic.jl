@@ -1,5 +1,5 @@
 """
-    out_neighbors_looped(graph, vertex)
+    outneighbors_looped(graph, vertex)
 
 Return lists of outneighbors of `vertex` in `graph`. If outdegree of `vertex` is
 zero, then [v] is returned.
@@ -14,21 +14,21 @@ julia> g = DiGraph(3)
 julia> add_edge!(g, 1, 3)
 true
 
-julia> QuantumWalk.out_neighbors_looped(g, 1)
+julia> QuantumWalk.outneighbors_looped(g, 1)
 1-element Array{Int64,1}:
  3
 
-julia> QuantumWalk.out_neighbors_looped(g, 2)
+julia> QuantumWalk.outneighbors_looped(g, 2)
 1-element Array{Int64,1}:
  2
 ```
 """
-function out_neighbors_looped(graph::AbstractGraph, vertex::Int)
-   outneighbors = out_neighbors(graph, vertex)
-   if outneighbors == []
+function outneighbors_looped(graph::AbstractGraph, vertex::Int)
+   outns = outneighbors(graph, vertex)
+   if outns == []
       return [vertex]
    end
-   outneighbors
+   outns
 end
 
 
@@ -56,7 +56,7 @@ Accepts both Graph and DiGraph.
 function graphpreservationcheck(graph::AbstractGraph,
                                 stochastic::SparseMatrixCSC{<:Number})
    @assert size(stochastic, 1) == nv(graph) "Orders of matrix and graph do not match"
-   @assert all([ i ∈ out_neighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
+   @assert all([ i ∈ outneighbors_looped(graph, j) for (i, j, _)=zip(findnz(stochastic)...)]) "Nonzero elements of stochastic do not coincide with graph edges"
    nothing
 end
 

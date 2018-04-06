@@ -1,19 +1,19 @@
 @testset "Szegedy model test" begin
   @testset "Generalized neighbor function" begin
     g = DiGraph(3)
-    @test QuantumWalk.out_neighbors_looped(g, 3) == [3]
+    @test QuantumWalk.outneighbors_looped(g, 3) == [3]
 
     add_edge!(g, 1, 2)
     add_edge!(g, 1, 3)
 
-    @test QuantumWalk.out_neighbors_looped(g, 1) == [2, 3]
-    @test QuantumWalk.out_neighbors_looped(g, 3) == [3]
+    @test QuantumWalk.outneighbors_looped(g, 1) == [2, 3]
+    @test QuantumWalk.outneighbors_looped(g, 3) == [3]
 
-    @test QuantumWalk.out_neighbors_looped(CompleteGraph(3), 3) == [1, 2]
-    @test QuantumWalk.out_neighbors_looped(CompleteDiGraph(3), 3) == [1, 2]
+    @test QuantumWalk.outneighbors_looped(CompleteGraph(3), 3) == [1, 2]
+    @test QuantumWalk.outneighbors_looped(CompleteDiGraph(3), 3) == [1, 2]
 
-    @test_throws BoundsError QuantumWalk.out_neighbors_looped(g, 0)
-    @test_throws BoundsError QuantumWalk.out_neighbors_looped(g, 4)
+    @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 0)
+    @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 4)
   end
 
   @testset "Graph stochastic matrix checker" begin
