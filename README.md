@@ -31,7 +31,7 @@ Pkg.clone("https://github.com/QuantumWalks/QuantumWalk.jl.git")
 ```
 All of the required modules will be installed automatically.
 
-## Exemplare usage nad citing
+## Exemplary usage and citing
 Our package was already used in papers concerning quantum attacks
 * Adam Glos, Jarosław Adam Miszczak. `Impact of the malicious input data modification on the efficiency of quantum algorithms.' arXiv preprint arXiv:[1802.10041](https://arxiv.org/abs/1802.10041) (2018).
 
