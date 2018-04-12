@@ -2,7 +2,7 @@
 
 The package consists of two main type hierarchies: quantum walk model hierarchy,
 which is simply a description of the quantum walk model, and quantum walk dynamics,
-which are used for quantum walk analysis. The first one should in general be small, and should consist only of general parameters used in most of the models. Second one
+which are used for quantum walk analysis or simulation. The first one should in general be small, and should consist only of general parameters used in most of the models. Second one
 should possess all information needed for efficient simulation/analysis. For example
 `CTQW` model should consist of graph, on which the evolution is made and *label*
 which implies if adjacency or Laplacian matrix is used. Contrary `QWEvolution{CTQW}` should consist of Hamiltonian used for evolution.
@@ -11,7 +11,7 @@ which implies if adjacency or Laplacian matrix is used. Contrary `QWEvolution{CT
 
 The main supertype is `QWModel`. As typically discrete and continuous evolution
 are simulated and analysed using different techniques, `QWModelCont` and
-`QWModelDiscr` are its only direct subtypes. Furthermore every model have
+`QWModelDiscr` are its direct subtypes. Furthermore every model have
 its direct abstract supertype, which is at least *similar* in the sense of
 implemented function to the supertype.
 
@@ -29,12 +29,13 @@ struct Model <: AbstractModel
 end
 ```
 
-At the moment `CTQW` and `Szegedy` walks are implemented.
+At the moment `CTQW` and `Szegedy` walks are implemented. Note that arbitrary
+quantum walk model should consist of `measure`, `evolve` and `check_qwdynamics` for basic pure walk simulation.
 
 ## Quantum dynamics hierarchy
 
-The main supertype is `QWDynamics`. As the algorithms and analysis usually differs,
-subtypes of `QWDynamics` are a composite types.
+The main supertype is `QWDynamics`. As the algorithms and analysis usually differs strongly,
+subtypes of `QWDynamics` should be mostly a composite types.
 
 Any `QWDynamics` should consist of at least two parameters: `model`, which is a
 quantum walk model, and `parameters`, which is a dictionary consisting of values
@@ -57,6 +58,8 @@ end
 ```
 
 At the moment `QWEvolution` for pure walk evolution and `QWSearch` for quantum spatial search are implemented.
+All dynamics provides `execute` functionality, together with their its variation. For details see section below.
+
 
 ## Documentation
 

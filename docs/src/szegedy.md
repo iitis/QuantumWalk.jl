@@ -11,6 +11,8 @@ Modules = [QuantumWalk]
 Pages   = ["szegedy.md"]
 ```
 
+## Full docs
+
 ```@docs
 AbstractSzegedy
 QWEvolution(::AbstractSzegedy)

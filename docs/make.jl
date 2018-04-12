@@ -22,9 +22,7 @@ makedocs(
 		"Examplary models"             	=> Any[
 						"CTQW model" 		=> "ctqw.md",
 						"Szegedy model" 	=> "szegedy.md"],
-		"How to make your own types?"	=> Any[
-						"New model" 	=> "new_model.md",
-						"New dynamics" 	=> "new_dynamics.md"],
+		"New dynamics"     	=> "new_dynamics.md",
         "Contributing"		=> "contributing.md",
         "Citing"	       	=> "citing.md",
 		"Licence"			=> "license.md",

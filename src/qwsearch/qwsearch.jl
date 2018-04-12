@@ -139,17 +139,21 @@ QuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64}(  [2 ]  =  0.288675
 """
 struct QSearchState{S,Y<:Real}
   state::S
-  probability::Array{Float64}
+  probability::Vector{Float64}
   runtime::Y
 
   function QSearchState(state::S,
-                        probability::Array{Float64},
+                        probability::Vector{Float64},
                         runtime::Y) where {S,Y<:Real}
      new{S,Y}(state, probability, runtime)
   end
 end
 
 function QSearchState(qss::QWSearch, state, runtime::Real)
+   QSearchState(state, measure(qss, state, qss.marked), runtime)
+end
+
+function QSearchState(qss::QWSearch, state::Vector{Float64}, runtime::Real)
    QSearchState(state, measure(qss, state, qss.marked), runtime)
 end
 
