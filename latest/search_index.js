@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Welcome to QuantumWalk.jl",
     "category": "section",
-    "text": "QuantumWalk.jl is a package which provides general functionalities and implementations of quantum walks. The package uses the Julia\'s typ hierarchy to produce general functions working on at least large collection of quantum walk models."
+    "text": "QuantumWalk.jl is a package providing general functionalities and implementations of quantum walks. The package uses the Julia\'s type hierarchy to produce general functions working on at least large collection of quantum walk models."
 },
 
 {
@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Why?",
     "category": "section",
-    "text": "Since the very first paper proposing quantum walk, plenty of quantum walk models were proposed. This includes continuous-time quantum walk, Szegedy quantum walk, coined quantum walk, stochastic quantum walk or flip-flop quantum walk, to name a few. Furthermore most of the models have very similar application as for example spatial search or transport. Moreover models are usually compared by their properties such as localization, propagation or trapping.The purpose of the package is not to provide an implementations of all models, as this is simply impossible due to quantum walk theory progress. Our aim is to provide cross functionality: implementing properly single model, we may use already implemented dynamics such as search or pure walk. Contrary, if we came out with some interesting general quantum walk property, we can use the package for analysing already existing models."
+    "text": "Since the very first paper defining quantum walk, plenty of quantum walk models were proposed. This includes continuous-time quantum walk, Szegedy quantum walk, coined quantum walk, stochastic quantum walk or flip-flop quantum walk, to name a few. Most of the models have the same applications as for example spatial search or transport. Furthermore models are compared by general properties such as localization, propagation or trapping.The purpose of the package is not to provide an implementations of all models, as this is simply impossible due to quantum walk theory progress. Our aim is to provide cross functionality: implementing properly single model allows using already implemented dynamics such as spatial search or pure walk evolution. Contrary, if we came out with some interesting general quantum walk property, we can use the package for analysing already existing models."
 },
 
 {
@@ -29,15 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "How?",
     "category": "section",
-    "text": "The package implements two independent type hierarchies: one for quantum walk model, one for quantum dynamics. If possible, the quantum dynamics is defined iff proper functions are defined. For example if we provide evolve, measure and check_qwevolution methods we can use the model for simulating pure walk evolution. Similarly we need initial_state, evolve, measure and check_qwevolution.Currently defined quantum walk models are presented in section Examplary models, while examplary quantum dynamics are presented in Examplary models."
-},
-
-{
-    "location": "index.html#Why-this-way?-1",
-    "page": "Home",
-    "title": "Why this way?",
-    "category": "section",
-    "text": "We understand we cannot do anything on our own. Understanding all of the simulations and improving them would require to much knowledge, especially when we think of how many analysis methods are available. That is way we propose the package, which (at least at the moment) has nothing, but allows everything. User can provide arbitrary analysis or arbitrary model implementation, maybe suitable for his research only, that is way the package allows everything. At the same time he can use easily already existing part of our code, as the package is mostly abstract, and this is way we say it has nothing."
+    "text": "The package implements two independent type hierarchies: one for quantum walk model, one for quantum dynamics. If possible, the quantum dynamics is defined iff proper functions for quantum walk models are defined. For example if we provide evolve, measure and check_qwdynamics methods we can use the model for simulating pure walk evolution. Similarly we need initial_state, evolve, measure and check_qwdynamics for quantum spatial search dynamics.Currently defined quantum walk models are presented in section Exemplary models, while exemplary quantum dynamics are presented in Exemplary models."
 },
 
 {
@@ -61,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "Type hierarchy",
     "category": "section",
-    "text": "The package consists of two main type hierarchies: quantum walk model hierarchy, which is simply a description of the quantum walk model, and quantum walk dynamics, which are used for quantum walk analysis. The first one should in general be small, and should consist only of general parameters used in most of the models. Second one should possess all information needed for efficient simulation/analysis. For example CTQW model should consist of graph, on which the evolution is made and label which implies if adjacency or Laplacian matrix is used. Contrary QWEvolution{CTQW} should consist of Hamiltonian used for evolution."
+    "text": "The package consists of two main type hierarchies: quantum walk model hierarchy, which is simply a description of the quantum walk model, and quantum walk dynamics, which are used for quantum walk analysis or simulation. The first one should in general be small, and should consist only of general parameters used in most of the models. Second one should possess all information needed for efficient simulation/analysis. For example CTQW model should consist of graph, on which the evolution is made and label which implies if adjacency or Laplacian matrix is used. Contrary QWEvolution{CTQW} should consist of Hamiltonian used for evolution."
 },
 
 {
@@ -69,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "Quantum walk models hierarchy",
     "category": "section",
-    "text": "The main supertype is QWModel. As typically discrete and continuous evolution are simulated and analysed using different techniques, QWModelCont and QWModelDiscr are its only direct subtypes. Furthermore every model have its direct abstract supertype, which is at least similar in the sense of implemented function to the supertype.Any instance of quantum walk model consists of graph on which evolution is made. Such graph can be accessed via graph function. Hence an typical definition of quantum walk model type takes the fromstruct Model <: AbstractModel\n   graph::Graph\n   ...\n   function Model(graph::Graph, ...)\n      ...\n      new(graph, ...)\n   end\nendAt the moment CTQW and Szegedy walks are implemented."
+    "text": "The main supertype is QWModel. As typically discrete and continuous evolution are simulated and analysed using different techniques, QWModelCont and QWModelDiscr are its direct subtypes. Furthermore every model have its direct abstract supertype, which is at least similar in the sense of implemented function to the supertype.Any instance of quantum walk model consists of graph on which evolution is made. Such graph can be accessed via graph function. Hence an typical definition of quantum walk model type takes the fromstruct Model <: AbstractModel\n   graph::Graph\n   ...\n   function Model(graph::Graph, ...)\n      ...\n      new(graph, ...)\n   end\nendAt the moment CTQW and Szegedy walks are implemented. Note that arbitrary quantum walk model should consist of measure, evolve and check_qwdynamics for basic pure walk simulation."
 },
 
 {
@@ -77,7 +69,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchy",
     "title": "Quantum dynamics hierarchy",
     "category": "section",
-    "text": "The main supertype is QWDynamics. As the algorithms and analysis usually differs, subtypes of QWDynamics are a composite types.Any QWDynamics should consist of at least two parameters: model, which is a quantum walk model, and parameters, which is a dictionary consisting of values needed for model. Elements are accessible via function with the same name. In order to check correctness, check_qwdynamics should always be executed in the constructor. Typical quantum walk dynamics are defined as follows.struct Dynamics{T} <: QWDynamics{T}\n  model::T\n  parameters::Dict{Symbol}\n  ...\n\n  function Dynamics(model::T, parameters::Dict{Symbol}, ...) where T<:QWModel\n     ...\n     check_qwdynamics(::Dynamics, model, parameters, ...)\n     ...\n     new(model, parameters, ...)\n  end\nendAt the moment QWEvolution for pure walk evolution and QWSearch for quantum spatial search are implemented."
+    "text": "The main supertype is QWDynamics. As the algorithms and analysis usually differs strongly, subtypes of QWDynamics should be mostly a composite types.Any QWDynamics should consist of at least two parameters: model, which is a quantum walk model, and parameters, which is a dictionary consisting of values needed for model. Elements are accessible via function with the same name. In order to check correctness, check_qwdynamics should always be executed in the constructor. Typical quantum walk dynamics are defined as follows.struct Dynamics{T} <: QWDynamics{T}\n  model::T\n  parameters::Dict{Symbol}\n  ...\n\n  function Dynamics(model::T, parameters::Dict{Symbol}, ...) where T<:QWModel\n     ...\n     check_qwdynamics(::Dynamics, model, parameters, ...)\n     ...\n     new(model, parameters, ...)\n  end\nendAt the moment QWEvolution for pure walk evolution and QWSearch for quantum spatial search are implemented. All dynamics provides execute functionality, together with their its variation. For details see section below."
 },
 
 {
@@ -165,7 +157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "Quantum evolution",
     "category": "section",
-    "text": "The simplest quantum walk evolution. It simply takes the model and initial state from the user, makes and evolution and outputs the state or the probability distribution of measured state.The dynamics requires evolve, measure and check_qwdynamics functions. It provides execute, execute_single, execute_single_measured, execute_all and execute_all_measured functions. Depending on the name it outputs single state or all states, measured or not measured. The execute combines the last four functions. In the case of type-stability requirement, we recommend to use the last four functions. execute_all and execute_all_measured are provided only for discrete quantum walk models.Following functions are connected to the dynamics:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"quantum_walk.md\"]"
+    "text": "The simplest quantum walk evolution. It simply takes the model and initial state from the user, simulate an evolution and outputs the state or the probability distribution of measured state.The dynamics requires evolve, measure and check_qwdynamics functions. It provides execute, execute_single, execute_single_measured, execute_all and execute_all_measured functions. Depending on the name it outputs single state or all states, measured or not measured. The execute combines the last four functions. In the case of type-stability requirement, we recommend to use the last four functions. execute_all and execute_all_measured are provided only for discrete quantum walk models.Following functions are connected to the dynamics:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"quantum_walk.md\"]"
 },
 
 {
@@ -181,7 +173,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "Adjusting model to QWEvolution",
     "category": "section",
-    "text": ""
+    "text": "The QWEvolution requires an implementation of evolve, measure and check_qwdynamics. Instead of implementing purely quantum walk, we will implement simple random walk, which still fits our considerations. Note that we creates an additional AbstractStochastic supertype, in case someone would prefer to make different stochastic evolution (for example change the stochastic matrix). Note we skipped some assertion checking for readability. Furthermore note we have defined two versions of measure: in most cases measuring only part of vertices are faster than making full measurement.abstract type AbstractStochastic <: QWModelDiscr end\n\nstruct UniformStochastic{G<:SimpleGraph} <: AbstractStochastic\n  graph::G\nend\n\nUniformScaling(digraph::G) where G= UniformStochastic{G}(digraph)\n\nfunction check_qwdynamics(::Type{QWEvolution},\n                          abs_stoch::UniformStochastic,\n                          parameters::Dict{Symbol,Any})\n  @assert :stochastic ∈ keys(parameters) \"parameters needs to have key stochastic\"\n  n = nv(graph(abs_stoch))\n  @assert isa(parameters[:stochastic], SparseMatrixCSC{<:Real}) \"value for :stochastic needs to be sparse matrix with real numbers\"\n  @assert size(parameters[:stochastic], 1) == size(parameters[:stochastic], 2) \"Stochastic matrix needs to be square stochastic matrix\"\n  @assert mapslices(sum, parameters[:stochastic], 1)[1,:] ≈ ones(n) \"Stochastic matrix needs to be square stochastic matrix of order graph\"\nend\n\nfunction stochastic_matrix(g::SimpleGraph)\n  a = adjacency_matrix(g)\n  a*spdiagm(mapslices(x->1/sum(x), a, 1)[1,:])\nend\n\nfunction QWEvolution(stoch::AbstractStochastic)\n   parameters = Dict{Symbol,Any}(:stochastic => stochastic_matrix(graph(stoch)))\n   QWEvolution(stoch, parameters)\nend\n\nfunction stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T<:Real\n  s*v\nend\n\nfunction evolve(qss::QWDynamics{<:AbstractStochastic}, state)\n  stochastic_evolution(parameters(qss)[:stochastic], state)\nend\n\nfunction measure(::QWDynamics{<:AbstractStochastic}, state::Vector{<:Real})\n   return state\nend\n\nfunction measure(::QWDynamics{<:AbstractStochastic},\n                 state::Vector{<:Real},\n                 vertices::Vector{Int})\n   return state[vertices]\nendThanks to the definition above we can make a pure walk evolution.dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))\n\nprintln(execute_single(dynamic, fill(1./5, 5), 5))\n# [0.186831, 0.313169, 0.313169, 0.0934156, 0.0934156]Note that continuous quantum walks requires time argument in evolution function."
 },
 
 {
@@ -277,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "Quantum Search",
     "category": "section",
-    "text": "Quantum spatial search is an algorithm, which starts at some initial state (which  depends on the graph structure), and runs for some time in order to cumulate  amplitude at marked vertex. The algorithm is know to outperform classical search.The dynamics requires evolve, measure, initial_state and check_qwdynamics functions. It provides execute, execute_single, execute_single_measured, execute_all and execute_all_measured functions - the description can be found in Quantum walk evolution section. The only difference is that QWSearch uses the state provided by initial_state function, unless other is provided. Furthermore the function provides marked, penalty and maximize_quantum_search. While the first two simple provides the parameters typical to QWSearch, the last one searches for optimal measure time. The maximization depends on the model (if it is continuous or discrete). While for discrete evolution obtaining reasonable result is guaranteed, it is not the case for the continuous one, as the optimization suffers locating at local extremum.The penalty is an additional time added in optimization. Note, that if we optimize  time/success_probability(time) function, the optimum is always at time 0. This would imply that algorithm achieves full efficiency if it is instantly measured. This is misleading, as the time for constructing initial state and for measurement is ignored.  Hence we need to include (usually small) additional time in penalty in order to  get useful result. Note the  time/success_probability(time) is at called  expected_runtime and can be obtained by expected_runtime function.Some function as a result outputs not QSearchState instead of the original state.  The struct consists of the original state, the runtime and the probability of measuring  each marked vertex. Those elements can be extracted by state, runtime and probability functions.Following functions are connected to the dynamics:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"quantum_walk.md\"]"
+    "text": "Quantum spatial search is an algorithm, which starts at some initial state (which  depends on the graph structure), and runs for some time in order to cumulate  amplitude at marked vertex. The algorithm is known to outperform classical search.The dynamics requires evolve, measure, initial_state and check_qwdynamics functions. It provides execute, execute_single, execute_single_measured, execute_all and execute_all_measured functions - the description can be found in Quantum walk evolution section. The only difference is that QWSearch uses the state provided by initial_state function, unless other is provided. Furthermore the function provides marked, penalty and maximize_quantum_search. While the first two simple provides the parameters typical to QWSearch, the last one searches for optimal measure time. The maximization depends on the model (if it is continuous or discrete). While for discrete evolution obtaining reasonable result is guaranteed, it is not the case for the continuous one, as the optimization suffers for locating at local extrema.The penalty is an additional time added in optimization. Note, that if we optimize  time/success_probability(time) function, the optimum is always at time 0. This would imply that algorithm achieves full efficiency if it is instantly measured. This is misleading, as the time for constructing initial state and for measurement is ignored.  Hence we need to include (usually small) additional time in penalty in order to  get useful result. Note the  time/success_probability(time) is at called  expected_runtime and can be obtained by expected_runtime function.Some function as a result outputs not QSearchState instead of the original state.  The struct consists of the original state, the runtime and the probability of measuring  each marked vertex. Those elements can be extracted by state, runtime and probability functions.Following functions are connected to the quantum search:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"quantum_search.md\"]"
 },
 
 {
@@ -285,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "Example",
     "category": "section",
-    "text": "TODO"
+    "text": "using QuantumWalk, LightGraphs\n\nn = 100\npenalty_szegedy = log(n)\nqsearch = QWSearch(Szegedy(CompleteGraph(n)), [1], penalty_szegedy)\n\nruntime(maximize_quantum_search(qsearch))-penalty_szegedy\n# 5.0\n\nprobability(maximize_quantum_search(qsearch))\n# [0.569689]\n\nexecute_single_measured(qsearch, ceil(Int, pi*sqrt(100)/2))\n#100-element Array{Float64,1}:\n# 0.428475  \n# 0.00577298\n# 0.00577298\n# 0.00577298\n# 0.00577298\n# 0.00577298\n  ⋮         \n# 0.00577298\n# 0.00577298\n# 0.00577298\n# 0.00577298\n# 0.00577298"
 },
 
 {
@@ -293,7 +285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "Adjusting model to QWSearch",
     "category": "section",
-    "text": "TODO"
+    "text": "Here we consider the example from the Quantum walk evolution section. We can consider random walk search as follows: at given step we check if we are at the marked vertex. If not, we continue evolution. Hence we need to cumulate the success probability at marked vertices. We can propose following implementation (including the functions from mentioned section).##\nfunction check_qwdynamics(::Type{QWSearch},\n                          abs_stoch::UniformStochastic,\n                          ::Array{Int},\n                          parameters::Dict{Symbol,Any})\n  @assert :stochastic ∈ keys(parameters) \"parameters needs to have key stochastic\"\n  n = nv(graph(abs_stoch))\n  @assert isa(parameters[:stochastic], SparseMatrixCSC{<:Real}) \"value for :stochastic needs to be sparse matrix with real numbers\"\n  @assert size(parameters[:stochastic], 1) == size(parameters[:stochastic], 2) \"Stochastic matrix needs to be square stochastic matrix\"\n  @assert mapslices(sum, parameters[:stochastic], 1)[1,:] ≈ ones(n) \"Stochastic matrix needs to be square stochastic matrix of order graph\"\nend\n\nfunction QWSearch(stoch::AbstractStochastic,\n                  marked::Array{Int},\n                  penalty::Real = 0.)\n   parameters = Dict{Symbol,Any}(:stochastic => stochastic_matrix(graph(stoch)))\n\n   QWSearch(stoch, marked, parameters, penalty)\nend\n\nfunction initial_state(qss::QWSearch{<:AbstractStochastic})\n  n = nv(graph(qss))\n  fill(1./n, n)\nend\n\nfunction evolve(qss::QWSearch{<:AbstractStochastic}, state::Vector{<:Real})\n  old_probability = measure(qss, state, marked(qss))\n  state[marked(qss)] = zero(marked(qss))\n  state = stochastic_evolution(parameters(qss)[:stochastic], state)\n  state[marked(qss)] += old_probability\n  state\nendNote that for example measure function does not change. Below we provide an evolution simulation example.dynamic = QWSearch(UniformStochastic(CompleteGraph(100)), [1])\n\nmeasure(dynamic, execute_single(dynamic, 0), [1])\n# [0.01]\n\nmeasure(dynamic, execute_single(dynamic, 40), [1])\n# [0.340416]\n\nmeasure(dynamic, execute_single(dynamic, 1000), [1])\n# [0.999961]"
 },
 
 {
@@ -537,6 +529,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "szegedy.html#Szegedy-Quantum-Walk-1",
+    "page": "Szegedy model",
+    "title": "Szegedy Quantum Walk",
+    "category": "section",
+    "text": "The Szegedy quantum walk is one of the most popular discrete quantum walk models. It takes stochastic matrix, turns it into unitary operator and use it for evolution. The evolution is purely unitary on the dimension equal to square of the graph order. The definition can be found in Quantum speed-up of Markov chain based algorithms, by Szegedy. The definition of quantum search can be found in Direct Equivalence of Coined and Szegedy\'s Quantum Walks, by Wong.The abstract supertype is AbstractSzegedy with its default realization Szegedy The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"szegedy.md\"]"
+},
+
+{
     "location": "szegedy.html#QuantumWalk.AbstractSzegedy",
     "page": "Szegedy model",
     "title": "QuantumWalk.AbstractSzegedy",
@@ -617,19 +617,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "szegedy.html#Szegedy-Quantum-Walk-1",
+    "location": "szegedy.html#Full-docs-1",
     "page": "Szegedy model",
-    "title": "Szegedy Quantum Walk",
+    "title": "Full docs",
     "category": "section",
-    "text": "The Szegedy quantum walk is one of the most popular discrete quantum walk models. It takes stochastic matrix, turns it into unitary operator and use it for evolution. The evolution is purely unitary on the dimension equal to square of the graph order. The definition can be found in Quantum speed-up of Markov chain based algorithms, by Szegedy. The definition of quantum search can be found in Direct Equivalence of Coined and Szegedy\'s Quantum Walks, by Wong.The abstract supertype is AbstractSzegedy with its default realization Szegedy The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"szegedy.md\"]AbstractSzegedy\nQWEvolution(::AbstractSzegedy)\nQWSearch(::AbstractSzegedy, ::Array{Int}, ::Real)\nSzegedy\ncheck_qwdynamics(::Type{QWSearch}, ::AbstractSzegedy, ::Array{Int}, ::Dict{Symbol})\ncheck_qwdynamics(::Type{QWEvolution}, ::AbstractSzegedy, ::Dict{Symbol})\nevolve(::QWDynamics{Szegedy{<:Any,T}}, ::SparseVector{T}) where T<:Number\ninitial_state(::QWSearch{<:AbstractSzegedy})\nmeasure(::QWDynamics{<:AbstractSzegedy}, ::SparseVector{<:Number})\nsqrtstochastic"
-},
-
-{
-    "location": "new_model.html#",
-    "page": "New model",
-    "title": "New model",
-    "category": "page",
-    "text": "TODO"
+    "text": "AbstractSzegedy\nQWEvolution(::AbstractSzegedy)\nQWSearch(::AbstractSzegedy, ::Array{Int}, ::Real)\nSzegedy\ncheck_qwdynamics(::Type{QWSearch}, ::AbstractSzegedy, ::Array{Int}, ::Dict{Symbol})\ncheck_qwdynamics(::Type{QWEvolution}, ::AbstractSzegedy, ::Dict{Symbol})\nevolve(::QWDynamics{Szegedy{<:Any,T}}, ::SparseVector{T}) where T<:Number\ninitial_state(::QWSearch{<:AbstractSzegedy})\nmeasure(::QWDynamics{<:AbstractSzegedy}, ::SparseVector{<:Number})\nsqrtstochastic"
 },
 
 {
