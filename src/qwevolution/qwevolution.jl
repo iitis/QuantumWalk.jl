@@ -6,7 +6,7 @@ export
 Type describing standard quantum walk evolution. Needs implementation of
 * `evolve(::QWEvolution{<:QWModelDiscr}, state)` or `evolve(::QWEvolution{<:QWModelCont}, state, time::Real)`
 * `measure(::QWEvolution, state)`
-* `check_qwevolution(::QWModelDiscr, parameters::Dict{Symbol})`
+* `check_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})`
 * proper constructors.
 
 Offers functions

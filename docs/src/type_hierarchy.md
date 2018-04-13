@@ -1,3 +1,9 @@
+```@meta
+DocTestSetup = quote
+   using QuantumWalk, LightGraphs
+end
+```
+
 # Type hierarchy
 
 The package consists of two main type hierarchies: quantum walk model hierarchy,
@@ -78,6 +84,7 @@ QWModel
 QWModelCont
 QWModelDiscr
 graph(::QWModel)
+graph(::QWDynamics)
 model(::QWDynamics)
 parameters(::QWDynamics)
 ```

@@ -1,3 +1,9 @@
+```@meta
+DocTestSetup = quote
+   using QuantumWalk, LightGraphs
+end
+```
+
 # Quantum Search
 
 Quantum spatial search is an algorithm, which starts at some initial state (which
@@ -115,14 +121,17 @@ measure(dynamic, execute_single(dynamic, 1000), [1])
 
 ```@docs
 QWSearch
-marked
-penalty
-check_qwdynamics
+marked(qss::QWSearch)
+penalty(qss::QWSearch)
+check_qwdynamics(::QWSearch, ::Vector{Int}, ::Dict{Symbol})
 execute(::QWSearch, ::Real)
-execute_single(::QWSearch{<:QWModelDiscr}, ::Any, ::Int)
+execute_single(qss::QWSearch{<:QWModelDiscr}, initstate, runtime::Int)
+execute_single(qss::QWSearch{<:QWModelCont}, initstate, runtime::Real)
+execute_single(qss::QWSearch, runtime::Real)
 execute_single_measured(::QWSearch{<:QWModelDiscr}, ::Int)
-execute_all(::QWSearch{<:QWModelDiscr}, ::S, ::Int) where S
+execute_all(::QWSearch{<:QWModelDiscr}, ::Any, ::Int)
 execute_all_measured(::QWSearch{<:QWModelDiscr}, ::Int)
+initial_state
 maximize_quantum_search
 QSearchState
 state

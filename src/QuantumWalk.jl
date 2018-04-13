@@ -55,12 +55,14 @@ evolve(::Any)
 
 
 """
-    check_qwevolution(dynamictype, model, ..., parameters)
+    check_qwdynamics(dynamictype, model, ..., parameters)
 
 Checks whetver combination of the arguments creates valid quantum walk dynamics.
 The behaviour strongly depends on arguments.
 """
 check_qwdynamics(::Any)
+
+
 
 include("type_hierarchy.jl")
 include("dynamics.jl")
@@ -72,9 +74,5 @@ include("qwevolution/qwevolution.jl")
 # models
 include("ctqw/ctqw.jl")
 include("szegedy/szegedy.jl")
-
-
-
-
 
 end

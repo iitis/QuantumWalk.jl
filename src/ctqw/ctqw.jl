@@ -25,6 +25,11 @@ struct CTQW <: AbstractCTQW
    CTQW(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw(ErrorException("Only :laplacian and :adjacency is implemented"))
 end
 
+"""
+    CTQW(graph)
+
+Constructor for CTQW, taking `matrix` to be `:adjacency`.
+"""
 CTQW(graph::Graph) = CTQW(graph, :adjacency)
 
 """
@@ -73,6 +78,11 @@ Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
 `Complex128`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
 By default hamiltonian is `SparseMatrixCSC`.
+
+    QWSearch(qss::QWSearch{<:CTQW}; marked, penalty)
+
+Updates quantum walk search to new subset of marked elements and new penalty. By
+default marked and penalty are the same as in qss.
 """
 function QWSearch(::Type{T},
                  ctqw::AbstractCTQW,
@@ -85,22 +95,15 @@ function QWSearch(::Type{T},
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
 
    QWSearch(ctqw, marked, parameters, penalty)
-end
+end,
 
 function QWSearch(ctqw::AbstractCTQW,
                  marked::Array{Int},
                  jumpingrate::Real = jumping_rate(Float64, ctqw),
                  penalty::Real=0.)
    QWSearch(Complex128, ctqw, marked, Complex128(jumpingrate), penalty)
-end
+end,
 
-
-"""
-    QWSearch(qss::QWSearch{<:CTQW}; marked, penalty)
-
-Updates quantum walk search to new subset of marked elements and new penalty. By
-default marked and penalty are the same as in qss.
-"""
 function QWSearch(qss::QWSearch{<:CTQW};
                   marked::Vector{Int}=qss.marked,
                   penalty::Real=qss.penalty)
@@ -115,7 +118,7 @@ end
 
 
 """
-    check_qwsearch(ctqw::AbstractCTQW, marked, parameters)
+    check_qwdynamics(ctqw::AbstractCTQW, marked, parameters)
 
 Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with
@@ -139,14 +142,14 @@ function QWEvolution(::Type{U},
                      ctqw::AbstractCTQW) where U<:Number
    parameters = Dict{Symbol,Any}(:hamiltonian => graph_hamiltonian(U, ctqw))
    QWEvolution(ctqw, parameters)
-end
+end,
 
 function QWEvolution(ctqw::AbstractCTQW)
    QWEvolution(Complex128, ctqw)
 end
 
 """
-    check_qwevolution(ctqw::AbstractCTQW, parameters)
+    check_qwdynamics(ctqw::AbstractCTQW, parameters)
 
 Checks whetver combination of `ctqw` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:hamiltonian` with

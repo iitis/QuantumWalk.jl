@@ -157,7 +157,7 @@ function check_szegedy(szegedy::AbstractSzegedy,
 end
 
 """
-    check_qwsearch(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwdynamics(szegedy::AbstractSzegedy, marked, parameters)
 
 Check whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:operators` with
@@ -172,7 +172,7 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 """
-    check_qwevolution(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwdynamics(szegedy::AbstractSzegedy, marked, parameters)
 
 Check whetver combination of `szegedy`, `marked` and `parameters` produces a
 valid `QWEvolution` object. It checks where `parameters` consists of key

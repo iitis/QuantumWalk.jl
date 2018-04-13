@@ -1,3 +1,5 @@
+
+
 # Welcome to QuantumWalk.jl
 
 *QuantumWalk.jl* is a package providing general functionalities and implementations of quantum walks. The package uses the Julia's type hierarchy to produce general functions working on at least large collection of quantum walk models.

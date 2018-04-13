@@ -16,10 +16,10 @@ Simulates quantum search on `model` with `marked` vertices and additional `param
 be included for better optimization, see documentation of `maximizing_function`.
 
 Needs implementation of
-* initial_state(::QWEvolution)
+* `initial_state(::QWEvolution)`
 * `evolve(::QWEvolution{<:QWModelDiscr}, state)` or `evolve(::QWEvolution{<:QWModelCont}, state, time::Real)`
 * `measure(::QWEvolution, state)`
-* `check_qwsearch(::QWModelDiscr, parameters::Dict{Symbol})`
+* `check_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})`
 * proper constructors.
 
 Offers functions
@@ -73,7 +73,7 @@ QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirecte
 
 julia> marked(qss)
 1-element Array{Int64,1}:
-  1
+ 1
 ```
 """
 marked(qss::QWSearch) = qss.marked
@@ -117,9 +117,6 @@ and running time `runtime`. Validity of `probability` and `runtime` is not check
 In second case `state` is measured according to `qss` is made.
 
 ```jldoctest
-julia?> 2+2
-5
-
 julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qss, initial_state(qss), 0)
@@ -223,15 +220,15 @@ runtime(qsearchstate::QSearchState) = qsearchstate.runtime
 
 # documentation for
 """
-    check_qwsearch(model, marked, parameters)
+    check_qwdynamics(model, marked, parameters)
 
 Checks whetver combination of `model`, `marked` and `parameters` creates valid
 quantum search evolution. Note that whetver list of vertices `marked` are a subset
 of vertices of `graph` from `model` is checked seperately in `QWSearch` constructor.
 
-Details concerning implementing `check_qwsearch` for own models can be found in GitHub pages.
+Details concerning implementing `check_qwdynamics` for own models can be found in GitHub pages.
 """
-check_qwsearch
+check_qwdynamics(::QWSearch, ::Vector{Int}, ::Dict{Symbol})
 
 """
     initial_state(qss)

@@ -1,3 +1,8 @@
+```@meta
+DocTestSetup = quote
+   using QuantumWalk, LightGraphs
+end
+```
 
 # Continuous-Time Quantum Walk
 

@@ -69,7 +69,7 @@ function execute_single(qss::QWSearch{<:QWModelDiscr},
    end
 
    QSearchState(qss, state, runtime)
-end
+end,
 
 function execute_single(qss::QWSearch{<:QWModelCont},
                         initstate,
@@ -77,7 +77,7 @@ function execute_single(qss::QWSearch{<:QWModelCont},
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
 
    QSearchState(qss, evolve(qss, initstate, runtime), runtime)
-end
+end,
 
 function execute_single(qss::QWSearch, runtime::Real)
    execute_single(qss, initial_state(qss), runtime)

@@ -1,6 +1,3 @@
-```@meta
-CurrentModule = QuantumWalk
-```
 
 
 function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
@@ -43,7 +40,6 @@ julia> evolve(qss, initial_state(qss), 1.)
   0.219272+0.357976im
   0.219272+0.357976im
   0.219272+0.357976im
-
 ```
 """
 function evolve(qwd::QWDynamics{<:AbstractCTQW},
@@ -78,10 +74,10 @@ julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)])
  0.3
  0.5
 
- julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)], [2, 3])
- 2-element Array{Float64,1}:
-  0.3
-  0.5
+julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)], [2, 3])
+2-element Array{Float64,1}:
+ 0.3
+ 0.5
 
 ```
 """

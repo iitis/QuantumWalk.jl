@@ -3,14 +3,15 @@ include("../src/QuantumWalk.jl")
 using QuantumWalk, LightGraphs
 
 # same for contributing and license
-println(pwd())
 cp(normpath(@__FILE__, "../../LICENSE.md"), normpath(@__FILE__, "../src/license.md"); remove_destination=true)
+
+
 
 makedocs(
     modules     = [QuantumWalk],
     format      = :html,
     sitename    = "QuantumWalk",
-    doctest     = false,
+    doctest     = true,
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[
@@ -26,8 +27,6 @@ makedocs(
         "Contributing"		=> "contributing.md",
         "Citing"	       	=> "citing.md",
 		"Licence"			=> "license.md",
-#		"Citing"			=> "citing.md",
-#		"Contributing"	                => "contributing.md"
     ]
 )
 
