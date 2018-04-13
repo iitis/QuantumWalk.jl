@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/QuantumWalks/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/QuantumWalks/QuantumWalk.jl)
 [![Coverage Status](https://coveralls.io/repos/github/QuantumWalks/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/QuantumWalks/QuantumWalk.jl?branch=master)
-
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantumWalks.github.io/QuantumWalk.jl/latest)
 # QuantumWalk
 
 ## Description
