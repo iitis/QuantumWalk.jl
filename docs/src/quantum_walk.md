@@ -4,7 +4,7 @@ DocTestSetup = quote
 end
 ```
 
-# Quantum evolution
+# Quantum walk evolution
 
 The simplest quantum walk evolution. It simply takes the model and initial state from
 the user, simulate an evolution and outputs the state or the probability distribution
@@ -15,7 +15,9 @@ It provides `execute`, `execute_single`, `execute_single_measured`, `execute_all
 `execute_all_measured` functions. Depending on the name it outputs single state
 or all states, measured or not measured. The execute combines the last four functions.
 In the case of type-stability requirement, we recommend to use the last four
-functions. `execute_all` and `execute_all_measured` are provided only for discrete
+functions.
+
+**Note:** Methods `execute_all` and `execute_all_measured` are provided only for discrete
 quantum walk models.
 
 Following functions are connected to the dynamics:
@@ -27,8 +29,6 @@ Pages   = ["quantum_walk.md"]
 
 ## Example
 ```julia
-julia> using LightGraphs, QuantumWalk
-
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> state = rand(16); state = sparse(state/norm(state));
@@ -59,8 +59,6 @@ julia> execute_all_measured(qwe, state, 4)
  0.244393  0.213254  0.378161  0.171268  0.323264
  0.279018  0.165221  0.124872  0.301066  0.0969412
 
-julia> execute(qwe, state, 4, )
-execute(qwd::QuantumWalk.QWDynamics, initstate, runtime::Real; all, measure) in QuantumWalk at /home/adam/.julia/v0.6/QuantumWalk/src/dynamics.jl:23
 julia> execute(qwe, state, 4, measure=true, all=true)
 4×5 Array{Float64,2}:
  0.273249  0.455568  0.308632  0.339199  0.429348
@@ -73,7 +71,9 @@ julia> execute(qwe, state, 4, measure=true, all=true)
 
 The `QWEvolution` requires an implementation of `evolve`, `measure` and `check_qwdynamics`.
 Instead of implementing purely quantum walk, we will implement simple random walk,
-which still fits our considerations. Note that we creates an additional `AbstractStochastic` supertype, in case someone would prefer to make different
+which still fits our considerations.
+
+Note we create an additional `AbstractStochastic` supertype, in case someone would prefer to make different
 stochastic evolution (for example change the stochastic matrix). Note we skipped
 some assertion checking for readability. Furthermore note we have defined two
 versions of `measure`: in most cases measuring only part of `vertices` are faster
@@ -130,13 +130,24 @@ end
 Thanks to the definition above we can make a pure walk evolution.
 
 ```julia
-dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))
+julia> dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))
+QuantumWalk.QWEvolution{UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}}(UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}({5, 5} undirected simple Int64 graph), Dict{Symbol,Any}(Pair{Symbol,Any}(:stochastic,
+  [2, 1]  =  0.5
+  [3, 1]  =  0.5
+  [1, 2]  =  0.333333
+  [3, 2]  =  0.333333
+  [4, 2]  =  0.333333
+  [1, 3]  =  0.333333
+  [2, 3]  =  0.333333
+  [5, 3]  =  0.333333
+  [2, 4]  =  1.0
+  [3, 5]  =  1.0)))
 
-println(execute_single(dynamic, fill(1./5, 5), 5))
-# [0.186831, 0.313169, 0.313169, 0.0934156, 0.0934156]
+julia> println(execute_single(dynamic, fill(1./5, 5), 5))
+[0.186831, 0.313169, 0.313169, 0.0934156, 0.0934156]
 ```
 
-Note that continuous quantum walks requires time argument in `evolution` function.
+Note that continuous walks requires time argument in `evolution` function, see [CTQW model](ctqw.md).
 
 ## Full docs
 

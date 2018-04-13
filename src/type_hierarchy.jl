@@ -44,7 +44,7 @@ Abstract supertype of all discrete quantum walk models.
 abstract type QWModelDiscr <: QWModel end
 
 """
-    QWDynamics{T<:QWModel}
+    QWDynamics
 
 Abstract supertype of all dynamics on quantum walk models.
 """
@@ -57,21 +57,7 @@ Returns `graph` element of `model` from `qwd`. Equivalent to
 `graph(model(qwd))`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
-QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
-  [1, 1]  =  1.0+0.0im
-  [2, 1]  =  0.333333+0.0im
-  [3, 1]  =  0.333333+0.0im
-  [4, 1]  =  0.333333+0.0im
-  [1, 2]  =  0.333333+0.0im
-  [3, 2]  =  0.333333+0.0im
-  [4, 2]  =  0.333333+0.0im
-  [1, 3]  =  0.333333+0.0im
-  [2, 3]  =  0.333333+0.0im
-  [4, 3]  =  0.333333+0.0im
-  [1, 4]  =  0.333333+0.0im
-  [2, 4]  =  0.333333+0.0im
-  [3, 4]  =  0.333333+0.0im)), 0.0)
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> graph(qss)
 {4, 6} undirected simple Int64 graph
@@ -85,21 +71,7 @@ graph(qwd::QWDynamics) = graph(qwd.model)
 Returns `model` element of `qwd`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
-QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
-  [1, 1]  =  1.0+0.0im
-  [2, 1]  =  0.333333+0.0im
-  [3, 1]  =  0.333333+0.0im
-  [4, 1]  =  0.333333+0.0im
-  [1, 2]  =  0.333333+0.0im
-  [3, 2]  =  0.333333+0.0im
-  [4, 2]  =  0.333333+0.0im
-  [1, 3]  =  0.333333+0.0im
-  [2, 3]  =  0.333333+0.0im
-  [4, 3]  =  0.333333+0.0im
-  [1, 4]  =  0.333333+0.0im
-  [2, 4]  =  0.333333+0.0im
-  [3, 4]  =  0.333333+0.0im)), 0.0)
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> model(qss)
 QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency)
@@ -113,21 +85,7 @@ model(qwd::QWDynamics) = qwd.model
 Returns `parameters` element of `qwd`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
-QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
-  [1, 1]  =  1.0+0.0im
-  [2, 1]  =  0.333333+0.0im
-  [3, 1]  =  0.333333+0.0im
-  [4, 1]  =  0.333333+0.0im
-  [1, 2]  =  0.333333+0.0im
-  [3, 2]  =  0.333333+0.0im
-  [4, 2]  =  0.333333+0.0im
-  [1, 3]  =  0.333333+0.0im
-  [2, 3]  =  0.333333+0.0im
-  [4, 3]  =  0.333333+0.0im
-  [1, 4]  =  0.333333+0.0im
-  [2, 4]  =  0.333333+0.0im
-  [3, 4]  =  0.333333+0.0im)), 0.0)
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> parameters(qss)
 Dict{Symbol,Any} with 1 entry:

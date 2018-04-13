@@ -1,3 +1,5 @@
+using LightGraphs
+
 module QuantumWalk
 using Expokit
 using LightGraphs
@@ -10,6 +12,7 @@ export
     check_qwdynamics
 
 
+
 """
     QuantumWalk
 
@@ -17,7 +20,7 @@ An package for quantum walk and quantum search simulation.
 
 The packaged provides hierarchy of Quantum walk models and their numerical description together
 with general function for quantum walk simulation and quantum search evolution. In
-particular CTQW and Szegedy walk models are implemented as an example of continuous
+particular `CTQW` and `Szegedy` walk models are implemented as an example of continuous
 and discrete walk models.
 
 For both continuous and discrete model quantum walk simulator is implemented and
@@ -30,23 +33,22 @@ Full documentation is available in GitHub pages.
 QuantumWalk
 
 """
-    measure(qwevolution, state[, vertices])
+    measure(qwdynamic, state[, vertices])
 
-Measure `state` according to model from quantum walk evolution `qwevolution`.
+Measure `state` according to model from quantum walk evolution `qwdynamic`.
 If `vertices` is provided,
 probabilities of given vertices should be provided. Otherwise full probability
 distribution should be provided. Output should be always
-of type Array{Float64}.
-The behaviour strongly depends on
+of type `Vector{Float64}`. The behaviour strongly depends on
 arguments
 """
 measure(::Any)
 
 """
-    evolve(qwevolution{<:QWModelDiscr}, state)
-    evolve(qwevolution{<:QWModelCont}, state, time)
+    evolve(qwdynamic::QWDynamics{<:QWModelDiscr}, state)
+    evolve(qwdynamic::QWDynamics{<:QWModelCont}, state, time)
 
-Evolve `state` according to `qwevolution`. `time` should be provided
+Evolve `state` according to `qwdynamic`. `time` should be provided
 if model is continuous, otherwise one-step evolution should be performed. Type returned
 should be the same as type of `state`. The behaviour strongly depends on
 arguments.

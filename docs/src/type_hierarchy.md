@@ -36,15 +36,16 @@ end
 ```
 
 At the moment `CTQW` and `Szegedy` walks are implemented. Note that arbitrary
-quantum walk model should consist of `measure`, `evolve` and `check_qwdynamics` for basic pure walk simulation.
+quantum walk model should consist of `measure`, `evolve` and `check_qwdynamics`
+for basic pure walk simulation implemented in `QWEvolution`.
 
 ## Quantum dynamics hierarchy
 
 The main supertype is `QWDynamics`. As the algorithms and analysis usually differs strongly,
 subtypes of `QWDynamics` should be mostly a composite types.
 
-Any `QWDynamics` should consist of at least two parameters: `model`, which is a
-quantum walk model, and `parameters`, which is a dictionary consisting of values
+Any `QWDynamics` should consist of at least two parameters: `model::QWModel`, which is a
+quantum walk model, and `parameters::Dict{Symbol,Any}`, which is a dictionary consisting of values
 needed for `model`. Elements are accessible via function with the same name. In order to check correctness, `check_qwdynamics` should always
 be executed in the constructor. Typical quantum walk dynamics are defined as
 follows.
@@ -56,7 +57,7 @@ struct Dynamics{T} <: QWDynamics{T}
 
   function Dynamics(model::T, parameters::Dict{Symbol}, ...) where T<:QWModel
      ...
-     check_qwdynamics(::Dynamics, model, parameters, ...)
+     check_qwdynamics(Dynamics, model, parameters, ...)
      ...
      new(model, parameters, ...)
   end
@@ -64,7 +65,7 @@ end
 ```
 
 At the moment `QWEvolution` for pure walk evolution and `QWSearch` for quantum spatial search are implemented.
-All dynamics provides `execute` functionality, together with their its variation. For details see section below.
+All dynamics provides `execute` functionality, together with their its variation.
 
 
 ## Documentation
@@ -73,13 +74,13 @@ Following functions are connected to the presented topic:
 ```@index
 Order = [:type, :function]
 Modules = [QuantumWalk]
-Pages   = ["quantum_walk.md"]
+Pages   = ["type_hierarchy.md"]
 ```
 
 ### Full docs
 
 ```@docs
-QWDynamics
+QWDynamics{T<:QWModel}
 QWModel
 QWModelCont
 QWModelDiscr

@@ -16,11 +16,11 @@ makedocs(
     assets 	= ["assets/logo.ico"],
     pages       = Any[
 		"Home"				=> "index.md",
-		"Type hierarchy" 		=> "type_hierarchy.md",
-		"Examplary dynamics"		=> Any[
+		"Type hierarchies"	=> "type_hierarchy.md",
+    		"Dynamics"		=> Any[
 						"Quantum walk evolution"=> "quantum_walk.md",
 						"Quantum search"        => "quantum_search.md"],
-		"Examplary models"             	=> Any[
+		"Walk models"         => Any[
 						"CTQW model" 		=> "ctqw.md",
 						"Szegedy model" 	=> "szegedy.md"],
 		"New dynamics"     	=> "new_dynamics.md",

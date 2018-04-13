@@ -6,7 +6,7 @@ end
 
 # Continuous-Time Quantum Walk
 
-Exemplary implementation of continuous quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. The evolutions starts in equal superposition, and after time it is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in [Spatial search by quantum walk](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.70.022314), written by Childs and Goldstone, where both pure walk and search dynamics are described.
+Implementation of continuous-time quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, state is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in [Spatial search by quantum walk](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.70.022314) by Childs and Goldstone, where both pure walk and search dynamics are described.
 
 The abstract supertype is `AbstractCTQW` with its default realization `CTQW`. The model includes following types and methods:
 

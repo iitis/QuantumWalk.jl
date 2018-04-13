@@ -8,7 +8,7 @@
 *QuantumWalk.jl* is a package for Julia programming language implementing models
 of quantum continuous and discrete walks used for performing quantum spatial
 search. It's main purpose is to provide general functionalities by crossing usage
-of quantum models and applications implementations. 
+of quantum models and applications implementations.
 
 Currently the package provides implementation of
 * Szegedy quantum walks `Szegedy` with abstract supertype `AbstractSzegedy`,
@@ -20,13 +20,13 @@ and dynamics
 
 In particular for the last dynamic algorithm `maximize_quantum_search` finding optimal measure time are implemeneted. Note the function works in general for arbitrarily discrete-time quantum walk. The results are not guaranteed for continuous-time quantum walk, as times is not discretized.
 
-The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl), [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) and [Expokit.jl](https://github.com/acroy/Expokit.jl). 
+The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl), [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) and [Expokit.jl](https://github.com/acroy/Expokit.jl).
 
 *QuantumWalk.jl* is currently under construction. First release is planned for June 2018.
 ## Installation
 
 The package can be installed using `Pkg.clone` command as
-```julia 
+```julia
 Pkg.clone("https://github.com/QuantumWalks/QuantumWalk.jl.git")
 ```
 All of the required modules will be installed automatically.

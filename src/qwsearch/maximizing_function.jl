@@ -19,12 +19,10 @@ is supsected to have small expected runtime. To large value may miss the optimal
 while to small may greatly increase runtime of the algorithm.
 
 `maxtime` defaults to graph order n, `tstep` defaults to `sqrt(n)/5`. `QSearchState`
-is returned by deafult without `penalty`. Note that in general the probability is not maximal
+is returned by deafult without `penalty`. Note that in general the probability is not maximal.
 
 
-```@doc
-julia> using QuantumWalk,LightGraphs
-
+```jldoctest
 julia> qss = QWSearch(CTQW(CompleteGraph(100)), [1], 0.01, 1.);
 
 julia> result = maximize_quantum_search(qss)
@@ -101,8 +99,7 @@ The optimal time depende on chosen `mode`:
 * `:firstmaxeff` stops whene expected runtime start to increase,
 * `:maxtimeeff` chooses exhaustively the time from [0, runtime] with smallest expected time,
 * `:maxtimeprob` chooses exhaustively the time from [0, runtime] with maximal success probability,
-* `:maxeff` (default) finds optimal time with smallest expected time, usually faster
-than `:maxtimefff`.
+* `:maxeff` (default) finds optimal time with smallest expected time, usually faster than `:maxtimefff`.
 
 Note last three modes always returns optimal time within the interval.
 

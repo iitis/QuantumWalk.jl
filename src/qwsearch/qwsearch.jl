@@ -16,10 +16,10 @@ Simulates quantum search on `model` with `marked` vertices and additional `param
 be included for better optimization, see documentation of `maximizing_function`.
 
 Needs implementation of
-* `initial_state(::QWEvolution)`
-* `evolve(::QWEvolution{<:QWModelDiscr}, state)` or `evolve(::QWEvolution{<:QWModelCont}, state, time::Real)`
-* `measure(::QWEvolution, state)`
-* `check_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})`
+* `initial_state(::QWSearch)`
+* `evolve(::QWSearch{<:QWModelDiscr}, state)` or `evolve(::QWEvolution{<:QWModelCont}, state, time::Real)`
+* `measure(::QWSearch, state)`
+* `check_qwdynamics(::QWSearch, parameters::Dict{Symbol})`
 * proper constructors.
 
 Offers functions
@@ -55,21 +55,7 @@ end
 Returns `marked` element of `qss`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
-QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
-  [1, 1]  =  1.0+0.0im
-  [2, 1]  =  0.333333+0.0im
-  [3, 1]  =  0.333333+0.0im
-  [4, 1]  =  0.333333+0.0im
-  [1, 2]  =  0.333333+0.0im
-  [3, 2]  =  0.333333+0.0im
-  [4, 2]  =  0.333333+0.0im
-  [1, 3]  =  0.333333+0.0im
-  [2, 3]  =  0.333333+0.0im
-  [4, 3]  =  0.333333+0.0im
-  [1, 4]  =  0.333333+0.0im
-  [2, 4]  =  0.333333+0.0im
-  [3, 4]  =  0.333333+0.0im)), 0.0)
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> marked(qss)
 1-element Array{Int64,1}:
@@ -84,21 +70,7 @@ marked(qss::QWSearch) = qss.marked
 Returns `penalty` element of `qss`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1])
-QuantumWalk.QWSearch{QuantumWalk.CTQW,Float64}(QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency), [1], Dict{Symbol,Any}(Pair{Symbol,Any}(:hamiltonian,
-  [1, 1]  =  1.0+0.0im
-  [2, 1]  =  0.333333+0.0im
-  [3, 1]  =  0.333333+0.0im
-  [4, 1]  =  0.333333+0.0im
-  [1, 2]  =  0.333333+0.0im
-  [3, 2]  =  0.333333+0.0im
-  [4, 2]  =  0.333333+0.0im
-  [1, 3]  =  0.333333+0.0im
-  [2, 3]  =  0.333333+0.0im
-  [4, 3]  =  0.333333+0.0im
-  [1, 4]  =  0.333333+0.0im
-  [2, 4]  =  0.333333+0.0im
-  [3, 4]  =  0.333333+0.0im)), 0.0)
+julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
 julia> penalty(qss)
 0.0
@@ -239,7 +211,7 @@ for example for `CTQW` write `?initial_state(QWSearch{CTQW})`.
 
 Details concerning implementing `initial_state` for own models can be found in GitHub pages.
 """
-initial_state
+initial_state(::QWSearch)
 
 include("qwsearch_dynamics.jl")
 include("qwsearch_util.jl")
