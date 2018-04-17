@@ -17,17 +17,17 @@ Modules = [QuantumWalk]
 Pages   = ["szegedy.md"]
 ```
 
-## Full docs
+# Full docs
 
 ```@docs
 AbstractSzegedy
 QWEvolution(::AbstractSzegedy)
-QWSearch(::AbstractSzegedy, ::Array{Int}, ::Real)
+QWSearch(::AbstractSzegedy, ::Vector{Int}, ::Real)
 Szegedy
-check_qwdynamics(::Type{QWSearch}, ::AbstractSzegedy, ::Array{Int}, ::Dict{Symbol})
+check_qwdynamics(::Type{QWSearch}, ::AbstractSzegedy, ::Dict{Symbol}, ::Vector{Int})
 check_qwdynamics(::Type{QWEvolution}, ::AbstractSzegedy, ::Dict{Symbol})
 evolve(::QWDynamics{Szegedy{<:Any,T}}, ::SparseVector{T}) where T<:Number
 initial_state(::QWSearch{<:AbstractSzegedy})
 measure(::QWDynamics{<:AbstractSzegedy}, ::SparseVector{<:Number})
-sqrtstochastic
+sqrtstochastic(::AbstractSzegedy)
 ```

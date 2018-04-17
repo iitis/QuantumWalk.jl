@@ -28,7 +28,7 @@ Order = [:type, :function]
 Modules = [QuantumWalk]
 Pages   = ["quantum_search.md"]
 ```
-## Example
+# Example
 
 ```julia
 julia> n = 100;
@@ -67,7 +67,7 @@ julia> execute_single_measured(qsearch, ceil(Int, pi*sqrt(100)/2))
  0.00577298
 ```
 
-## Adjusting model to `QWSearch`
+# Adjusting model to `QWSearch`
 
 Here we consider the example from the [Quantum walk evolution](quantum_walk.md) section. We consider
 random walk search as follows: at given step we check if we are at the marked vertex.
@@ -77,10 +77,10 @@ from mentioned section). Again some additional assertion could be included for
 full functionality.
 
 ```julia
-##
+#
 function check_qwdynamics(::Type{QWSearch},
                           abs_stoch::UniformStochastic,
-                          ::Array{Int},
+                          ::Vector{Int},
                           parameters::Dict{Symbol,Any})
   @assert :stochastic ∈ keys(parameters) "parameters needs to have key stochastic"
   n = nv(graph(abs_stoch))
@@ -90,7 +90,7 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 function QWSearch(stoch::AbstractStochastic,
-                  marked::Array{Int},
+                  marked::Vector{Int},
                   penalty::Real = 0.)
    parameters = Dict{Symbol,Any}(:stochastic => stochastic_matrix(graph(stoch)))
 
@@ -142,24 +142,24 @@ julia> measure(dynamic, execute_single(dynamic, 1000), [1])
  0.999961
 ```
 
-## Full docs
+# Full docs
 
 ```@docs
+QSearchState
 QWSearch
-marked(qws::QWSearch)
-penalty(qws::QWSearch)
 check_qwdynamics(QWSearch, ::Dict{Symbol}, ::Vector{Int})
 execute(::QWSearch, ::Real)
-execute_single(qws::QWSearch{<:QWModelDiscr}, initstate, runtime::Int)
-execute_single_measured(::QWSearch, ::Int)
-execute_all(qws::QWSearch{<:QWModelDiscr}, initstate::S, runtime::Int) where S
+execute_all(::QWSearch{<:QWModelDiscr}, ::S, ::Int) where S
 execute_all_measured(::QWSearch{<:QWModelDiscr}, ::Int)
+execute_single(::QWSearch{<:QWModelDiscr}, ::Any, ::Int)
+execute_single_measured(::QWSearch, ::Int)
+expected_runtime(::Real, ::Real)
 initial_state(::QWSearch)
-maximize_quantum_search(qws::QWSearch{<:QWModelCont})
-maximize_quantum_search(qws::QWSearch{<:QWModelDiscr})
-QSearchState
-state
-probability
-runtime
-expected_runtime(::Real, ::Float64)
+marked(::QWSearch)
+maximize_quantum_search(::QWSearch{<:QWModelCont})
+maximize_quantum_search(::QWSearch{<:QWModelDiscr})
+penalty(::QWSearch)
+probability(::QSearchState)
+runtime(::QSearchState)
+state(::QSearchState)
 ```

@@ -14,7 +14,7 @@ UniformScaling(digraph::G) where G= UniformStochastic{G}(digraph)
 
 function check_qwdynamics(::Type{QWSearch},
                           abs_stoch::UniformStochastic,
-                          ::Array{Int},
+                          ::Vector{Int},
                           parameters::Dict{Symbol,Any})
   @assert :stochastic ∈ keys(parameters) "parameters needs to have key stochastic"
   n = nv(graph(abs_stoch))
@@ -24,7 +24,7 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 function QWSearch(stoch::AbstractStochastic,
-                  marked::Array{Int},
+                  marked::Vector{Int},
                   penalty::Real = 0.)
    parameters = Dict{Symbol,Any}(:stochastic => stochastic_matrix(graph(stoch)))
 

@@ -38,12 +38,12 @@ vertices, as their are usuallu simple to adapt.
 struct QWSearch{T,W<:Real} <: QWDynamics{T}
   model::T
   parameters::Dict{Symbol}
-  marked::Array{Int}
+  marked::Vector{Int}
   penalty::W
 
   function QWSearch(model::T,
                     parameters::Dict{Symbol},
-                    marked::Array{Int},
+                    marked::Vector{Int},
                     penalty::W) where {T<:QWModel, W<:Real}
     @assert all(1 <= v <= nv(model.graph) for v=marked) && marked != [] "marked vertices needs to be non-empty subset of graph vertices set"
     @assert penalty >= 0 "Penalty needs to be nonnegative"

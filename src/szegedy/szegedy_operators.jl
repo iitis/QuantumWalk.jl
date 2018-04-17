@@ -18,9 +18,6 @@ end
 Return pair of Szegedy walk operators based on `sqrtstochastic` from `szegedy`.
 Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 4.
 The operators should be applied in given order.
-
-`sqrtstochastic` after
-elementwise square should be a column stochastic matrix.
 """
 function szegedy_walk_operators(szegedy::Szegedy{<:Any,S}) where S<:Number
    order = nv(szegedy.graph)
@@ -37,7 +34,7 @@ function szegedy_walk_operators(szegedy::Szegedy{<:Any,S}) where S<:Number
    r2 -= speye(r2)
 
    (r1, r2)
-end
+end,
 
 function szegedy_walk_operators(szegedy::AbstractSzegedy)
    order = nv(szegedy.graph)
@@ -60,13 +57,9 @@ end
     szegedyoracleoperators(szegedy, marked)
 
 Return a Szegedy oracle operators based on `sqrtstochastic` from `szegedy` and
-collection of `marked` vertices.
-Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 6.
-The operators should be applied in given order.
-
-`sqrtstochastic` after
-elementwise square should be a column stochastic matrix.
-
+collection of `marked` vertices. Definition of those can be found in
+https://arxiv.org/abs/1611.02238 on page 6. The operators should be applied in
+given order.
 """
 function szegedyoracleoperators(szegedy::AbstractSzegedy,
                                 marked::Vector{Int})

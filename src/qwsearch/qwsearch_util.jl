@@ -6,7 +6,7 @@ function measure(qwe::QWSearch, state::QSearchState)
    measure(qwe, state.state)
 end
 
-function measure(qwe::QWSearch, state::QSearchState, vertices::Array{Int})
+function measure(qwe::QWSearch, state::QSearchState, vertices::Vector{Int})
    measure(qwe, state.state, vertices)
 end
 
@@ -21,8 +21,8 @@ end
 
 #Expected runtime
 """
-    expected_runtime(runtime, probability)
-    expected_runtime(state)
+    expected_runtime(runtime::Real, probability::Real)
+    expected_runtime(state::QSearchState)
 
 Returns the expected runtime needed for quantum walk, considering it as Bernoulli
 process. It equals to `runtime/probability`. In the case of `state` provided the

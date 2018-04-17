@@ -1,27 +1,8 @@
 """
-    outneighbors_looped(graph, vertex)
+    outneighbors_looped(graph::AbstractGraph, vertex::Int)
 
 Return lists of outneighbors of `vertex` in `graph`. If outdegree of `vertex` is
 zero, then [v] is returned.
-
-# Example
-*Note* Example requires LightGraphs package.
-
-```jldoctest
-julia> g = DiGraph(3)
-{3, 0} directed simple Int64 graph
-
-julia> add_edge!(g, 1, 3)
-true
-
-julia> QuantumWalk.outneighbors_looped(g, 1)
-1-element Array{Int64,1}:
- 3
-
-julia> QuantumWalk.outneighbors_looped(g, 2)
-1-element Array{Int64,1}:
- 2
-```
 """
 function outneighbors_looped(graph::AbstractGraph, vertex::Int)
    outns = outneighbors(graph, vertex)
@@ -33,10 +14,9 @@ end
 
 
 """
-    isstochastic(stochastic)
+    isstochastic(stochastic::SparseMatrixCSC{<:Number})
 
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
-
 """
 function stochasticcheck(stochastic::SparseMatrixCSC{<:Number})
    @assert size(stochastic, 1) == size(stochastic, 2) "Matrix is not square"
@@ -47,11 +27,9 @@ end
 
 
 """
-    stochastic_preserves_graph_check(graph, stochastic)
+    stochastic_preserves_graph_check(graph::AbstractGraph, stochastic::SparseMatrixCSC{<:Number})
 
-Checks whether `stochastic`  matrix presreves graph structure. Returns nothing.
-Accepts both Graph and DiGraph.
-
+Checks whether `stochastic` matrix presreves graph structure. Returns nothing.
 """
 function graphpreservationcheck(graph::AbstractGraph,
                                 stochastic::SparseMatrixCSC{<:Number})
@@ -61,7 +39,7 @@ function graphpreservationcheck(graph::AbstractGraph,
 end
 
 """
-    graphstochasticcheck(graph, stochastic)
+    graphstochasticcheck(graph::AbstractGraph, stochastic::SparseMatrixCSC{<:Number})
 
 Check, whether `stochastic` is a column-stochatsic matrix preserving `graph`
 structure. Three properties are verified:
@@ -70,36 +48,6 @@ structure. Three properties are verified:
 
 Function returns `nothing` if `stochastic` satisfies properties above, otherwise
 raise error.
-
-# Examples
-*Note* Example requires LightGraphs package.
-
-```jldoctest
-julia> g = DiGraph(3)
-{3, 0} directed simple Int64 graph
-
-julia> add_edge!(g, 1, 2)
-true
-
-julia> stochastic = [0. 0. 0.; 1./3 1. 0.; 2./3 0. 1.]
-3×3 Array{Float64,2}:
-0.0       0.0  0.0
- 0.333333  1.0  0.0
- 0.666667  0.0  1.0
-
-julia> graphstochasticcheck(g, stochastic)
-ERROR: AssertionError: Nonzero elements of stochastic do not coincide with graph edges
-Stacktrace:
- [1]
-stochastic_preserves_graph_check(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QuantumWalk/src/szegedy.jl:64
- [2] graphstochasticcheck(::LightGraphs.SimpleGraphs.SimpleDiGraph{Int64}, ::Array{Float64,2}) at /home/adam/.julia/v0.6/QuantumWalk/src/szegedy.jl:87
-
-julia> add_edge!(g, 1, 3)
-true
-
-julia> graphstochasticcheck(g, stochastic)
-
-```
 """
 function graphstochasticcheck(graph::AbstractGraph,
                               stochastic::SparseMatrixCSC{<:Number})
@@ -109,35 +57,11 @@ function graphstochasticcheck(graph::AbstractGraph,
 end
 
 """
-    default_stochastic(graph)
+    default_stochastic(graph::AbstractGraph)
 
 Generates default column-stochastic matrix, which represents random walk with
-uniform spreading. Function accepts both `DiGraph` and `Graph` types. If outdegree
-of vertex is zero, additional 1 is added on the diagonal.
-
-# Examples
-*Note* Example requires LightGraphs package.
-
-```jldoctest
-julia> g = smallgraph(:bull)
-{5, 5} undirected simple Int64 graph
-
-julia> adjacency_matrix(g, dir=:in) |> full
-5×5 Array{Int64,2}:
- 0  1  1  0  0
- 1  0  1  1  0
- 1  1  0  0  1
- 0  1  0  0  0
- 0  0  1  0  0
-
-julia> QuantumWalk.default_stochastic(g) |> full
-5×5 Array{Float64,2}:
- 0.0  0.333333  0.333333  0.0  0.0
- 0.5  0.0       0.333333  1.0  0.0
- 0.5  0.333333  0.0       0.0  1.0
- 0.0  0.333333  0.0       0.0  0.0
- 0.0  0.0       0.333333  0.0  0.0
-```
+uniform spreading. If outdegree of vertex is zero, additional 1 is added on the
+diagonal.
 """
 function default_stochastic(graph::AbstractGraph)
    result = adjacency_matrix(graph, Float64, dir=:in)

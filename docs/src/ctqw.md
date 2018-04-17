@@ -16,17 +16,17 @@ Modules = [QuantumWalk]
 Pages   = ["ctqw.md"]
 ```
 
-## Full docs
+# Full docs
 
 ```@docs
 AbstractCTQW
 CTQW
 QWEvolution(::Type{U}, ::AbstractCTQW) where U<:Number
-QWSearch(::Type{T}, ::AbstractCTQW, ::Array{Int}, ::T, ::Real = 0.) where T<:Number
-check_qwdynamics(::Type{QWSearch}, ::AbstractCTQW, ::Array{Int}, ::Dict{Symbol})
+QWSearch(::Type{T}, ::AbstractCTQW, ::Vector{Int}, ::Real = 0., ::T) where T<:Number
+check_qwdynamics(::Type{QWSearch}, ::AbstractCTQW, ::Dict{Symbol}, ::Vector{Int})
 check_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})
 evolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
 initial_state(::QWSearch{<:AbstractCTQW})
 matrix(::AbstractCTQW)
-measure(::QWDynamics{AbstractCTQW}, ::Any) 
+measure(::QWDynamics{AbstractCTQW}, ::Vector{Number})
 ```

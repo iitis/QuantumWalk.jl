@@ -13,20 +13,10 @@ Default representation of `AbstractSzegedy` is `Szegedy`.
 abstract type AbstractSzegedy <: QWModelDiscr end
 
 """
-    Szegedy(graph[, stochastic, checkstochastic])
+    Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})
 
- Default representation of `AbstractSzegedy`. Parameter `graph` needs to be a
- subtype of `AbstractGraph` from LightGraphs module, and parameter `stochastic`
- needs to be a Real column stochastic matrix. Flag `checkstochastic` decides
- about checking the stochastic properties.
-
- Matrix `stochastic` defaults to the uniform walk operator, and
- `checkstochastic` deafults to `false` in case of default `stochastic`. If
- matrix `stochastic` is provided by the user, the default value of `stochastic`
- is true.
-
- Matrix `stochastic` is changed into `sqrtstochastic` by taking element-wise
- square root.
+ Default representation of `AbstractSzegedy`. `sqrtstochastic` needs to be an
+ element-wise square root of stochastic matrix.
 """
 struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
    graph::G
@@ -39,6 +29,17 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
 
 end
 
+"""
+    Szegedy(graph::AbstractGraph[, stochastic::SparseMatrixCSC{Real}, checkstochastic::Bool])
+
+ Constructors of `AbstractSzegedy`. `stochastic` needs to be a stochastic
+ matrix. Flag `checkstochastic` decides about checking the stochastic properties.
+
+ Matrix `stochastic` defaults to the uniform walk operator, and
+ `checkstochastic` deafults to `false` in case of default `stochastic`. If
+ matrix `stochastic` is provided by the user, the default value of `stochastic`
+ is `true`.
+"""
 function Szegedy(graph::G,
                  stochastic::SparseMatrixCSC{T},
                  checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
@@ -46,55 +47,33 @@ function Szegedy(graph::G,
       graphstochasticcheck(graph, stochastic)
    end
    Szegedy{G, T}(graph, sqrt.(stochastic))
-end
+end,
 
 function Szegedy(graph::AbstractGraph)
    Szegedy(graph, default_stochastic(graph), false)
 end
 
 """
-    sqrtstochastic(szegedy)
+    sqrtstochastic(szegedy::AbstractSzegedy)
 
-Return the `sqrtstochastic` element of `szegedy`. After element-wise squaring a
-column-stochastic matrix is obtained.
-
-```jldoctest
-julia> szegedy = Szegedy(CompleteGraph(4));
-
-julia> sqrtstochastic(szegedy)
-4×4 SparseMatrixCSC{Float64,Int64} with 12 stored entries:
-  [2, 1]  =  0.57735
-  [3, 1]  =  0.57735
-  [4, 1]  =  0.57735
-  [1, 2]  =  0.57735
-  [3, 2]  =  0.57735
-  [4, 2]  =  0.57735
-  [1, 3]  =  0.57735
-  [2, 3]  =  0.57735
-  [4, 3]  =  0.57735
-  [1, 4]  =  0.57735
-  [2, 4]  =  0.57735
-  [3, 4]  =  0.57735
-
-julia> full(sqrtstochastic(szegedy).^2)
-4×4 Array{Float64,2}:
- 0.0       0.333333  0.333333  0.333333
- 0.333333  0.0       0.333333  0.333333
- 0.333333  0.333333  0.0       0.333333
- 0.333333  0.333333  0.333333  0.0
-```
+Returns the `sqrtstochastic` element of `szegedy`.
 """
 sqrtstochastic(szegedy::AbstractSzegedy) = szegedy.sqrtstochastic
 
 """
-    QWSearch(szegedy::AbstractSzegedy, marked [, penalty])
+    QWSearch(szegedy::AbstractSzegedy, marked::Vector{Int}[, penalty::Real])
 
 Creates `QWSearch` according to `AbstractSzegedy` model. By default parameter
 `penalty` is set to 0. Evolution operators are constructed according to the
 definition from https://arxiv.org/abs/1611.02238.
+
+    QWSearch(qws::QWSearch[; marked::Vector{Int}, penalty::Real])
+
+Update quantum walk search to new subset of marked elements and new penalty. By
+default `marked` and `penalty` are the same as in `qws`.
 """
 function QWSearch(szegedy::AbstractSzegedy,
-                  marked::Array{Int},
+                  marked::Vector{Int},
                   penalty::Real=0)
    r1, r2 = szegedy_walk_operators(szegedy)
    q1, q2 = szegedyoracleoperators(szegedy, marked)
@@ -104,13 +83,6 @@ function QWSearch(szegedy::AbstractSzegedy,
    QWSearch(szegedy, parameters, marked, penalty)
 end
 
-"""
-    QWSearch(qws::QWSearch[; marked , penalty])
-
-Update quantum walk search to new subset of marked elements and new penalty. By
-default `marked` and `penalty` are the same as in `qws`.
-
-"""
 function QWSearch(qws::QWSearch{<:Szegedy};
                   marked::Vector{Int}=qws.marked,
                   penalty::Real=qws.penalty)
@@ -143,7 +115,7 @@ function QWEvolution(szegedy::AbstractSzegedy)
 end
 
 """
-    check_szegedy(szegedy, parameters)
+    check_szegedy(szegedy::AbstractSzegedy, parameters::Dict{Symbol})
 
 Private function for checking the existance of `:operators`, its type, and the
 dimensionality of its elements.
@@ -157,7 +129,7 @@ function check_szegedy(szegedy::AbstractSzegedy,
 end
 
 """
-    check_qwdynamics(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwdynamics(QWSearch, szegedy::AbstractSzegedy, marked::Vector{Int}, parameters::Dict{Symbol})
 
 Check whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:operators` with
@@ -167,14 +139,14 @@ needs to be square of size equals to square of `graph(szegedy).` order.
 function check_qwdynamics(::Type{QWSearch},
                           szegedy::AbstractSzegedy,
                           parameters::Dict{Symbol},
-                          marked::Array{Int})
+                          marked::Vector{Int})
    check_szegedy(szegedy, parameters)
 end
 
 """
-    check_qwdynamics(szegedy::AbstractSzegedy, marked, parameters)
+    check_qwdynamics(QWEvolution, szegedy::AbstractSzegedy, parameters::Dict{Symbol})
 
-Check whetver combination of `szegedy`, `marked` and `parameters` produces a
+Check whetver combination of `szegedy`, and `parameters` produces a
 valid `QWEvolution` object. It checks where `parameters` consists of key
 `:operators` with corresponding value being a list of `SparseMatrixCSC` objects.
 Furthermore operators need to be square of size equals to square of the order of

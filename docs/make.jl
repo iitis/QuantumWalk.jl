@@ -12,7 +12,7 @@ makedocs(
     format      = :html,
     sitename    = "QuantumWalk",
     clean       = true,
-    doctest     = false,
+    doctest     = true,
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[
