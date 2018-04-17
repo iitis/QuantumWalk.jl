@@ -1,4 +1,4 @@
-# Usage and citing
+## Usage and citing
 
 
 In case of citing, please use the following BibTeX form:

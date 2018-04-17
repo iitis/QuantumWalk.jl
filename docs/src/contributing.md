@@ -1,11 +1,11 @@
-# Contributing
+## Contributing
 
 TODO: wstep (Jarek)
 
 Please do not send pull request before an issue.
 
 
-# Bugs
+## Bugs
 
 In the case you noticed some bugs, please start with an issue with minimal working example
 of not-working code. If *Exception* is thrown, please provide an exception message as well.
@@ -14,7 +14,7 @@ correct answer.
 
 In the case you make a pull request, please add not-working example as a test.
 
-# Improvements
+## Improvements
 
 If you can provide a code, which works faster than already existing, please
 check its efficiency for various input data. In particular check various *dynamics*
@@ -26,7 +26,7 @@ the implementation which works well for *many* parameters, not only for example 
 
 We welcome as well any ideas concerning the readability and logic of the code.
 
-# Development guidelines
+## Development guidelines
 
 * Post an issue,
 * wait until the discussion ends :),

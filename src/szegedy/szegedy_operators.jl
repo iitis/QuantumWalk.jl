@@ -33,7 +33,7 @@ function szegedy_walk_operators(szegedy::Szegedy{<:Any,S}) where S<:Number
    r1 -= speye(r1)
    r2 -= speye(r2)
 
-   (r1, r2)
+   [r1, r2]
 end,
 
 function szegedy_walk_operators(szegedy::AbstractSzegedy)
@@ -50,7 +50,7 @@ function szegedy_walk_operators(szegedy::AbstractSzegedy)
    r1 -= speye(r1)
    r2 -= speye(r2)
 
-   (r1, r2)
+   [r1, r2]
 end
 
 """
@@ -73,5 +73,5 @@ function szegedyoracleoperators(szegedy::AbstractSzegedy,
    q1 = kron(markedidentity, speye(order))
    q2 = kron(speye(order), markedidentity)
 
-   (q1, q2)
+   [q1, q2]
 end

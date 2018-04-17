@@ -4,7 +4,7 @@ DocTestSetup = quote
 end
 ```
 
-# Type hierarchy
+## Type hierarchy
 
 The package consists of two main type hierarchies: quantum walk model hierarchy,
 which is simply a description of the quantum walk model, and quantum walk dynamics,
@@ -13,7 +13,7 @@ should possess all information needed for efficient simulation/analysis. For exa
 `CTQW` model should consist of graph, on which the evolution is made and *label*
 which implies if adjacency or Laplacian matrix is used. Contrary `QWEvolution{CTQW}` should consist of Hamiltonian used for evolution.
 
-# Quantum walk models hierarchy
+## Quantum walk models hierarchy
 
 The main supertype is `QWModel`. As typically discrete and continuous evolution
 are simulated and analysed using different techniques, `QWModelCont` and
@@ -39,7 +39,7 @@ At the moment `CTQW` and `Szegedy` walks are implemented. Note that arbitrary
 quantum walk model should consist of `measure`, `evolve` and `check_qwdynamics`
 for basic pure walk simulation implemented in `QWEvolution`.
 
-# Quantum dynamics hierarchy
+## Quantum dynamics hierarchy
 
 The main supertype is `QWDynamics`. As the algorithms and analysis usually differs strongly,
 subtypes of `QWDynamics` should be mostly a composite types.
@@ -68,7 +68,7 @@ At the moment `QWEvolution` for pure walk evolution and `QWSearch` for quantum s
 All dynamics provides `execute` functionality, together with its variation.
 
 
-# Documentation
+## Documentation
 
 Following functions are connected to the presented topic:
 ```@index
@@ -77,7 +77,7 @@ Modules = [QuantumWalk]
 Pages   = ["type_hierarchy.md"]
 ```
 
-# Full docs
+## Full docs
 
 ```@docs
 QWDynamics{T<:QWModel}

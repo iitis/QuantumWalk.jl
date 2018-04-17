@@ -107,9 +107,7 @@ Create `QWEvolution` according to `AbstractSzegedy` model. By default, the
 constructed operator is of type `SparseMatrixCSC`.
 """
 function QWEvolution(szegedy::AbstractSzegedy)
-   r1, r2 = szegedy_walk_operators(szegedy)
-   parameters = Dict{Symbol,Any}()
-   parameters[:operators] = [r1, r2]
+   parameters = Dict{Symbol,Any}(:operators => szegedy_walk_operators(szegedy))
 
    QWEvolution(szegedy, parameters)
 end

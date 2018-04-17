@@ -4,7 +4,7 @@ DocTestSetup = quote
 end
 ```
 
-# Quantum Search
+## Quantum Search
 
 Quantum spatial search is an algorithm, which starts at some initial state (which
  depends on the graph structure), and runs for some time in order to cumulate
@@ -28,7 +28,7 @@ Order = [:type, :function]
 Modules = [QuantumWalk]
 Pages   = ["quantum_search.md"]
 ```
-# Example
+## Example
 
 ```julia
 julia> n = 100;
@@ -67,7 +67,7 @@ julia> execute_single_measured(qsearch, ceil(Int, pi*sqrt(100)/2))
  0.00577298
 ```
 
-# Adjusting model to `QWSearch`
+## Adjusting model to `QWSearch`
 
 Here we consider the example from the [Quantum walk evolution](quantum_walk.md) section. We consider
 random walk search as follows: at given step we check if we are at the marked vertex.
@@ -77,7 +77,6 @@ from mentioned section). Again some additional assertion could be included for
 full functionality.
 
 ```julia
-#
 function check_qwdynamics(::Type{QWSearch},
                           abs_stoch::UniformStochastic,
                           ::Vector{Int},
@@ -142,7 +141,7 @@ julia> measure(dynamic, execute_single(dynamic, 1000), [1])
  0.999961
 ```
 
-# Full docs
+## Full docs
 
 ```@docs
 QSearchState

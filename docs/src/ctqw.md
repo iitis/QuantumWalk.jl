@@ -4,7 +4,7 @@ DocTestSetup = quote
 end
 ```
 
-# Continuous-Time Quantum Walk
+## Continuous-Time Quantum Walk
 
 Implementation of continuous-time quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, state is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in [Spatial search by quantum walk](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.70.022314) by Childs and Goldstone, where both pure walk and search dynamics are described.
 
@@ -16,7 +16,7 @@ Modules = [QuantumWalk]
 Pages   = ["ctqw.md"]
 ```
 
-# Full docs
+## Full docs
 
 ```@docs
 AbstractCTQW

@@ -4,7 +4,7 @@ DocTestSetup = quote
 end
 ```
 
-# Quantum walk evolution
+## Quantum walk evolution
 
 The simplest quantum walk evolution. It simply takes the model and initial state from
 the user, simulate an evolution and outputs the state or the probability distribution
@@ -29,7 +29,7 @@ Modules = [QuantumWalk]
 Pages   = ["quantum_walk.md"]
 ```
 
-# Example
+## Example
 ```julia
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
@@ -69,7 +69,7 @@ julia> execute(qwe, state, 4, measure=true, all=true)
  0.279018  0.165221  0.124872  0.301066  0.0969412
 ```
 
-# Adjusting model to `QWEvolution`
+## Adjusting model to `QWEvolution`
 
 The `QWEvolution` requires an implementation of `evolve`, `measure` and `check_qwdynamics`.
 Instead of implementing purely quantum walk, we will implement simple random walk,
@@ -151,7 +151,7 @@ julia> println(execute_single(dynamic, fill(1./5, 5), 5))
 
 Note that continuous walks requires time argument in `evolution` function, as an example consider  [CTQW model](ctqw.md).
 
-# Full docs
+## Full docs
 
 ```@docs
 QWEvolution
