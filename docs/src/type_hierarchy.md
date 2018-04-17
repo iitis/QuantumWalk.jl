@@ -65,7 +65,7 @@ end
 ```
 
 At the moment `QWEvolution` for pure walk evolution and `QWSearch` for quantum spatial search are implemented.
-All dynamics provides `execute` functionality, together with their its variation.
+All dynamics provides `execute` functionality, together with its variation.
 
 
 ## Documentation

@@ -15,18 +15,9 @@ Abstract supertype of all quantum walk models.
 abstract type QWModel end
 
 """
-    graph(model)
+    graph(model::QWModel)
 
 Returns `graph` element of `model`.
-
-```jldoctest
-julia> ctqw = CTQW(CompleteGraph(4))
-QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency)
-
-julia> graph(ctqw)
-{4, 6} undirected simple Int64 graph
-
-```
 """
 graph(model::QWModel) = model.graph
 
@@ -51,46 +42,23 @@ Abstract supertype of all dynamics on quantum walk models.
 abstract type QWDynamics{T<:QWModel} end
 
 """
-    graph(qwd)
+    graph(qwd::QWDynamics)
 
-Returns `graph` element of `model` from `qwd`. Equivalent to
+Returns `graph` element of `model` from dynamics `qwd`. Equivalent to
 `graph(model(qwd))`.
-
-```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
-
-julia> graph(qss)
-{4, 6} undirected simple Int64 graph
-```
 """
 graph(qwd::QWDynamics) = graph(qwd.model)
 
 """
-    model(qwd)
+    model(qwd::QWDynamics)
 
-Returns `model` element of `qwd`.
-
-```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
-
-julia> model(qss)
-QuantumWalk.CTQW({4, 6} undirected simple Int64 graph, :adjacency)
-```
+Returns `model` element of dynamics `qwd`.
 """
 model(qwd::QWDynamics) = qwd.model
 
 """
-    parameters(qwd)
+    parameters(qwd::QWDynamics)
 
-Returns `parameters` element of `qwd`.
-
-```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
-
-julia> parameters(qss)
-Dict{Symbol,Any} with 1 entry:
-  :hamiltonian => …
-
-```
+Returns `parameters` element of dynamics `qwd`.
 """
 parameters(qwd::QWDynamics) = qwd.parameters

@@ -1,18 +1,17 @@
 
-
 function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
-   fill(T(1/sqrt(size)), size)
+   fill(T(1./sqrt(size)), size)
 end
 
 """
-    initial_state(qss::QWSearch{AbstractCTQW})
+    initial_state(qws::QWSearch{AbstractCTQW})
 
-Returns equal superposition of size `size` and type of `qss.parameters[:hamiltonian]`.
+Returns equal superposition of size `size` and type of `qws.parameters[:hamiltonian]`.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
-julia> initial_state(qss)
+julia> initial_state(qws)
 4-element Array{Complex{Float64},1}:
  0.5+0.0im
  0.5+0.0im
@@ -21,8 +20,8 @@ julia> initial_state(qss)
 
 ```
 """
-function initial_state(qss::QWSearch{<:AbstractCTQW})
-   initial_state_ctqw(eltype(qss.parameters[:hamiltonian]), size(qss.parameters[:hamiltonian],1))
+function initial_state(qws::QWSearch{<:AbstractCTQW})
+   initial_state_ctqw(eltype(qws.parameters[:hamiltonian]), size(qws.parameters[:hamiltonian],1))
 end
 
 """
@@ -32,9 +31,9 @@ Returnes new state creates by evolving `state` by `qwd.parameters[:hamiltonian]`
 for time `runtime` according to Schrödinger equation.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
-julia> evolve(qss, initial_state(qss), 1.)
+julia> evolve(qws, initial_state(qws), 1.)
 4-element Array{Complex{Float64},1}:
  -0.128942+0.67431im
   0.219272+0.357976im
@@ -58,7 +57,7 @@ function measure_ctqw(state::Vector{<:Number},
 end
 
 """
-    measure(qwd::QWDynamics{<:AbstractCTQW}, state [, vertices])
+    measure(::QWDynamics{<:AbstractCTQW}, state)
 
 Returns the probability of measuring each vertex from `vertices` from `state`
 according to AbstractCTQW model. If `vertices` is not provided, full measurement is made.
@@ -66,22 +65,22 @@ For AbstractCTQW model measurement is done by taking square of absolute value of
 of state.
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(CTQW(CompleteGraph(4)), [1]);
 
-julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)])
-3-element Array{Float64,1}:
+julia> measure(qws, sqrt.([0.2, 0.3, 0.4, 0.1]))
+4-element Array{Float64,1}:
  0.2
  0.3
- 0.5
+ 0.4
+ 0.1
 
-julia> measure(qss, [sqrt(0.2), sqrt(0.3), sqrt(0.5)], [2, 3])
+julia> measure(qws, sqrt.([0.2, 0.3, 0.4, 0.1]), [2, 3])
 2-element Array{Float64,1}:
  0.3
- 0.5
-
+ 0.4
 ```
 """
-function measure(::QWDynamics{<:AbstractCTQW}, state)
+function measure(::QWDynamics{<:AbstractCTQW}, state::Any)
    measure_ctqw(state)
 end
 

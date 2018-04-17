@@ -101,30 +101,30 @@ function QWSearch(szegedy::AbstractSzegedy,
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1*q1, r2*q2]
 
-   QWSearch(szegedy, marked, parameters, penalty)
+   QWSearch(szegedy, parameters, marked, penalty)
 end
 
 """
-    QWSearch(qss::QWSearch[; marked , penalty])
+    QWSearch(qws::QWSearch[; marked , penalty])
 
 Update quantum walk search to new subset of marked elements and new penalty. By
-default `marked` and `penalty` are the same as in `qss`.
+default `marked` and `penalty` are the same as in `qws`.
 
 """
-function QWSearch(qss::QWSearch{<:Szegedy};
-                  marked::Vector{Int}=qss.marked,
-                  penalty::Real=qss.penalty)
-   oldmarked = qss.marked
+function QWSearch(qws::QWSearch{<:Szegedy};
+                  marked::Vector{Int}=qws.marked,
+                  penalty::Real=qws.penalty)
+   oldmarked = qws.marked
    local corr_oracles
    if Set(marked) != Set(oldmarked)
-    corr_oracles = szegedyoracleoperators(model(qss), oldmarked) .*
-                   szegedyoracleoperators(model(qss), marked)
+    corr_oracles = szegedyoracleoperators(model(qws), oldmarked) .*
+                   szegedyoracleoperators(model(qws), marked)
    else
-      corr_oracles = speye.(parameters(qss)[:operators])
+      corr_oracles = speye.(parameters(qws)[:operators])
    end
-   QWSearch(model(qss),
+   QWSearch(model(qws),
+            Dict(:operators => parameters(qws)[:operators].*corr_oracles),
             marked,
-            Dict(:operators => parameters(qss)[:operators].*corr_oracles),
             penalty)
 end
 
@@ -166,8 +166,8 @@ needs to be square of size equals to square of `graph(szegedy).` order.
 """
 function check_qwdynamics(::Type{QWSearch},
                           szegedy::AbstractSzegedy,
-                          marked::Array{Int},
-                          parameters::Dict{Symbol})
+                          parameters::Dict{Symbol},
+                          marked::Array{Int})
    check_szegedy(szegedy, parameters)
 end
 

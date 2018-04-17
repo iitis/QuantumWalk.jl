@@ -4,18 +4,18 @@ function initial_state_szegedy(sqrtstochastic::SparseMatrixCSC{<:Number})
 end
 
 """
-    initial_state(qss::QWSearch{<:AbstractSzegedy})
+    initial_state(qws::QWSearch{<:AbstractSzegedy})
 
 Generates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238.
-Vectorizes and normalizes obtained `sqrtstochastic` matrix from `model(qss)`.
+Vectorizes and normalizes obtained `sqrtstochastic` matrix from `model(qws)`.
 Note that the state
 may not be uniform supersposition in general, but it gives uniform superposition
 after partial tracing second system.
 
 ```jldoctest
-julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
-julia> initial_state(qss)
+julia> initial_state(qws)
 16-element SparseVector{Float64,Int64} with 12 stored entries:
   [2 ]  =  0.288675
   [3 ]  =  0.288675
@@ -32,8 +32,8 @@ julia> initial_state(qss)
 
 ```
 """
-function initial_state(qss::QWSearch{<:AbstractSzegedy})
-   initial_state_szegedy(qss.model.sqrtstochastic)
+function initial_state(qws::QWSearch{<:AbstractSzegedy})
+   initial_state_szegedy(qws.model.sqrtstochastic)
 end
 
 ## Special Szegedy evolution
@@ -75,9 +75,9 @@ Multiplies `state` be each `operator` from `operators` from quatnum walk
 evolution `qwe`. Elements of operators and state should be of the same type.
 
 ```jldoctest
-julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
-julia> evolve(qss, initial_state(qss))
+julia> evolve(qws, initial_state(qws))
 16-element SparseVector{Float64,Int64} with 12 stored entries:
   [2 ]  =  0.481125
   [3 ]  =  0.481125
@@ -124,18 +124,18 @@ all vertices. It is defined as the measurement of partially traced on second sys
 https://arxiv.org/abs/1611.02238.
 
 ```jldoctest
-julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
+julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
-julia> state = evolve(qss, initial_state(qss));
+julia> state = evolve(qws, initial_state(qws));
 
-julia> measure(qss, state)
+julia> measure(qws, state)
 4-element Array{Float64,1}:
  0.694444
  0.101852
  0.101852
  0.101852
 
-julia> measure(qss, state, [1,3])
+julia> measure(qws, state, [1,3])
 2-element Array{Float64,1}:
  0.694444
  0.101852

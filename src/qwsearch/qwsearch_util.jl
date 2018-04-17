@@ -27,23 +27,10 @@ end
 Returns the expected runtime needed for quantum walk, considering it as Bernoulli
 process. It equals to `runtime/probability`. In the case of `state` provided the
 measurement is made.
-
-```jldoctest
-julia> qss = QWSearch(Szegedy(CompleteGraph(4)), [1]);
-
-julia> result = execute(qss, 4);
-
-julia> expected_runtime(result)
-6.930377097077988
-
-julia> expected_runtime(runtime(result), sum(probability(result)))
-6.930377097077988
-```
 """
-function expected_runtime(runtime::Real,
-                          probability::Real)
+function expected_runtime(runtime::Real, probability::Real)
    runtime/probability
-end
+end,
 
 function expected_runtime(state::QSearchState)
    expected_runtime(state.runtime, sum(state.probability))

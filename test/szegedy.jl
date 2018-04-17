@@ -84,14 +84,14 @@
   @testset "Szegedy initial state and measurement" begin
     g = smallgraph(:bull)
     n = nv(g)
-    qss = QWSearch(Szegedy(g), [1])
+    qws = QWSearch(Szegedy(g), [1])
 
-    @test measure(qss, initial_state(qss), collect(1:n)) ≈ fill(1/n, (n))
+    @test measure(qws, initial_state(qws), collect(1:n)) ≈ fill(1/n, (n))
   end
 
   @testset "Szegedy conversion" begin
     szegedy = Szegedy(smallgraph(:bull))
-    qss = QWSearch(szegedy, [1], 0.5)
+    qws = QWSearch(szegedy, [1], 0.5)
 
     function is_equal_mine(q1::QWSearch, q2::QWSearch)
       model(q1) == model(q2) &&
@@ -100,12 +100,12 @@
       marked(q1) == marked(q2)
     end
 
-    qss1 = QWSearch(qss, marked = [1])
-    qss2 = QWSearch(qss, penalty = 0.5)
-    qss3 = QWSearch(qss, marked = [2])
-    qss4 = QWSearch(qss, penalty = 1.)
-    qss5 = QWSearch(qss, marked = [2], penalty = 1.)
-    qss6 = QWSearch(qss, marked = [2], penalty = 2.)
+    qss1 = QWSearch(qws, marked = [1])
+    qss2 = QWSearch(qws, penalty = 0.5)
+    qss3 = QWSearch(qws, marked = [2])
+    qss4 = QWSearch(qws, penalty = 1.)
+    qss5 = QWSearch(qws, marked = [2], penalty = 1.)
+    qss6 = QWSearch(qws, marked = [2], penalty = 2.)
 
     qss1_ref = QWSearch(szegedy, [1], 0.5)
     qss2_ref = QWSearch(szegedy, [1], 0.5)

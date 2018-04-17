@@ -2,10 +2,10 @@ export
    maximize_quantum_search
 
 """
-    maximize_quantum_search(qss::QWSearch{<:QWModelCont} [, maxtime, tstep])
+    maximize_quantum_search(qws::QWSearch{<:QWModelCont} [, maxtime, tstep])
 
 Determines optimal runtime for continuous quantum walk models. The time is
-searched in [0, maxtime] interval, with penalty `penalty(qss)`, which is added.
+searched in [0, maxtime] interval, with penalty `penalty(qws)`, which is added.
 It is recommended for penalty to be nonzero, otherwise time close to 0 is usually
 returned. Typically small `penalty` approximately equal to log(n) is enough, but
 optimal value may depend on the model or graph chosen.
@@ -23,9 +23,9 @@ is returned by deafult without `penalty`. Note that in general the probability i
 
 
 ```jldoctest
-julia> qss = QWSearch(CTQW(CompleteGraph(100)), [1], 0.01, 1.);
+julia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 0.01, 1.);
 
-julia> result = maximize_quantum_search(qss)
+julia> result = maximize_quantum_search(qws)
 QuantumWalk.QSearchState{Array{Complex{Float64},1},Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 12.99636940469214)
 
 julia> expected_runtime(result)
@@ -35,25 +35,25 @@ julia> probability(result)
 1-element Array{Float64,1}:
  0.869767
 
-julia> probability(execute_single(qss, pi*sqrt(100)/2))
+julia> probability(execute_single(qws, pi*sqrt(100)/2))
 1-element Array{Float64,1}:
  1.0
 ```
 """
-function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
-                                 maxtime::T = Float64(nv(graph(qss))),
-                                 tstep::T = Float64(0.2*sqrt(nv(graph(qss))))) where T<:Real
+function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
+                                 maxtime::T = Float64(nv(graph(qws))),
+                                 tstep::T = Float64(0.2*sqrt(nv(graph(qws))))) where T<:Real
    @assert maxtime >= 0. "Parameter 'maxtime' needs to be nonnegative"
    @assert tstep >= 0. "Parameter 'tstep' needs to be nonnegative"
 
-   if penalty(qss) == 0
+   if penalty(qws) == 0
       warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
       "Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
-   state = initial_state(qss)
+   state = initial_state(qws)
    function efficiency_opt(runtime::Number)
-      expected_runtime(runtime+penalty(qss), sum(measure(qss, evolve(qss, state, runtime), marked(qss))))
+      expected_runtime(runtime+penalty(qws), sum(measure(qws, evolve(qws, state, runtime), marked(qws))))
    end
 
    t = zero(T)
@@ -81,15 +81,15 @@ function maximize_quantum_search(qss::QWSearch{<:QWModelCont},
    maxt = min(maxtime, data_t[min(length(data_t), minindex+1)])
    optresult = optimize(efficiency_opt, mint, maxt)
 
-   result = execute_single(qss, Optim.minimizer(optresult))
-   QSearchState(result.state, result.probability, result.runtime+qss.penalty)
+   result = execute_single(qws, Optim.minimizer(optresult))
+   QSearchState(result.state, result.probability, result.runtime+qws.penalty)
 end
 
 """
-   maximize_quantum_search(qss::QWSearch{<:QWModelDiscr} [, runtime, mode])
+   maximize_quantum_search(qws::QWSearch{<:QWModelDiscr} [, runtime, mode])
 
 Determines optimal runtime for continuous quantum walk models. The time is
-searched in [0, runtime] interval, with penalty `penalty(qss)`, which is added.
+searched in [0, runtime] interval, with penalty `penalty(qws)`, which is added.
 It is recommended for penalty to be nonzero, otherwise time close 0 is returned.
 Typically small `penalty` approximately equal to log(n) is enough, but
 optimal value may depend on the model or graph chosen.
@@ -107,9 +107,9 @@ Note last three modes always returns optimal time within the interval.
 is returned by deafult without `penalty`.
 
 ```jldoctest
-julia> qss = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
+julia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
 
-julia> result = maximize_quantum_search(qss);
+julia> result = maximize_quantum_search(qws);
 
 julia> runtime(result)
 7
@@ -118,7 +118,7 @@ julia> probability(result)
 1-element Array{Float64,1}:
  0.500016
 
-julia> result = maximize_quantum_search(qss, 100, :maxtimeprob);
+julia> result = maximize_quantum_search(qws, 100, :maxtimeprob);
 
 julia> runtime(result)
 40
@@ -128,21 +128,21 @@ julia> probability(result)
  0.550938
 ```
 """
-function maximize_quantum_search(qss::QWSearch{<:QWModelDiscr},
-                                 runtime::Int = nv(graph(qss)),
+function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
+                                 runtime::Int = nv(graph(qws)),
                                  mode::Symbol = :maxeff)
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
-   if penalty(qss) == 0
+   if penalty(qws) == 0
       warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
       "Typically penalty should be approximately log(n), but this might by case-dependant.")
    end
 
 
-   best_result = QSearchState(qss, initial_state(qss), qss.penalty)
-   state = QSearchState(qss, initial_state(qss), qss.penalty)
+   best_result = QSearchState(qws, initial_state(qws), qws.penalty)
+   state = QSearchState(qws, initial_state(qws), qws.penalty)
    for t=1:runtime
-      state = QSearchState(qss, evolve(qss, state), t+qss.penalty)
+      state = QSearchState(qws, evolve(qws, state), t+qws.penalty)
       stopsearchflag = stopsearch(best_result, state, mode)
       best_result = best(best_result, state, mode)
 

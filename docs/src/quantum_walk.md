@@ -20,7 +20,9 @@ functions.
 **Note:** Methods `execute_all` and `execute_all_measured` are provided only for discrete
 quantum walk models.
 
-Following functions are connected to the dynamics:
+Following functions are connected to the dynamics. Note that since `QWEvolution`
+is a default subtype of `QWDynamics`, most of the functions are defined for
+the last type.
 ```@index
 Order = [:type, :function]
 Modules = [QuantumWalk]
@@ -73,7 +75,7 @@ The `QWEvolution` requires an implementation of `evolve`, `measure` and `check_q
 Instead of implementing purely quantum walk, we will implement simple random walk,
 which still fits our considerations.
 
-Note we create an additional `AbstractStochastic` supertype, in case someone would prefer to make different
+We create an  `AbstractStochastic` supertype, in case someone would prefer to make different
 stochastic evolution (for example change the stochastic matrix). Note we skipped
 some assertion checking for readability. Furthermore note we have defined two
 versions of `measure`: in most cases measuring only part of `vertices` are faster
@@ -112,8 +114,8 @@ function stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T<:Real
   s*v
 end
 
-function evolve(qss::QWDynamics{<:AbstractStochastic}, state)
-  stochastic_evolution(parameters(qss)[:stochastic], state)
+function evolve(qws::QWDynamics{<:AbstractStochastic}, state)
+  stochastic_evolution(parameters(qws)[:stochastic], state)
 end
 
 function measure(::QWDynamics{<:AbstractStochastic}, state::Vector{<:Real})
@@ -127,7 +129,7 @@ function measure(::QWDynamics{<:AbstractStochastic},
 end
 ```
 
-Thanks to the definition above we can make a pure walk evolution.
+Now we can make a pure walk evolution.
 
 ```julia
 julia> dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))
@@ -147,18 +149,17 @@ julia> println(execute_single(dynamic, fill(1./5, 5), 5))
 [0.186831, 0.313169, 0.313169, 0.0934156, 0.0934156]
 ```
 
-Note that continuous walks requires time argument in `evolution` function, see [CTQW model](ctqw.md).
+Note that continuous walks requires time argument in `evolution` function, as an example consider  [CTQW model](ctqw.md).
 
 ## Full docs
-
 
 ```@docs
 QWEvolution
 check_qwdynamics(::Any)
 evolve(::Any)
 execute(::QWDynamics, ::Any, ::Real)
-execute_all(qwd::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
-execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
+execute_all(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
+execute_all_measured(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
 execute_single(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
 execute_single_measured(::QWDynamics, ::Any, ::Real)
 measure(::Any)

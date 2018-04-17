@@ -36,8 +36,8 @@ function stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T<:Real
   s*v
 end
 
-function evolve(qss::QWDynamics{<:AbstractStochastic}, state)
-  stochastic_evolution(parameters(qss)[:stochastic], state)
+function evolve(qws::QWDynamics{<:AbstractStochastic}, state)
+  stochastic_evolution(parameters(qws)[:stochastic], state)
 end
 
 function measure(::QWDynamics{<:AbstractStochastic}, state::Vector{<:Real})

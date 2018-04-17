@@ -2,10 +2,10 @@
   n = 5
   g = CompleteGraph(n)
   ctqw = CTQW(g)
-  qss = QWSearch(ctqw, [1])
+  qws = QWSearch(ctqw, [1])
 
   @test QuantumWalk.graph(ctqw) == ctqw.graph
-  @test QuantumWalk.graph(qss) == QuantumWalk.graph(qss.model)
-  @test QuantumWalk.model(qss) == qss.model
-  @test QuantumWalk.parameters(qss) == qss.parameters
+  @test QuantumWalk.graph(qws) == QuantumWalk.graph(qws.model)
+  @test QuantumWalk.model(qws) == qws.model
+  @test QuantumWalk.parameters(qws) == qws.parameters
 end

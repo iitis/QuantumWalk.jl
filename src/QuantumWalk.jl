@@ -27,40 +27,34 @@ For both continuous and discrete model quantum walk simulator is implemented and
 function finding optimal measurement time for quantum search function. For discrete
 walk evolution various optimization may be chosen.
 
-Full documentation is available in GitHub pages.
+Full documentation is available in [GitHub pages](https://quantumwalks.github.io/QuantumWalk.jl/latest/).
 
 """
 QuantumWalk
 
 """
-    measure(qwdynamic, state[, vertices])
+    measure(qwd::QWDynamics, state[, vertices::Vector{Int}])
 
-Measure `state` according to model from quantum walk evolution `qwdynamic`.
-If `vertices` is provided,
-probabilities of given vertices should be provided. Otherwise full probability
-distribution should be provided. Output should be always
-of type `Vector{Float64}`. The behaviour strongly depends on
-arguments
+Measure `state` according to `qwd`. If `vertices` is provided, probabilities of
+given vertices is returned. Otherwise full probability distribution is returned.
+Output is of type `Vector{Float64}`.
 """
 measure(::Any)
 
 """
-    evolve(qwdynamic::QWDynamics{<:QWModelDiscr}, state)
-    evolve(qwdynamic::QWDynamics{<:QWModelCont}, state, time)
+    evolve(qwd::QWDynamics{<:QWModelDiscr}, state)
+    evolve(qwd::QWDynamics{<:QWModelCont}, state, time::Real)
 
-Evolve `state` according to `qwdynamic`. `time` should be provided
-if model is continuous, otherwise one-step evolution should be performed. Type returned
-should be the same as type of `state`. The behaviour strongly depends on
-arguments.
+Evolve `state` according to `qwd`. For discrete model single-step evolution
+is implemented. Type returned is the same as type of `state`.
 """
 evolve(::Any)
 
-
 """
-    check_qwdynamics(dynamictype, model, ..., parameters)
+    check_qwdynamics(qwdtype::Type{<:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)
 
-Checks whetver combination of the arguments creates valid quantum walk dynamics.
-The behaviour strongly depends on arguments.
+Checks whetver combination of the arguments creates valid quantum walk dynamics
+`qwdtype`.
 """
 check_qwdynamics(::Any)
 

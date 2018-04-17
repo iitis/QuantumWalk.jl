@@ -28,5 +28,5 @@ check_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})
 evolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
 initial_state(::QWSearch{<:AbstractCTQW})
 matrix(::AbstractCTQW)
-measure(::QWDynamics{<:AbstractCTQW}, ::Any)
+measure(::QWDynamics{AbstractCTQW}, ::Any) 
 ```

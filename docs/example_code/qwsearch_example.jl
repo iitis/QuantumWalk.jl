@@ -31,8 +31,8 @@ function QWSearch(stoch::AbstractStochastic,
    QWSearch(stoch, marked, parameters, penalty)
 end
 
-function initial_state(qss::QWSearch{<:AbstractStochastic})
-  n = nv(graph(qss))
+function initial_state(qws::QWSearch{<:AbstractStochastic})
+  n = nv(graph(qws))
   fill(1./n, n)
 end
 
@@ -45,11 +45,11 @@ function stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T<:Real
   s*v
 end
 
-function evolve(qss::QWSearch{<:AbstractStochastic}, state::Vector{<:Real})
-  old_probability = measure(qss, state, marked(qss))
-  state[marked(qss)] = zero(marked(qss))
-  state = stochastic_evolution(parameters(qss)[:stochastic], state)
-  state[marked(qss)] += old_probability
+function evolve(qws::QWSearch{<:AbstractStochastic}, state::Vector{<:Real})
+  old_probability = measure(qws, state, marked(qws))
+  state[marked(qws)] = zero(marked(qws))
+  state = stochastic_evolution(parameters(qws)[:stochastic], state)
+  state[marked(qws)] += old_probability
   state
 end
 

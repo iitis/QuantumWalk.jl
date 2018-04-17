@@ -16,28 +16,27 @@
 
   @testset "CTQW conversion" begin
     ctqw = CTQW(smallgraph(:bull))
-    jumpingrate = Float64(QuantumWalk.jumping_rate(ctqw))
-    qss = QWSearch(ctqw, [1], jumpingrate, 0.5)
+    qws = QWSearch(ctqw, [1], 0.5)
 
     function is_equal_mine(q1::QWSearch, q2::QWSearch)
       model(q1) == model(q2) &&
-      parameters(q1) == parameters(q2) &&
+      parameters(q1)[:hamiltonian] ≈ parameters(q2)[:hamiltonian] &&
       penalty(q1) == penalty(q2) &&
       marked(q1) == marked(q2)
     end
 
-    qss1 = QWSearch(qss, marked = [1])
-    qss2 = QWSearch(qss, penalty = 0.5)
-    qss3 = QWSearch(qss, marked = [2])
-    qss4 = QWSearch(qss, penalty = 1.)
-    qss5 = QWSearch(qss, marked = [2], penalty = 1.)
-    qss6 = QWSearch(qss, marked = [2], penalty = 2.)
-    
-    qss1_ref = QWSearch(ctqw, [1], jumpingrate, 0.5)
-    qss2_ref = QWSearch(ctqw, [1], jumpingrate, 0.5)
-    qss3_ref = QWSearch(ctqw, [2], jumpingrate, 0.5)
-    qss4_ref = QWSearch(ctqw, [1], jumpingrate, 1.)
-    qss5_ref = QWSearch(ctqw, [2], jumpingrate, 1.)
+    qss1 = QWSearch(qws, marked = [1])
+    qss2 = QWSearch(qws, penalty = 0.5)
+    qss3 = QWSearch(qws, marked = [2])
+    qss4 = QWSearch(qws, penalty = 1.)
+    qss5 = QWSearch(qws, marked = [2], penalty = 1.)
+    qss6 = QWSearch(qws, marked = [2], penalty = 2.)
+
+    qss1_ref = QWSearch(ctqw, [1], 0.5)
+    qss2_ref = QWSearch(ctqw, [1], 0.5)
+    qss3_ref = QWSearch(ctqw, [2], 0.5)
+    qss4_ref = QWSearch(ctqw, [1], 1.)
+    qss5_ref = QWSearch(ctqw, [2], 1.)
 
     @test is_equal_mine(qss1, qss1_ref)
     @test is_equal_mine(qss2, qss2_ref)

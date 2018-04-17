@@ -14,7 +14,7 @@ function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    else
       return T(1./eigs(adjacency_matrix(ctqw.graph), nev=1)[1][1])
    end
-end,
+end
 
 function jumping_rate(ctqw::AbstractCTQW)
    jumping_rate(Complex128, ctqw)
@@ -35,7 +35,7 @@ function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    else
       throw(ErrorException("Model $ctqw poorly parametrized"))
    end
-end,
+end
 
 function graph_hamiltonian(ctqw::AbstractCTQW)
    graph_hamiltonian(Complex128, ctqw)
@@ -52,7 +52,7 @@ function hamiltonian_evolution(hamiltonian::DenseMatrix{<:Number},
                                initstate::Array{<:Number},
                                runtime::Real)
    expm(1im*hamiltonian*runtime)*initstate
-end,
+end
 
 function hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number},
                                initstate::Array{<:Number},
