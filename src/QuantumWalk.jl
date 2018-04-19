@@ -1,6 +1,5 @@
-using LightGraphs
-
 module QuantumWalk
+
 using Expokit
 using LightGraphs
 using Optim
