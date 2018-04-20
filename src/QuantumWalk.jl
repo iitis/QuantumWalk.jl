@@ -7,10 +7,39 @@ using LightGraphs
 using Optim
 
 export
-    initial_state,
-    evolve,
-    measure,
-    check_qwdynamics
+	AbstractCTQW,
+	AbstractSzegedy,
+	CTQW,
+	QSearchState,
+	QWDynamics,
+	QWEvolution,
+	QWModel,
+	QWModelCont,
+	QWModelDiscr,
+	QWSearch,
+	QuantumWalk,
+	Szegedy,
+	check_qwdynamics,
+	evolve,
+	execute,
+	execute_all,
+	execute_all_measured,
+	execute_single,
+	execute_single_measured,
+	expected_runtime,
+	graph,
+	initial_state,
+	marked,
+	matrix,
+	maximize_quantum_search,
+	measure,
+	model,
+	parameters,
+	penalty,
+	probability,
+	runtime,
+	sqrtstochastic,
+	state    
 
 
 
