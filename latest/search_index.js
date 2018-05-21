@@ -565,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.AbstractSzegedy",
     "category": "type",
-    "text": "AbstractSzegedy\n\nAbstract Szegedy model. Description of the default parameter can be found in https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen. Default representation of AbstractSzegedy is Szegedy.\n\n\n\n"
+    "text": "AbstractSzegedy\n\nType representing the abstract Szegedy model. Description of the default parameter can be found in https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen.  Default representation of AbstractSzegedy is Szegedy.\n\n\n\n"
 },
 
 {
@@ -589,7 +589,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy model",
     "title": "QuantumWalk.Szegedy",
     "category": "type",
-    "text": "Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})\n\nDefault representation of AbstractSzegedy. sqrtstochastic needs to be an  element-wise square root of stochastic matrix.\n\n\n\n"
+    "text": "Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})\n\nDefault representation of AbstractSzegedy. Parameter sqrtstochastic needs to be an element-wise square root of stochastic matrix.\n\n\n\n"
 },
 
 {
