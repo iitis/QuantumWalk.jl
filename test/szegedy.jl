@@ -66,7 +66,8 @@
     @test isapprox(norm(r1*r1'-eye(r1), Inf), 0, atol=1e-8)
     @test isapprox(norm(r2*r2'-eye(r2), Inf), 0, atol=1e-8)
 
-    q1, q2 = QuantumWalk.szegedyoracleoperators(sz, [2, 3])
+    @test QuantumWalk.szegedy_walk_operators(sz) == QuantumWalk.szegedy_walk_operators(sz::AbstractSzegedy)
+    q1, q2 = QuantumWalk.szegedy_oracle_operators(sz, [2, 3])
 
     @test all(typeof(m) == SparseMatrixCSC{Float64,Int} for m = [r1, r2, q1, q2])
 
