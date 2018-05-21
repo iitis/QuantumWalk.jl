@@ -6,51 +6,51 @@ export
 """
     AbstractSzegedy
 
-Abstract Szegedy model. Description of the default parameter can be found in
-https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen.
-Default representation of `AbstractSzegedy` is `Szegedy`.
+Type representing the abstract Szegedy model. Description of the default
+parameter can be found in https://arxiv.org/abs/1611.02238, where two oracle
+operator case is chosen.  Default representation of `AbstractSzegedy` is
+`Szegedy`.
 """
 abstract type AbstractSzegedy <: QWModelDiscr end
 
 """
-    Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})
+  Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})
 
- Default representation of `AbstractSzegedy`. `sqrtstochastic` needs to be an
- element-wise square root of stochastic matrix.
+Default representation of `AbstractSzegedy`. Parameter `sqrtstochastic` needs to
+be an element-wise square root of stochastic matrix.
 """
 struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
-   graph::G
-   sqrtstochastic::SparseMatrixCSC{T,Int}
+    graph::G
+    sqrtstochastic::SparseMatrixCSC{T,Int}
 
-   function Szegedy{G, T}(graph::G,
+    function Szegedy{G, T}(graph::G,
                           sqrtstochastic::SparseMatrixCSC{T}) where {G<:AbstractGraph, T<:Number}
-      new{G, T}(graph, sqrtstochastic)
-   end
-
+        new{G, T}(graph, sqrtstochastic)
+    end
 end
 
 """
     Szegedy(graph::AbstractGraph[, stochastic::SparseMatrixCSC{Real}, checkstochastic::Bool])
 
- Constructors of `AbstractSzegedy`. `stochastic` needs to be a stochastic
- matrix. Flag `checkstochastic` decides about checking the stochastic properties.
+Constructors of `AbstractSzegedy`. Parameter `stochastic` needs to be a
+stochastic matrix.  Flag `checkstochastic` decides about checking the stochastic
+properties.
 
- Matrix `stochastic` defaults to the uniform walk operator, and
- `checkstochastic` deafults to `false` in case of default `stochastic`. If
- matrix `stochastic` is provided by the user, the default value of `stochastic`
- is `true`.
+Matrix `stochastic` defaults to the uniform walk operator, and `checkstochastic`
+deafults to `false` in case of default `stochastic`. If matrix `stochastic` is
+provided by the user, the default value of `stochastic` is `true`.
 """
 function Szegedy(graph::G,
-                 stochastic::SparseMatrixCSC{T},
-                 checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
-   if checkstochastic
-      graphstochasticcheck(graph, stochastic)
-   end
-   Szegedy{G, T}(graph, sqrt.(stochastic))
+                  stochastic::SparseMatrixCSC{T},
+                  checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
+    if checkstochastic
+        graphstochasticcheck(graph, stochastic)
+    end
+    Szegedy{G, T}(graph, sqrt.(stochastic))
 end,
 
 function Szegedy(graph::AbstractGraph)
-   Szegedy(graph, default_stochastic(graph), false)
+    Szegedy(graph, default_stochastic(graph), false)
 end
 
 """
@@ -76,7 +76,7 @@ function QWSearch(szegedy::AbstractSzegedy,
                   marked::Vector{Int},
                   penalty::Real=0)
    r1, r2 = szegedy_walk_operators(szegedy)
-   q1, q2 = szegedyoracleoperators(szegedy, marked)
+   q1, q2 = szegedy_oracle_operators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
    parameters[:operators] = [r1*q1, r2*q2]
 
@@ -89,8 +89,8 @@ function QWSearch(qws::QWSearch{<:Szegedy};
    oldmarked = qws.marked
    local corr_oracles
    if Set(marked) != Set(oldmarked)
-    corr_oracles = szegedyoracleoperators(model(qws), oldmarked) .*
-                   szegedyoracleoperators(model(qws), marked)
+    corr_oracles = szegedy_oracle_operators(model(qws), oldmarked) .*
+                   szegedy_oracle_operators(model(qws), marked)
    else
       corr_oracles = speye.(parameters(qws)[:operators])
    end
