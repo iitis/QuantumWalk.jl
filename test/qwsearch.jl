@@ -40,5 +40,12 @@ end
     @test probability(res3) == res1[steps+1].probability
     @test state(res3) == res1[steps+1].state
     @test state(execute_single(qws,1)) == execute_single(qws,1).state
+
+    s = evolve(qws, QuantumWalk.initial_state(qws))
+    @test evolve(qws, s) == evolve(qws, evolve(qws, QuantumWalk.initial_state(qws)))
+  end
+
+  @testset "Measurement" begin
+    @test sum(measure(qws,QuantumWalk.initial_state(qws))) ≈ 1    
   end
 end
