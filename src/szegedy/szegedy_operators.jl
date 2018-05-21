@@ -54,14 +54,14 @@ function szegedy_walk_operators(szegedy::AbstractSzegedy)
 end
 
 """
-    szegedyoracleoperators(szegedy, marked)
+    szegedy_oracle_operators(szegedy, marked)
 
 Return a Szegedy oracle operators based on `sqrtstochastic` from `szegedy` and
 collection of `marked` vertices. Definition of those can be found in
 https://arxiv.org/abs/1611.02238 on page 6. The operators should be applied in
 given order.
 """
-function szegedyoracleoperators(szegedy::AbstractSzegedy,
+function szegedy_oracle_operators(szegedy::AbstractSzegedy,
                                 marked::Vector{Int})
    order = nv(szegedy.graph)
 
