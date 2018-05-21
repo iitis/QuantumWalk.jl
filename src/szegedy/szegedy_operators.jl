@@ -19,22 +19,6 @@ Return pair of Szegedy walk operators based on `sqrtstochastic` from `szegedy`.
 Definition of those can be found in https://arxiv.org/abs/1611.02238 on page 4.
 The operators should be applied in given order.
 """
-function szegedy_walk_operators(szegedy::Szegedy{<:Any,S}) where S<:Number
-   order = nv(szegedy.graph)
-   projectors = [2.*proj(szegedy.sqrtstochastic[:,v]) for v=1:order]
-
-   r1 = cat([1, 2], projectors...)::SparseMatrixCSC{S,Int}
-
-   r2 = spzeros(S, order^2, order^2)
-   for x=1:order
-      r2[(1:order:order^2)+x-1,(1:order:order^2)+x-1] = projectors[x]
-   end
-
-   r1 -= speye(r1)
-   r2 -= speye(r2)
-
-   [r1, r2]
-end,
 
 function szegedy_walk_operators(szegedy::AbstractSzegedy)
    order = nv(szegedy.graph)
