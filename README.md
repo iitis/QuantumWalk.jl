@@ -12,7 +12,7 @@ of quantum models and applications implementations.
 
 Currently the package provides implementation of
 * Szegedy quantum walks `Szegedy` with abstract supertype `AbstractSzegedy`,
-* continuous-time quantum walks `CTQW`  with abstract supertype `AbstractCTQW`,
+* continuous-time quantum walks `CTQW` and `CTQWDense` with abstract supertype `AbstractCTQW`,
 
 and dynamics
 * pure quantum walk `QWEvolution`,
