@@ -677,7 +677,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Contributing",
     "category": "section",
-    "text": "TODO: wstep (Jarek)Please do not send pull request before an issue."
+    "text": "If you have a model or an algorithm which in your opinion should be included in the package, please open an issue at GitHub. After discussing the issue and the proposed changes, we will be happy to include your code in the main tree.Please do not send pull request before an issue."
 },
 
 {
@@ -685,7 +685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Bugs",
     "category": "section",
-    "text": "In the case you noticed some bugs, please start with an issue with minimal working example of not-working code. If Exception is thrown, please provide an exception message as well. If no Exception is thrown, but the result is wrong, please provide in the issue message correct answer.In the case you make a pull request, please add not-working example as a test."
+    "text": "In the case, you noticed some bugs, please start with an issue with a minimal working example of not-working code. If Exception is thrown, please provide an exception message as well.  If no Exception is thrown, but the result is wrong, please provide in the issue message correct answer.In the case you make a pull request, please add a not-working example as a test."
 },
 
 {
@@ -693,7 +693,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Improvements",
     "category": "section",
-    "text": "If you can provide a code, which works faster than already existing, please check its efficiency for various input data. In particular check various dynamics and graphs. Typically checked graphs are Path  and Complete graphs.We are aware of the fact, that the efficiency of the quantum walk model evolution may depend strongly on the graph properties, including order and sparsity. If your implementation works better only on some collection, please provide it as separate model, possible as subtype of already existing model if possible. Note we are interested in the implementation which works well for many parameters, not only for example for fixed graphs.We welcome as well any ideas concerning the readability and logic of the code."
+    "text": "If you can provide a code, which works faster than already existing, please check its efficiency for various input data. In particular check various dynamics and graphs. Typically checked graphs are Path  and Complete graphs.We are aware of the fact, that the efficiency of the quantum walk model evolution may depend strongly on the graph properties, including order and sparsity. If your implementation works better only on some collection, please provide it as a separate model, possible as a subtype of an already existing model if possible. Note we are interested in the implementation which works well for many parameters, not only for example for fixed graphs.We welcome any ideas concerning the readability and logic of the code as well."
 },
 
 {
@@ -701,7 +701,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Development guidelines",
     "category": "section",
-    "text": "Post an issue,\nwait until the discussion ends :),\ncheck the name convention from already existing model,\ntry to make your code as general as possible, for example\ncheck if the general functions as measure or evolve are defined for abstract supertype (if you provide such),\ncheck the requirements for model/dynamics. If possible, extend them.\ncreate assertions on argument types and other requirements,\ninclude necessary references,\nwrite tests."
+    "text": "Post an issue.\nWait until the discussion ends.\nCheck the name convention from already existing model.\nTry to make your code as general as possible, for example:\nCheck if the general functions as measure or evolve are defined for abstract supertype (if you provide such).\nCheck the requirements for model/dynamics. If possible, extend them.\nCreate assertions on argument types and other requirements.\nInclude necessary references.\nWrite tests."
 },
 
 {
