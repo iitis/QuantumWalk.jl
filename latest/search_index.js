@@ -442,23 +442,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#",
-    "page": "CTQW model",
-    "title": "CTQW model",
+    "page": "CTQW and CTQWDense",
+    "title": "CTQW and CTQWDense",
     "category": "page",
     "text": "DocTestSetup = quote\n   using QuantumWalk, LightGraphs\nend"
 },
 
 {
     "location": "ctqw.html#Continuous-Time-Quantum-Walk-1",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "Continuous-Time Quantum Walk",
     "category": "section",
-    "text": "Implementation of continuous-time quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, state is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW. The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
+    "text": "Implementation of continuous-time quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, state is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW, which works on sparse matrices. Alternative realization is CTQWDense, which works on dense matrices. The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
 },
 
 {
     "location": "ctqw.html#QuantumWalk.AbstractCTQW",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.AbstractCTQW",
     "category": "type",
     "text": "AbstractCTQW\n\nAbstract CTQW model. By default evolve according to Schrödinger equation and performs measurmenet by taking square of absolute values of its elements. Default representation of AbstractCTQW is CTQW.\n\n\n\n"
@@ -466,15 +466,39 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.CTQW",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.CTQW",
     "category": "type",
-    "text": "CTQW(graph::Graph, matrix::Symbol)\n\nDefault representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency.\n\n\n\n"
+    "text": "CTQW(graph::Graph, matrix::Symbol)\n\nDefault representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a sparse matrix.\n\n\n\n"
+},
+
+{
+    "location": "ctqw.html#QuantumWalk.CTQW-Tuple{LightGraphs.SimpleGraphs.SimpleGraph}",
+    "page": "CTQW and CTQWDense",
+    "title": "QuantumWalk.CTQW",
+    "category": "method",
+    "text": "CTQW(graph)\n\nConstructor for CTQW, taking matrix to be :adjacency.\n\n\n\n"
+},
+
+{
+    "location": "ctqw.html#QuantumWalk.CTQWDense",
+    "page": "CTQW and CTQWDense",
+    "title": "QuantumWalk.CTQWDense",
+    "category": "type",
+    "text": "CTQWDense(graph::Graph, matrix::Symbol)\n\nAlternative representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a dense matrix.\n\n\n\n"
+},
+
+{
+    "location": "ctqw.html#QuantumWalk.CTQWDense-Tuple{LightGraphs.SimpleGraphs.SimpleGraph}",
+    "page": "CTQW and CTQWDense",
+    "title": "QuantumWalk.CTQWDense",
+    "category": "method",
+    "text": "CTQWDense(graph)\n\nConstructor for CTQWDense, taking matrix to be :adjacency.\n\n\n\n"
 },
 
 {
     "location": "ctqw.html#QuantumWalk.QWEvolution-Union{Tuple{Type{U},QuantumWalk.AbstractCTQW}, Tuple{U}} where U<:Number",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.QWEvolution",
     "category": "method",
     "text": "QWEvolution([type::Type{Number}, ]ctqw::AbstractCTQW)\n\nCreates QWEvolution according to AbstractCTQW model. By default type equals Complex128. The hamiltonian is SparseMatrixCSC.\n\n\n\n"
@@ -482,15 +506,15 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.QWSearch-Union{Tuple{T}, Tuple{Type{T},QuantumWalk.AbstractCTQW,Array{Int64,1},Real,T}, Tuple{Type{T},QuantumWalk.AbstractCTQW,Array{Int64,1}}} where T<:Number",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.QWSearch",
     "category": "method",
-    "text": "QWSearch([type::Type{T}, ]ctqw::AbstractCTQW, marked::Vector{Int}[, penalty::Real, jumpingrate::T]) where T<:Number\n\nCreates QWSearch according to AbstractCTQW model. By default type equals Complex128, jumpingrate equals largest eigenvalue of adjacency matrix of graph if matrix(CTQW) outputs :adjacency and error otherwise, and penalty equals 0. The hamiltonian is SparseMatrixCSC.\n\nQWSearch(qws::QWSearch{<:CTQW}; marked, penalty)\n\nUpdates quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
+    "text": "QWSearch([type::Type{T}, ]ctqw::AbstractCTQW, marked::Vector{Int}[, penalty::Real, jumpingrate::T]) where T<:Number\n\nCreates QWSearch according to AbstractCTQW model. By default type equals Complex128, jumpingrate equals largest eigenvalue of adjacency matrix of graph if matrix(CTQW) outputs :adjacency and error otherwise, and penalty equals 0. The hamiltonian is SparseMatrixCSC.\n\nQWSearch(qws::QWSearch{<:AbstractCTQW}; marked, penalty)\n\nUpdates quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
 },
 
 {
     "location": "ctqw.html#QuantumWalk.check_qwdynamics-Tuple{Type{QuantumWalk.QWSearch},QuantumWalk.AbstractCTQW,Dict{Symbol,V} where V,Array{Int64,1}}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
     "text": "check_qwdynamics(QWSearch, ctqw::AbstractCTQW, parameters::Dict{Symbol}, marked::Vector{Int})\n\nChecks whetver combination of ctqw, marked and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. the hermiticity is not checked for efficiency issue.\n\n\n\n"
@@ -498,7 +522,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.check_qwdynamics-Tuple{Type{QuantumWalk.QWEvolution},QuantumWalk.AbstractCTQW,Dict{Symbol,V} where V}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
     "text": "check_qwdynamics(QWEvolution, ctqw::AbstractCTQW, parameters::Dict{Symbol})\n\nChecks iof combination of ctqw and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. The hermiticity is not checked for efficiency issues.\n\n\n\n"
@@ -506,7 +530,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.evolve-Tuple{QuantumWalk.QWDynamics{#s15} where #s15<:QuantumWalk.AbstractCTQW,Array{#s14,1} where #s14<:Number,Real}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.evolve",
     "category": "method",
     "text": "evolve(qwd::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}, runtime::Real)\n\nReturnes new state creates by evolving state by parameters(qwd)[:hamiltonian] for time runtime according to Schrödinger equation.\n\n\n\n"
@@ -514,7 +538,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.initial_state-Tuple{QuantumWalk.QWSearch{#s15,W} where W<:Real where #s15<:QuantumWalk.AbstractCTQW}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.initial_state",
     "category": "method",
     "text": "initial_state(qws::QWSearch{AbstractCTQW})\n\nReturns equal superposition of size size and type of parameters(qws)[:hamiltonian].\n\n\n\n"
@@ -522,7 +546,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.matrix-Tuple{QuantumWalk.AbstractCTQW}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.matrix",
     "category": "method",
     "text": "matrix(ctqw::AbstractCTQW)\n\nReturns the matrix symbol defining matrix graph used.\n\n\n\n"
@@ -530,7 +554,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{QuantumWalk.AbstractCTQW},Array{Number,1}}",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.measure",
     "category": "method",
     "text": "measure(::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}[, vertices::Vector{Int}])\n\nReturns the probability of measuring each vertex from vertices from state according to AbstractCTQW model. If vertices is not provided, full measurement is made. The measurement is done by taking square of absolute value of all elements of state.\n\n\n\n"
@@ -538,23 +562,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "ctqw.html#Full-docs-1",
-    "page": "CTQW model",
+    "page": "CTQW and CTQWDense",
     "title": "Full docs",
     "category": "section",
-    "text": "AbstractCTQW\nCTQW\nQWEvolution(::Type{U}, ::AbstractCTQW) where U<:Number\nQWSearch(::Type{T}, ::AbstractCTQW, ::Vector{Int}, ::Real = 0., ::T) where T<:Number\ncheck_qwdynamics(::Type{QWSearch}, ::AbstractCTQW, ::Dict{Symbol}, ::Vector{Int})\ncheck_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})\nevolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)\ninitial_state(::QWSearch{<:AbstractCTQW})\nmatrix(::AbstractCTQW)\nmeasure(::QWDynamics{AbstractCTQW}, ::Vector{Number})"
+    "text": "AbstractCTQW\nCTQW\nCTQW(::Graph)\nCTQWDense\nCTQWDense(::Graph)\nQWEvolution(::Type{U}, ::AbstractCTQW) where U<:Number\nQWSearch(::Type{T}, ::AbstractCTQW, ::Vector{Int}, ::Real = 0., ::T) where T<:Number\ncheck_qwdynamics(::Type{QWSearch}, ::AbstractCTQW, ::Dict{Symbol}, ::Vector{Int})\ncheck_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})\nevolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)\ninitial_state(::QWSearch{<:AbstractCTQW})\nmatrix(::AbstractCTQW)\nmeasure(::QWDynamics{AbstractCTQW}, ::Vector{Number})"
 },
 
 {
     "location": "szegedy.html#",
-    "page": "Szegedy model",
-    "title": "Szegedy model",
+    "page": "Szegedy",
+    "title": "Szegedy",
     "category": "page",
     "text": "DocTestSetup = quote\n   using QuantumWalk, LightGraphs\nend"
 },
 
 {
     "location": "szegedy.html#Szegedy-Quantum-Walk-1",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "Szegedy Quantum Walk",
     "category": "section",
     "text": "The Szegedy quantum walk is one of the most popular discrete quantum walk models. It takes stochastic matrix, turns it into unitary operator and use it for evolution. The evolution is purely unitary on the dimension equal to square of the graph order. The definition can be found in Quantum speed-up of Markov chain based algorithms by Szegedy. The definition of quantum search can be found in Direct Equivalence of Coined and Szegedy\'s Quantum Walks by Wong.The abstract supertype is AbstractSzegedy with its default realization Szegedy. The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"szegedy.md\"]"
@@ -562,7 +586,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.AbstractSzegedy",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.AbstractSzegedy",
     "category": "type",
     "text": "AbstractSzegedy\n\nType representing the abstract Szegedy model. Description of the default parameter can be found in https://arxiv.org/abs/1611.02238, where two oracle operator case is chosen.  Default representation of AbstractSzegedy is Szegedy.\n\n\n\n"
@@ -570,7 +594,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.QWEvolution-Tuple{QuantumWalk.AbstractSzegedy}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.QWEvolution",
     "category": "method",
     "text": "QWEvolution(szegedy::AbstractSzegedy)\n\nCreate QWEvolution according to AbstractSzegedy model. By default, the constructed operator is of type SparseMatrixCSC.\n\n\n\n"
@@ -578,7 +602,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.QWSearch-Tuple{QuantumWalk.AbstractSzegedy,Array{Int64,1},Real}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.QWSearch",
     "category": "method",
     "text": "QWSearch(szegedy::AbstractSzegedy, marked::Vector{Int}[, penalty::Real])\n\nCreates QWSearch according to AbstractSzegedy model. By default parameter penalty is set to 0. Evolution operators are constructed according to the definition from https://arxiv.org/abs/1611.02238.\n\nQWSearch(qws::QWSearch[; marked::Vector{Int}, penalty::Real])\n\nUpdate quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
@@ -586,7 +610,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.Szegedy",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.Szegedy",
     "category": "type",
     "text": "Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})\n\nDefault representation of AbstractSzegedy. Parameter sqrtstochastic needs to be an element-wise square root of stochastic matrix.\n\n\n\n"
@@ -594,7 +618,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.check_qwdynamics-Tuple{Type{QuantumWalk.QWSearch},QuantumWalk.AbstractSzegedy,Dict{Symbol,V} where V,Array{Int64,1}}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
     "text": "check_qwdynamics(QWSearch, szegedy::AbstractSzegedy, marked::Vector{Int}, parameters::Dict{Symbol})\n\nCheck whetver combination of szegedy, marked and parameters produces valid QWSearch object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
@@ -602,7 +626,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.check_qwdynamics-Tuple{Type{QuantumWalk.QWEvolution},QuantumWalk.AbstractSzegedy,Dict{Symbol,V} where V}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
     "text": "check_qwdynamics(QWEvolution, szegedy::AbstractSzegedy, parameters::Dict{Symbol})\n\nCheck whetver combination of szegedy, and parameters produces a valid QWEvolution object. It checks where parameters consists of key :operators with corresponding value being a list of SparseMatrixCSC objects. Furthermore operators need to be square of size equals to square of the order of graph(szegedy).\n\n\n\n"
@@ -610,7 +634,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.evolve-Union{Tuple{QuantumWalk.QWDynamics{QuantumWalk.Szegedy{#s15,T} where #s15},SparseVector{T,Ti} where Ti<:Integer}, Tuple{T}} where T<:Number",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.evolve",
     "category": "method",
     "text": "evolve(qwd::QWDynamics{AbstractSzegedy}, state::SparseVector)\n\nMultiplies state be each operator from operators from quantum walk evolution qwd. Elements of operators and state should be of the same type.\n\n\n\n"
@@ -618,7 +642,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.initial_state-Tuple{QuantumWalk.QWSearch{#s15,W} where W<:Real where #s15<:QuantumWalk.AbstractSzegedy}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.initial_state",
     "category": "method",
     "text": "initial_state(qws::QWSearch{<:AbstractSzegedy})\n\nGenerates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238. Vectorizes and normalizes obtained sqrtstochastic matrix from model(qws).\n\n\n\n"
@@ -626,7 +650,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.measure-Tuple{QuantumWalk.QWDynamics{#s15} where #s15<:QuantumWalk.AbstractSzegedy,SparseVector{#s14,Ti} where Ti<:Integer where #s14<:Number}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.measure",
     "category": "method",
     "text": "measure(qwd::AbstractSzegedy, state::SparseVector{<:Number}[, vertices])\n\nPerformes a measurement on state on vertices. vertices defaults to list of all vertices. It is defined as the measurement of partially traced on second system state https://arxiv.org/abs/1611.02238.\n\n\n\n"
@@ -634,7 +658,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#QuantumWalk.sqrtstochastic-Tuple{QuantumWalk.AbstractSzegedy}",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "QuantumWalk.sqrtstochastic",
     "category": "method",
     "text": "sqrtstochastic(szegedy::AbstractSzegedy)\n\nReturns the sqrtstochastic element of szegedy.\n\n\n\n"
@@ -642,7 +666,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "szegedy.html#Full-docs-1",
-    "page": "Szegedy model",
+    "page": "Szegedy",
     "title": "Full docs",
     "category": "section",
     "text": "AbstractSzegedy\nQWEvolution(::AbstractSzegedy)\nQWSearch(::AbstractSzegedy, ::Vector{Int}, ::Real)\nSzegedy\ncheck_qwdynamics(::Type{QWSearch}, ::AbstractSzegedy, ::Dict{Symbol}, ::Vector{Int})\ncheck_qwdynamics(::Type{QWEvolution}, ::AbstractSzegedy, ::Dict{Symbol})\nevolve(::QWDynamics{Szegedy{<:Any,T}}, ::SparseVector{T}) where T<:Number\ninitial_state(::QWSearch{<:AbstractSzegedy})\nmeasure(::QWDynamics{<:AbstractSzegedy}, ::SparseVector{<:Number})\nsqrtstochastic(::AbstractSzegedy)"
