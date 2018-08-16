@@ -24,13 +24,13 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
     sqrtstochastic::SparseMatrixCSC{T,Int}
 
     function Szegedy{G, T}(graph::G,
-                          sqrtstochastic::SparseMatrixCSC{T}) where {G<:AbstractGraph, T<:Number}
+                           sqrtstochastic::SparseMatrixCSC{T}) where {G<:AbstractGraph, T<:Number}
         new{G, T}(graph, sqrtstochastic)
     end
 end
 
 """
-    Szegedy(graph::AbstractGraph[, stochastic::SparseMatrixCSC{Real}, checkstochastic::Bool])
+    Szegedy(graph::AbstractGraph[, stochastic::SparseMatrixCSC{Number}, checkstochastic::Bool])
 
 Constructors of `AbstractSzegedy`. Parameter `stochastic` needs to be a
 stochastic matrix.  Flag `checkstochastic` decides about checking the stochastic
@@ -41,8 +41,8 @@ deafults to `false` in case of default `stochastic`. If matrix `stochastic` is
 provided by the user, the default value of `stochastic` is `true`.
 """
 function Szegedy(graph::G,
-                  stochastic::SparseMatrixCSC{T},
-                  checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
+                 stochastic::SparseMatrixCSC{T},
+                 checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
     if checkstochastic
         graphstochasticcheck(graph, stochastic)
     end
@@ -75,10 +75,10 @@ default `marked` and `penalty` are the same as in `qws`.
 function QWSearch(szegedy::AbstractSzegedy,
                   marked::Vector{Int},
                   penalty::Real=0)
-   r1, r2 = szegedy_walk_operators(szegedy)
-   q1, q2 = szegedy_oracle_operators(szegedy, marked)
+   walk_operators = szegedy_walk_operators(szegedy)
+   oracle_operators = szegedy_oracle_operators(szegedy, marked)
    parameters = Dict{Symbol,Any}()
-   parameters[:operators] = [r1*q1, r2*q2]
+   parameters[:operators] = walk_operators .* oracle_operators
 
    QWSearch(szegedy, parameters, marked, penalty)
 end
@@ -121,6 +121,7 @@ dimensionality of its elements.
 function check_szegedy(szegedy::AbstractSzegedy,
                        parameters::Dict{Symbol})
    @assert :operators in keys(parameters) "Parameters should contain key operators"
+   @assert length(parameters[:operators]) == 2 "Only two operators allowed"
    @assert all(typeof(i) <: SparseMatrixCSC{<:Number} for i=parameters[:operators]) "Parameters should be a list of SparseMatrixCSC{<:Number}"
    order = nv(szegedy.graph)
    @assert all(size(i) == (order, order).^2 for i=parameters[:operators]) "Operators sizes mismatch"

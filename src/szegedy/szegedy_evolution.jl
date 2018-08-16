@@ -13,21 +13,15 @@ function initial_state(qws::QWSearch{<:AbstractSzegedy})
    initial_state_szegedy(qws.model.sqrtstochastic)
 end
 
-#decorating for szegedy
 """
     evolve(qwd::QWDynamics{AbstractSzegedy}, state::SparseVector)
 
 Multiplies `state` be each `operator` from `operators` from quantum walk
 evolution `qwd`. Elements of operators and state should be of the same type.
 """
-function evolve(qwd::QWDynamics{Szegedy{<:Any,T}},
-                state::SparseVector{T}) where T<:Number
-   evolve_szegedy_special((qwd.parameters[:operators])..., state)
-end
-
 function evolve(qwd::QWDynamics{<:AbstractSzegedy},
-                state::SparseVector{<:Number})
-   evolve_szegedy_general(qwd.parameters[:operators], state)
+                state::SparseVector{T}) where T<:Number
+   _evolve_szegedy((qwd.parameters[:operators])..., state)
 end
 
 ## Special Szegedy evolution
@@ -37,25 +31,10 @@ end
 Multiplies `state` be `operator1` and then by `operator2`. Elements of
 operators and state should be of the same type.
 """
-function evolve_szegedy_special(operator1::SparseMatrixCSC{T, Int},
-                                operator2::SparseMatrixCSC{T, Int},
-                                state::SparseVector{T}) where T<:Number
+function _evolve_szegedy(operator1::SparseMatrixCSC{T},
+                         operator2::SparseMatrixCSC{T},
+                         state::SparseVector{T}) where T<:Number
    operator2*(operator1*state)
-end
-
-#general szegdy evolution (more than two operators)
-"""
-    evolve_szegedy_general(operators, state)
-
-Multiplies `state` be each `operator` from `operators` in given order.
-Elements of operators and state should be of the same type.
-"""
-function evolve_szegedy_general(operators::Vector{SparseMatrixCSC{T, Int}},
-                                state::SparseVector{T}) where T<:Number
-   for operator = operators
-      state = operator*state
-   end
-   state
 end
 
 """
