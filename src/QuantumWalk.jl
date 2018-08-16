@@ -10,6 +10,7 @@ export
 	AbstractCTQW,
 	AbstractSzegedy,
 	CTQW,
+    CTQWDense,
 	QSearchState,
 	QWDynamics,
 	QWEvolution,
@@ -39,7 +40,7 @@ export
 	probability,
 	runtime,
 	sqrtstochastic,
-	state    
+	state
 
 
 

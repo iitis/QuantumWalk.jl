@@ -16,7 +16,7 @@ abstract type AbstractCTQW <: QWModelCont end
     CTQW(graph::Graph, matrix::Symbol)
 
 Default representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
-to `:adjacency`.
+to `:adjacency`. The Hamiltonian is a sparse matrix.
 """
 struct CTQW <: AbstractCTQW
    graph::Graph
@@ -25,11 +25,30 @@ struct CTQW <: AbstractCTQW
 end
 
 """
+    CTQWDense(graph::Graph, matrix::Symbol)
+
+Alternative representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
+to `:adjacency`. The Hamiltonian is a dense matrix.
+"""
+struct CTQWDense <: AbstractCTQW
+   graph::Graph
+   matrix::Symbol
+   CTQWDense(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw(ErrorException("Only :laplacian and :adjacency is implemented"))
+end
+
+"""
     CTQW(graph)
 
 Constructor for CTQW, taking `matrix` to be `:adjacency`.
 """
 CTQW(graph::Graph) = CTQW(graph, :adjacency)
+
+"""
+    CTQWDense(graph)
+
+Constructor for CTQWDense, taking `matrix` to be `:adjacency`.
+"""
+CTQWDense(graph::Graph) = CTQWDense(graph, :adjacency)
 
 """
     matrix(ctqw::AbstractCTQW)
@@ -58,7 +77,7 @@ dimensionality.
 function check_ctqw(ctqw::AbstractCTQW,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
-   @assert isa(parameters[:hamiltonian], SparseMatrixCSC{<:Number}) || isa(hamiltonian, Matrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
+   @assert isa(parameters[:hamiltonian], SparseMatrixCSC{<:Number}) || isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
    nothing
 end
@@ -71,7 +90,7 @@ Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
 The hamiltonian is `SparseMatrixCSC`.
 
-    QWSearch(qws::QWSearch{<:CTQW}; marked, penalty)
+    QWSearch(qws::QWSearch{<:AbstractCTQW}; marked, penalty)
 
 Updates quantum walk search to new subset of marked elements and new penalty. By
 default marked and penalty are the same as in qws.
@@ -96,7 +115,7 @@ function QWSearch(ctqw::AbstractCTQW,
    QWSearch(Complex128, ctqw, marked, penalty, Complex128(jumpingrate))
 end,
 
-function QWSearch(qws::QWSearch{<:CTQW};
+function QWSearch(qws::QWSearch{<:AbstractCTQW};
                   marked::Vector{Int}=qws.marked,
                   penalty::Real=qws.penalty)
    oldmarked = qws.marked
@@ -107,6 +126,7 @@ function QWSearch(qws::QWSearch{<:CTQW};
 
    QWSearch(model(qws), Dict(:hamiltonian => hamiltonian), marked, penalty)
 end
+
 
 
 """

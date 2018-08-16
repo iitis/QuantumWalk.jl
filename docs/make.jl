@@ -22,8 +22,8 @@ makedocs(
 						"Quantum walk evolution"=> "quantum_walk.md",
 						"Quantum search"        => "quantum_search.md"],
 		"Walk models"         => Any[
-						"CTQW model" 		=> "ctqw.md",
-						"Szegedy model" 	=> "szegedy.md"],
+						"CTQW and CTQWDense" 		=> "ctqw.md",
+						"Szegedy" 	=> "szegedy.md"],
 		"New dynamics"     	=> "new_dynamics.md",
         "Contributing"		=> "contributing.md",
         "Citing"	       	=> "citing.md",

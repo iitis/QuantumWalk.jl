@@ -36,6 +36,16 @@ function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    end
 end,
 
+function graph_hamiltonian(::Type{T}, ctqw::CTQWDense) where T<:Number
+   if ctqw.matrix == :adjacency
+      return full(adjacency_matrix(ctqw.graph, T))
+   elseif ctqw.matrix == :laplacian
+      return full(laplacian_matrix(ctqw.graph, T))
+   else
+      throw(ErrorException("Model $ctqw poorly parametrized"))
+   end
+end,
+
 function graph_hamiltonian(ctqw::AbstractCTQW)
    graph_hamiltonian(Complex128, ctqw)
 end
