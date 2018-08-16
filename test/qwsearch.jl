@@ -4,12 +4,18 @@
     g = smallgraph(:bull)
     qws = QWSearch(CTQW(g), [1])
     @test norm(execute_single(qws, 10).state) ≈ 1
+
+    qws = QWSearch(CTQWDense(g), [1])
+    @test norm(execute_single(qws, 10).state) ≈ 1
   end
 
-  @testset "CTQW search" begin
+  @testset "CTQW and CTQWDense arch" begin
     n = 5
     g = CompleteGraph(n)
     qws = QWSearch(CTQW(g), [1], 0, 1/n)
+    @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
+
+    qws = QWSearch(CTQWDense(g), [1], 0, 1/n)
     @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
   end
 end
@@ -46,6 +52,6 @@ end
   end
 
   @testset "Measurement" begin
-    @test sum(measure(qws,QuantumWalk.initial_state(qws))) ≈ 1    
+    @test sum(measure(qws,QuantumWalk.initial_state(qws))) ≈ 1
   end
 end

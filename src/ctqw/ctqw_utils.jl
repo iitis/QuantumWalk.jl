@@ -21,10 +21,10 @@ end
 
 
 """
-    graph_hamiltonian([type::Type{Number}, ]ctqw::AbstractCTQW)
+    graph_hamiltonian(type::Type{Number}, ctqw::AbstractCTQW)
 
-Returns default evolution matrix, adjacency or laplacian matrix depending on
-`ctqw` parametrization. `type` deafults to Complex128.
+Returns default evolution matrix of `type`, adjacency or laplacian matrix depending on
+`ctqw` parametrization.
 """
 function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    if ctqw.matrix == :adjacency
@@ -41,15 +41,8 @@ function graph_hamiltonian(::Type{T}, ctqw::CTQWDense) where T<:Number
       return full(adjacency_matrix(ctqw.graph, T))
    elseif ctqw.matrix == :laplacian
       return full(laplacian_matrix(ctqw.graph, T))
-   else
-      throw(ErrorException("Model $ctqw poorly parametrized"))
    end
-end,
-
-function graph_hamiltonian(ctqw::AbstractCTQW)
-   graph_hamiltonian(Complex128, ctqw)
 end
-
 """
     hamiltonian_evolution(hamiltonian::DenseMatrix{<:Number}, initstate::Vector{<:Number}, runtime::Real)
     hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number}, initstate::Vector{<:Number}, runtime::Real)

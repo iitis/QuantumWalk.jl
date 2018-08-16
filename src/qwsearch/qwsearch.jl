@@ -112,6 +112,7 @@ function QSearchState(qws::QWSearch, state, runtime::Real)
    QSearchState(state, measure(qws, state, qws.marked), runtime)
 end
 
+# Following for resolving method ambiguity error
 function QSearchState(qws::QWSearch, state::Vector{Float64}, runtime::Real)
    QSearchState(state, measure(qws, state, qws.marked), runtime)
 end
