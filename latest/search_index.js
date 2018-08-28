@@ -741,7 +741,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Citing",
     "title": "Usage and citing",
     "category": "section",
-    "text": "In case of citing, please use the following BibTeX form:@misc{glos2018quantumwalkjl,\n  author       = {Adam Glos and Jaros{\\l}aw Adam Miszczak},\n  title        = {{QuantumWalks/QuantumWalk.jl}},\n  year         = {2018},\n  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}\n}Our package was already used in papers concerning quantum attacksAdam Glos, Jarosław Adam Miszczak. \'Impact of the malicious input data modification on the efficiency of quantum algorithms.\' arXiv preprint arXiv:1802.10041 (2018).In case You have used our package for your research, we will be grateful for any information about the paper or the package. With your consent we will provide an link to the paper here."
+    "text": "In case of citing, please use the following BibTeX form:@misc{glos2018quantumwalkjl,\n  author       = {Adam Glos and Jaros{\\l}aw Adam Miszczak},\n  title        = {{QuantumWalks/QuantumWalk.jl}},\n  year         = {2018},\n  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}\n}Our package was already used in papers concerning quantum attacksAdam Glos, Jarosław Adam Miszczak. \'Impact of the malicious input data modification on the efficiency of quantum algorithms.\' arXiv preprint arXiv:1802.10041 (2018).In case You have used our package for your research, we will be grateful for any information about the paper or the package. With your consent we will provide a link to the paper here."
 },
 
 {
