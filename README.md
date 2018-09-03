@@ -15,19 +15,18 @@ Currently the package provides implementation of
 * continuous-time quantum walks `CTQW` and `CTQWDense` with abstract supertype `AbstractCTQW`,
 
 and dynamics
-* pure quantum walk `QWEvolution`,
+* simple quantum walk `QWEvolution`,
 * quantum spatial search `QWSearch`.
 
-In particular for the last dynamic algorithm `maximize_quantum_search` finding optimal measure time are implemeneted. Note the function works in general for arbitrarily discrete-time quantum walk. The results are not guaranteed for continuous-time quantum walk, as times is not discretized.
+In particular for the last dynamic algorithm `maximize_quantum_search` finding optimal measure time are implemeneted. Note the function works in general for arbitrary discrete-time quantum walk. The results are not guaranteed for continuous-time quantum walk, as times is not discretized.
 
 The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl), [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) and [Expokit.jl](https://github.com/acroy/Expokit.jl).
 
-*QuantumWalk.jl* is currently under construction. First release is planned for June 2018.
 ## Installation
 
 The package can be installed using `Pkg.clone` command as
 ```julia
-Pkg.clone("https://github.com/QuantumWalks/QuantumWalk.jl.git")
+Pkg.add("QuantumWalk")
 ```
 All of the required modules will be installed automatically.
 
