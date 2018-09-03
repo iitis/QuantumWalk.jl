@@ -16,18 +16,18 @@ makedocs(
     checkdocs   = :exports,
     assets 	= ["assets/logo.ico"],
     pages       = Any[
-		"Home"				=> "index.md",
-		"Type hierarchies"	=> "type_hierarchy.md",
-    		"Dynamics"		=> Any[
-						"Quantum walk evolution"=> "quantum_walk.md",
-						"Quantum search"        => "quantum_search.md"],
-		"Walk models"         => Any[
-						"CTQW and CTQWDense" 		=> "ctqw.md",
-						"Szegedy" 	=> "szegedy.md"],
-		"New dynamics"     	=> "new_dynamics.md",
-        "Contributing"		=> "contributing.md",
-        "Citing"	       	=> "citing.md",
-		"Licence"			=> "license.md",
+		"Home"		   => "index.md",
+		"Type hierarchies" => "type_hierarchy.md",
+    		"Dynamics"	   => Any[
+				   	"Quantum walk evolution" => "quantum_walk.md",
+					"Quantum search"         => "quantum_search.md"],
+		"Walk models"      => Any[
+					"CTQW and CTQWDense" 	 => "ctqw.md",
+					"Szegedy" 		 => "szegedy.md"],
+		"New dynamics"     => "new_dynamics.md",
+	        "Contributing"	   => "contributing.md",
+	        "Citing"	   => "citing.md",
+		"Licence"	   => "license.md",
     ]
 )
 

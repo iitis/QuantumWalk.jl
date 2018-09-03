@@ -33,7 +33,6 @@ for *many* parameters, not only for example for fixed graphs.
 We welcome any ideas concerning the readability and logic of the code as well.
 
 ## Development guidelines
-
 * Post an issue.
 * Wait until the discussion ends.
 * Check the name convention from already existing model.
