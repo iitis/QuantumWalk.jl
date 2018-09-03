@@ -13,8 +13,7 @@
     n = 5
     g = CompleteGraph(n)
     qws = QWSearch(CTQW(g), [1], 0, 1/n)
-    s0 = QuantumWalk.initial_state(qws)
-
+    s0 =  QSearchState(qws, initial_state(qws),0.0)
     @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
     @test evolve(qws,evolve(qws,s0,0.1),0.1) ≈ evolve(qws,s0,0.2)
 
@@ -55,7 +54,8 @@ end
   end
 
   @testset "Measurement" begin
-    @test sum(measure(qws,QuantumWalk.initial_state(qws))) ≈ 1
-    @test sum(measure(qws,QuantumWalk.initial_state(qws),[1,2,3])) + sum(measure(qws,QuantumWalk.initial_state(qws),[4,5])) ≈ 1
+    s = QSearchState(qws, initial_state(qws),0)
+    @test sum(measure(qws,s)) ≈ 1
+    @test sum(measure(qws,s,[1,2,3])) + sum(measure(qws,s,[4,5])) ≈ 1
   end
 end
