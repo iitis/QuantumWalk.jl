@@ -6,8 +6,8 @@
 
     @testset "Continuous mode" begin
 
-        cqss = QWSearch(CTQW(g), [1], nv(g), qss_penalty)
-        cqss0 = QWSearch(CTQW(g), [1], nv(g))
+        cqss = QWSearch(CTQW(g), [1], qss_penalty)
+        cqss0 = QWSearch(CTQW(g), [1])
 
         @test_throws AssertionError maximize_quantum_search(cqss, -1.)
         @test_throws AssertionError maximize_quantum_search(cqss, 1., -1.)
@@ -15,6 +15,9 @@
         @test runtime(maximize_quantum_search(cqss, 1., 1.)) > qss_penalty
         @test_warn r".*" maximize_quantum_search(cqss0)
         @test_nowarn maximize_quantum_search(cqss)
+
+        @test runtime(maximize_quantum_search(cqss, 1., 0.2)) ≈ 1.+penalty(cqss)
+
     end
 
     @testset "Discrete mode" begin
@@ -29,6 +32,7 @@
         @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeeff)) > qss_penalty
         @test runtime(maximize_quantum_search(dqss, nv(g), :maxeff)) > qss_penalty
         @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeprob)) > qss_penalty
+
 
         @test_warn r".*" maximize_quantum_search(dqss0)
         @test_nowarn maximize_quantum_search(dqss)

@@ -69,10 +69,11 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
 
 
    minindex = findmin(data_y)[2]
+
    mint = max(zero(T), data_t[max(1, minindex-1)])
    maxt = min(maxtime, data_t[min(length(data_t), minindex+1)])
-   optresult = optimize(efficiency_opt, mint, maxt)
 
+   optresult = optimize(efficiency_opt, mint, maxt)
    result = execute_single(qws, Optim.minimizer(optresult))
    QSearchState(result.state, result.probability, result.runtime+qws.penalty)
 end

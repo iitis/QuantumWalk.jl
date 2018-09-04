@@ -27,6 +27,9 @@
     @test_throws AssertionError execute(qweLap, init , -1.0)
     @test execute(qweLap, init, 1) ≈ execute(qweLap, execute(qweLap, init, 0.5), 0.5)
 
+    # due to sign issue the measure function is needed
+    @test measure(qweAdj, execute(qweAdj, init, 1)) ≈ measure(qweLap, execute(qweLap, init, 1))
+
     @test_throws ErrorException QWEvolution(CTQW(g, :notimplemented))
   end
 
