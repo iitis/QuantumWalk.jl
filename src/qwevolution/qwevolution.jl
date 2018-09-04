@@ -31,3 +31,7 @@ struct QWEvolution{T} <: QWDynamics{T}
     new{T}(model, parameters)
   end
 end
+
+function check_qwdynamics(qwe::QWEvolution)
+  check_qwdynamics(QWEvolution, model(qwe), parameters(qwe))
+end

@@ -3,6 +3,12 @@
   n = 5
   g = CompleteGraph(n)
 
+  @testset "General" begin
+    qwe = QWEvolution(Szegedy(g))
+
+    @test check_qwdynamics(qwe) == nothing
+  end
+
   @testset "Quantum walks simulator for CTQW" begin
     init = fill(Complex128(1/sqrt(n)), n)
     ctqwAdj = CTQW(g, :adjacency)

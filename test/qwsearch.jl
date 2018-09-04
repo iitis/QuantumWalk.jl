@@ -1,3 +1,10 @@
+@testset "General" begin
+  g = smallgraph(:bull)
+  qws = QWSearch(Szegedy(g), [1])
+
+  @test check_qwdynamics(qws) == nothing
+end
+
 @testset "Continuous search" begin
 
   @testset "Norm preservation" begin

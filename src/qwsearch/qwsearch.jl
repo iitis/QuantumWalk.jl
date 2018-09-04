@@ -58,6 +58,10 @@ struct QWSearch{T,W<:Real} <: QWDynamics{T}
   end
 end
 
+function check_qwdynamics(qws::QWSearch)
+    check_qwdynamics(QWSearch, model(qws), parameters(qws), marked(qws))
+end
+
 """
     marked(qws)
 
