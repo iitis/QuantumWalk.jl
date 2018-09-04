@@ -197,7 +197,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(qwdtype::Type{<:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)\n\nChecks whetver combination of the arguments creates valid quantum walk dynamics qwdtype.\n\n\n\n"
+    "text": "check_qwdynamics(qwdtype::Type{<:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)\ncheck_qwdynamics(qwd)\n\nChecks whetver combination of the arguments creates valid quantum walk dynamics qwdtype. Check whether qwd is properly parametrized dynamic.\n\n\n\n"
 },
 
 {
