@@ -19,6 +19,9 @@
     qweLap = QWEvolution(ctqwLap)
 
     @test_throws AssertionError execute(qweAdj, init , -1.0)
+
+    @test check_dynamics(ctqwAdj)
+
     @test execute(qweAdj, init, 1) ≈ execute(qweAdj, execute(qweAdj, init, 0.5), 0.5)
 
     @test_throws AssertionError execute(qweLap, init , -1.0)
@@ -33,6 +36,8 @@
     init[1] = init[n] = init[n*n] = 1/sqrt(3.)
 
     steps = 10
+
+    @test check_dynamics(qwe)
 
     @test_throws AssertionError execute(qwe, init, -1)
     @test_throws MethodError execute(qwe, init, 0.5)

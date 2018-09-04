@@ -4,10 +4,15 @@
 
   @test check_qwdynamics(qws) == nothing
   @test_throws AssertionError QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=true)
-  @test_no_error QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=false) 
+  @test_no_error QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=false)
 end
 
 @testset "Continuous search" begin
+  @testset "General" begin
+    g = smallgraph(:bull)
+    qws = QWSearch(CTQW(g), [1])
+    @test check_dynamics(qws)
+  end
 
   @testset "Norm preservation" begin
     g = smallgraph(:bull)
@@ -34,6 +39,11 @@ end
 @testset "Discrete search" begin
   g = smallgraph(:bull)
   qws = QWSearch(Szegedy(g), [1])
+
+  @testset "General" begin
+    @test check_dynamics(qws)
+  end
+
 
   @testset "Norm preservation" begin
     @test norm(execute_single(qws, 10).state) ≈ 1
