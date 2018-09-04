@@ -2,12 +2,12 @@ export
    maximize_quantum_search
 
 """
-    maximize_quantum_search(qws::QWSearch{<:QWModelCont} [, maxtime::T, tstep::T]) where T<:Real
+    maximize_quantum_search(qws_cont [, maxtime, tstep])
 
 Determines optimal runtime for continuous quantum walk search. The time is
-searched in [0, maxtime] interval, with penalty `penalty(qws)`.
+searched in [0, maxtime] interval, with penalty `penalty(qws_cont)`.
 It is recommended for penalty to be nonzero, otherwise time close to 0 is usually
-returned. Typically `penalty` equal to `log(nv(graph(qws)))` is enough, but
+returned. Typically `penalty` equal to `log(nv(graph(qws_cont)))` is enough, but
 optimal value may depend on the model or graph chosen.
 
 The optimal time is chosen according to expected runtime, which equals to
@@ -78,10 +78,10 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
 end
 
 """
-   maximize_quantum_search(qws::QWSearch{<:QWModelDiscr} [, runtime::Int, mode::Symbol])
+   maximize_quantum_search(qws_discr [, runtime, mode])
 
 Determines optimal runtime for discrete quantum walk search. The time is
-searched in [0, runtime] interval, with penalty `penalty(qws)`.
+searched in [0, runtime] interval, with penalty `penalty(qws_discr)`.
 It is recommended for penalty to be nonzero, otherwise time close 0 is returned.
 Typically small `penalty` approximately equal to log(n) is enough, but
 optimal value may depend on the model or graph chosen.
@@ -147,7 +147,7 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
 end
 
 """
-    stopsearch(previous_state::QSearchState, state::QSearchState, mode::Symbol)
+    stopsearch(previous_state, state, mode)
 
 For given combination of argument decides whetver maximizing search function
 should be stopped:
@@ -175,7 +175,7 @@ function stopsearch(previous_state::QSearchState,
 end
 
 """
-    best(state1::QSearchState, state2::QSearchState, mode::Symbol)
+    best(state1, state2, mode)
 
 Choose better state depending on mode. If success probability is maximized, then
 the success probability is compared. If expected runtime is minimized,

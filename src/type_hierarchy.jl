@@ -15,7 +15,7 @@ Abstract supertype of all quantum walk models.
 abstract type QWModel end
 
 """
-    graph(model::QWModel)
+    graph(model)
 
 Returns `graph` element of `model`.
 """
@@ -42,7 +42,7 @@ Abstract supertype of all dynamics on quantum walk models.
 abstract type QWDynamics{T<:QWModel} end
 
 """
-    graph(qwd::QWDynamics)
+    graph(qwd)
 
 Returns `graph` element of `model` from dynamics `qwd`. Equivalent to
 `graph(model(qwd))`.
@@ -50,14 +50,14 @@ Returns `graph` element of `model` from dynamics `qwd`. Equivalent to
 graph(qwd::QWDynamics) = graph(qwd.model)
 
 """
-    model(qwd::QWDynamics)
+    model(qwd)
 
 Returns `model` element of dynamics `qwd`.
 """
 model(qwd::QWDynamics) = qwd.model
 
 """
-    parameters(qwd::QWDynamics)
+    parameters(qwd)
 
 Returns `parameters` element of dynamics `qwd`.
 """

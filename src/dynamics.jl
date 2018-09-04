@@ -6,7 +6,7 @@ export
    execute_all_measured
 
 """
-    execute(qwd::QWDynamics, initstate, runtime::Real[, all=false, measure=false])
+    execute(qwd, initstate, runtime[, all=false, measure=false])
 
 Run proper execution function depending on given keywords. `all` and `measure`
 keywords defaults to `false`. In case of `all` being true, all intermidiate states
@@ -31,8 +31,7 @@ function execute(qwd::QWDynamics,
 end
 
 """
-    execute_single(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)
-    execute_single(qwd::QWDynamics{<:QWModelCont}, initstate, runtime::Real)
+    execute_single(qwd, initstate, runtime)
 
 Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative.
@@ -59,8 +58,7 @@ function execute_single(qwd::QWDynamics{<:QWModelCont},
 end
 
 """
-    execute_single_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)
-    execute_single_measured(qwd::QWDynamics{<:QWModelCont}, initstate, runtime::Real)
+    execute_single_measured(qwd, initstate, runtime)
 
 Evolve `initstate` acording to `qwd` for time `runtime` and measure
 it in the end. `runtime` needs to be nonnegative.
@@ -73,7 +71,7 @@ end
 
 
 """
-    execute_all(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)
+    execute_all(qwd, initstate, runtime)
 
 Returns list of all states including the `initstate` according to `qwd` for
 times from 0 to `runtime`. `runtime` needs to be nonnegative.
@@ -94,7 +92,7 @@ function execute_all(qwd::QWDynamics{<:QWModelDiscr},
 end
 
 """
-    execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)
+    execute_all_measured(qwd, initstate, runtime)
 
 Evolve `initstate` acording to `qwd` for time `runtime`. Returns matrix of type
 `Matrix{Float64}` for which `i`-th column is the probability distribution obtained

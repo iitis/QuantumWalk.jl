@@ -21,8 +21,8 @@ end
 
 #Expected runtime
 """
-    expected_runtime(runtime::Real, probability::Real)
-    expected_runtime(state::QSearchState)
+    expected_runtime(runtime, probability)
+    expected_runtime(state)
 
 Returns the expected runtime needed for quantum walk, considering it as Bernoulli
 process. It equals to `runtime/probability`. In the case of `state` provided the

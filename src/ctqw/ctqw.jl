@@ -13,7 +13,7 @@ representation of `AbstractCTQW` is `CTQW`.
 abstract type AbstractCTQW <: QWModelCont end
 
 """
-    CTQW(graph::Graph, matrix::Symbol)
+    CTQW(graph, matrix)
 
 Default representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
 to `:adjacency`. The Hamiltonian is a sparse matrix.
@@ -25,7 +25,7 @@ struct CTQW <: AbstractCTQW
 end
 
 """
-    CTQWDense(graph::Graph, matrix::Symbol)
+    CTQWDense(graph, matrix)
 
 Alternative representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
 to `:adjacency`. The Hamiltonian is a dense matrix.
@@ -51,16 +51,16 @@ Constructor for CTQWDense, taking `matrix` to be `:adjacency`.
 CTQWDense(graph::Graph) = CTQWDense(graph, :adjacency)
 
 """
-    matrix(ctqw::AbstractCTQW)
+    matrix(ctqw)
 
 Returns the matrix symbol defining matrix graph used.
 """
 matrix(ctqw::AbstractCTQW) = ctqw.matrix
 
 """
-    proj(::Type{Number}, i::Int, n::Int)
+    proj(type, i, n)
 
-Return a canonic projection onto `i`-th subspace.
+Return a canonic projection onto `i`-th subspace of `n`-dimensional space.
  """
 function proj(::Type{T}, i::Int, n::Int) where T<:Number
    result = spzeros(T, n, n)
@@ -69,7 +69,7 @@ function proj(::Type{T}, i::Int, n::Int) where T<:Number
 end
 
 """
-    check_ctqw(ctqw::AbstractCTQW, parameters::Dict{Symbol})
+    check_ctqw(ctqw, parameters)
 
 Private functions which checks the existance of `:hamiltonian`, its type and
 dimensionality.
@@ -83,14 +83,14 @@ function check_ctqw(ctqw::AbstractCTQW,
 end
 
 """
-    QWSearch([type::Type{T}, ]ctqw::AbstractCTQW, marked::Vector{Int}[, penalty::Real, jumpingrate::T]) where T<:Number
+    QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])
 
 Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
 `Complex128`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
 The hamiltonian is `SparseMatrixCSC`.
 
-    QWSearch(qws::QWSearch{<:AbstractCTQW}; marked, penalty)
+    QWSearch(qws_ctqw; marked, penalty)
 
 Updates quantum walk search to new subset of marked elements and new penalty. By
 default marked and penalty are the same as in qws.
@@ -130,7 +130,7 @@ end
 
 
 """
-    check_qwdynamics(QWSearch, ctqw::AbstractCTQW, parameters::Dict{Symbol}, marked::Vector{Int})
+    check_qwdynamics(QWSearch, ctqw, parameters, marked)
 
 Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks if `parameters` consists of key `:hamiltonian` with
@@ -146,7 +146,7 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 """
-    QWEvolution([type::Type{Number}, ]ctqw::AbstractCTQW)
+    QWEvolution([type, ]ctqw)
 
 Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equals
 `Complex128`. The hamiltonian is `SparseMatrixCSC`.
@@ -155,14 +155,14 @@ function QWEvolution(::Type{U},
                      ctqw::AbstractCTQW) where U<:Number
    parameters = Dict{Symbol,Any}(:hamiltonian => graph_hamiltonian(U, ctqw))
    QWEvolution(ctqw, parameters)
-end
+end,
 
 function QWEvolution(ctqw::AbstractCTQW)
    QWEvolution(Complex128, ctqw)
 end
 
 """
-    check_qwdynamics(QWEvolution, ctqw::AbstractCTQW, parameters::Dict{Symbol})
+    check_qwdynamics(QWEvolution, ctqw, parameters)
 
 Checks iof combination of `ctqw` and `parameters` produces valid
 `QWSearch` object. It checks if `parameters` consists of key `:hamiltonian` with
