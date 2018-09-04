@@ -3,6 +3,7 @@
   qws = QWSearch(Szegedy(g), [1])
 
   @test check_qwdynamics(qws) == nothing
+  @test_throws AssertionError QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=true)
 end
 
 @testset "Continuous search" begin

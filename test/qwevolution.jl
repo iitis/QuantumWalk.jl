@@ -6,6 +6,7 @@
   @testset "General" begin
     qwe = QWEvolution(Szegedy(g))
 
+    @test_throws AssertionError QWEvolution(Szegedy(g), Dict{Symbol,Any}(), check=true)
     @test check_qwdynamics(qwe) == nothing
   end
 
