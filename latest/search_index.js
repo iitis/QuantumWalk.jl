@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchies",
     "title": "QuantumWalk.graph",
     "category": "method",
-    "text": "graph(model::QWModel)\n\nReturns graph element of model.\n\n\n\n"
+    "text": "graph(model)\n\nReturns graph element of model.\n\n\n\n"
 },
 
 {
@@ -125,7 +125,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchies",
     "title": "QuantumWalk.graph",
     "category": "method",
-    "text": "graph(qwd::QWDynamics)\n\nReturns graph element of model from dynamics qwd. Equivalent to graph(model(qwd)).\n\n\n\n"
+    "text": "graph(qwd)\n\nReturns graph element of model from dynamics qwd. Equivalent to graph(model(qwd)).\n\n\n\n"
 },
 
 {
@@ -133,7 +133,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchies",
     "title": "QuantumWalk.model",
     "category": "method",
-    "text": "model(qwd::QWDynamics)\n\nReturns model element of dynamics qwd.\n\n\n\n"
+    "text": "model(qwd)\n\nReturns model element of dynamics qwd.\n\n\n\n"
 },
 
 {
@@ -141,7 +141,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Type hierarchies",
     "title": "QuantumWalk.parameters",
     "category": "method",
-    "text": "parameters(qwd::QWDynamics)\n\nReturns parameters element of dynamics qwd.\n\n\n\n"
+    "text": "parameters(qwd)\n\nReturns parameters element of dynamics qwd.\n\n\n\n"
 },
 
 {
@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.QWEvolution",
     "category": "type",
-    "text": "QWEvolution(model, parameters)\n\nType describing standard quantum walk evolution. Needs implementation of\n\nevolve(::QWEvolution{<:QWModelDiscr}, state) or evolve(::QWEvolution{<:QWModelCont}, state, time::Real)\nmeasure(::QWEvolution, state)\ncheck_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})\nproper constructors.\n\nOffers functions\n\nexecute\nexecute_single\nexecute_single_measured\nexecute_all\nexecute_all_measured\n\n\n\n"
+    "text": "QWEvolution(model, parameters, check)\n\nType describing standard quantum walk evolution. check_qwdynamics is executed if and only iff check is true.\n\nNeeds implementation of\n\nevolve(::QWEvolution{<:QWModelDiscr}, state) or evolve(::QWEvolution{<:QWModelCont}, state, time::Real)\nmeasure(::QWEvolution, state)\ncheck_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})\nproper constructors.\n\nOffers functions\n\nexecute\nexecute_single\nexecute_single_measured\nexecute_all\nexecute_all_measured\n\n\n\n"
 },
 
 {
@@ -213,7 +213,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.execute",
     "category": "method",
-    "text": "execute(qwd::QWDynamics, initstate, runtime::Real[, all=false, measure=false])\n\nRun proper execution function depending on given keywords. all and measure keywords defaults to false. In case of all being true, all intermidiate states are returned. Note that for all equal to true, the model specified by qwd needs to be disrete. For measure equal to true, measurement distributions are returned.\n\n\n\n"
+    "text": "execute(qwd, initstate, runtime[, all=false, measure=false])\n\nRun proper execution function depending on given keywords. all and measure keywords defaults to false. In case of all being true, all intermidiate states are returned. Note that for all equal to true, the model specified by qwd needs to be disrete. For measure equal to true, measurement distributions are returned.\n\n\n\n"
 },
 
 {
@@ -221,7 +221,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.execute_all",
     "category": "method",
-    "text": "execute_all(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)\n\nReturns list of all states including the initstate according to qwd for times from 0 to runtime. runtime needs to be nonnegative.\n\n\n\n"
+    "text": "execute_all(qwd, initstate, runtime)\n\nReturns list of all states including the initstate according to qwd for times from 0 to runtime. runtime needs to be nonnegative.\n\n\n\n"
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.execute_all_measured",
     "category": "method",
-    "text": "execute_all_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)\n\nEvolve initstate acording to qwd for time runtime. Returns matrix of type Matrix{Float64} for which i-th column is the probability distribution obtained  from the measurement in (i-1)-th step. runtime needs to be nonnegative.\n\n\n\n"
+    "text": "execute_all_measured(qwd, initstate, runtime)\n\nEvolve initstate acording to qwd for time runtime. Returns matrix of type Matrix{Float64} for which i-th column is the probability distribution obtained  from the measurement in (i-1)-th step. runtime needs to be nonnegative.\n\n\n\n"
 },
 
 {
@@ -237,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.execute_single",
     "category": "method",
-    "text": "execute_single(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)\nexecute_single(qwd::QWDynamics{<:QWModelCont}, initstate, runtime::Real)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative.\n\n\n\n"
+    "text": "execute_single(qwd, initstate, runtime)\n\nEvolve initstate acording to QWDynamics qwd for time runtime. runtime needs to be nonnegative.\n\n\n\n"
 },
 
 {
@@ -245,7 +245,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum walk evolution",
     "title": "QuantumWalk.execute_single_measured",
     "category": "method",
-    "text": "execute_single_measured(qwd::QWDynamics{<:QWModelDiscr}, initstate, runtime::Int)\nexecute_single_measured(qwd::QWDynamics{<:QWModelCont}, initstate, runtime::Real)\n\nEvolve initstate acording to qwd for time runtime and measure it in the end. runtime needs to be nonnegative.\n\n\n\n"
+    "text": "execute_single_measured(qwd, initstate, runtime)\n\nEvolve initstate acording to qwd for time runtime and measure it in the end. runtime needs to be nonnegative.\n\n\n\n"
 },
 
 {
@@ -301,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.QSearchState",
     "category": "type",
-    "text": "QSearchState(state, probability::Float64, runtime::Real)\nQSearchState(qws::QWSearch, state, runtime::Float64)\n\nCreates container which consists of state, success probability probability and running time runtime. Validity of probability and runtime is not checked.\n\nIn second case state is measured according to qws.\n\nExample\n\njulia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);\n\njulia> result = QSearchState(qws, initial_state(qws), 0)\nQuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64}(  [2 ]  =  0.288675\n  [3 ]  =  0.288675\n  [4 ]  =  0.288675\n  [5 ]  =  0.288675\n  [7 ]  =  0.288675\n  [8 ]  =  0.288675\n  [9 ]  =  0.288675\n  [10]  =  0.288675\n  [12]  =  0.288675\n  [13]  =  0.288675\n  [14]  =  0.288675\n  [15]  =  0.288675, [0.25], 0)\n\n\n\n"
+    "text": "QSearchState(state, probability, runtime)\nQSearchState(qws, state, runtime)\n\nCreates container which consists of state, success probability probability and running time runtime. Validity of probability and runtime is not checked.\n\nIn second case state is measured according to qws.\n\nExample\n\njulia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);\n\njulia> result = QSearchState(qws, initial_state(qws), 0)\nQuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64}(  [2 ]  =  0.288675\n  [3 ]  =  0.288675\n  [4 ]  =  0.288675\n  [5 ]  =  0.288675\n  [7 ]  =  0.288675\n  [8 ]  =  0.288675\n  [9 ]  =  0.288675\n  [10]  =  0.288675\n  [12]  =  0.288675\n  [13]  =  0.288675\n  [14]  =  0.288675\n  [15]  =  0.288675, [0.25], 0)\n\n\n\n"
 },
 
 {
@@ -309,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.QWSearch",
     "category": "type",
-    "text": "QWSearch(model::QWModel, parameters::Dict{Symbol}, marked::Vector{Int}, penalty::Real)\n\nSimulates quantum search on model with marked vertices and additional parameters. penalty represents the cost of initial state creation and measurement, which should be included for better optimization, see documentation of maximizing_function. Note that marked vertices needs to be between 1 and nv(graph(model)). Furthermore penalty needs to be nonnegative.\n\nNeeds implementation of\n\ninitial_state(qws::QWSearch)\nevolve(qws::QWSearch{<:QWModelDiscr}, state) or evolve(qws::QWSearch{<:QWModelCont}, state, time::Real)\nmeasure(qws::QWSearch, state[, vertices])\ncheck_qwdynamics(::QWSearch, parameters::Dict{Symbol})\nproper constructors.\n\nOffers functions\n\nexecute\nexecute_single\nexecute_single_measured\nexecute_all\nexecute_all_measured\nmaximize_quantum_search.\n\nIt is encoureged to implement constructor, which changes the penalty and/or marked vertices, as their are usuallu simple to adapt.\n\n\n\n"
+    "text": "QWSearch(model, parameters, marked, penalty[; check])\n\nSimulates quantum search on model with marked vertices and additional parameters. penalty represents the cost of initial state creation and measurement, which should be included for better optimization, see documentation of maximizing_function. Note that marked vertices needs to be between 1 and nv(graph(model)). Furthermore penalty needs to be nonnegative.\n\ncheck_qwdynamics is executed if and only iff check is true.\n\nNeeds implementation of\n\ninitial_state(qws::QWSearch)\nevolve(qws::QWSearch{<:QWModelDiscr}, state) or evolve(qws::QWSearch{<:QWModelCont}, state, time::Real)\nmeasure(qws::QWSearch, state[, vertices])\ncheck_qwdynamics(::QWSearch, parameters::Dict{Symbol})\nproper constructors.\n\nOffers functions\n\nexecute\nexecute_single\nexecute_single_measured\nexecute_all\nexecute_all_measured\nmaximize_quantum_search.\n\nIt is encoureged to implement constructor, which changes the penalty and/or marked vertices, as their are usuallu simple to adapt.\n\n\n\n"
 },
 
 {
@@ -317,7 +317,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(model::QWModel, parameters::Dict{Symbol}, marked::Vector{Int})\n\nChecks whetver combination of model, marked and parameters creates valid quantum search evolution. Note that whetver list of vertices marked are a subset of vertices of graph from model is checked seperately in QWSearch constructor.\n\n\n\n"
+    "text": "check_qwdynamics(model, parameters, marked)\n\nChecks whetver combination of model, marked and parameters creates valid quantum search evolution. Note that whetver list of vertices marked are a subset of vertices of graph from model is checked seperately in QWSearch constructor.\n\n\n\n"
 },
 
 {
@@ -333,7 +333,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.execute_all",
     "category": "method",
-    "text": "execute_all(qws::QSWSearch{<:QWModelDiscr},[ initstate,] runtime::Int)\n\nEvolve initstate acording to qws for time runtime. runtime needs to be nonnegative. The initial state is generated by initial_state(qws) if not provided. Returns Vector of all QSearchState{typeof(initstate)} including initstate.\n\n\n\n"
+    "text": "execute_all(qws,[ initstate,] runtime)\n\nEvolve initstate acording to qws for time runtime. runtime needs to be nonnegative. The initial state is generated by initial_state(qws) if not provided. Returns Vector of all QSearchState{typeof(initstate)} including initstate.\n\n\n\n"
 },
 
 {
@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.execute_all_measured",
     "category": "method",
-    "text": "execute_all_measured(qws::QWSearch{<:QWModelDiscr},[ initstate,] runtime::Int)\n\nEvolve initstate acording to qws for time runtime. runtime needs to be nonnegative. The initial state is generated by initial_state(qws)  if not provided. As a result return matrix of type Matrix{Float64}  for which i-th column is measurement probability distribution in (i-1)-th step.\n\n\n\n"
+    "text": "execute_all_measured(qws,[ initstate,] runtime)\n\nEvolve initstate acording to qws for time runtime. runtime needs to be nonnegative. The initial state is generated by initial_state(qws)  if not provided. As a result return matrix of type Matrix{Float64}  for which i-th column is measurement probability distribution in (i-1)-th step.\n\n\n\n"
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.execute_single",
     "category": "method",
-    "text": "execute_single(qws::QWSearch{<:QWModelDiscr},[ initstate,] runtime::Int)\nexecute_single(qws::QWSearch{<:QWModelConst},[ initstate,] runtime::Real)\n\nEvolve initstate acording to qws for time runtime. The initial state is generated by initial_state(qws) if not provided. runtime needs to be nonnegative. QSearchState{typeof(initstate)} is returned.\n\n\n\n"
+    "text": "execute_single(qws, [ initstate,] runtime::Int)\n\nEvolve initstate acording to qws for time runtime. The initial state is generated by initial_state(qws) if not provided. runtime needs to be nonnegative. QSearchState{typeof(initstate)} is returned.\n\n\n\n"
 },
 
 {
@@ -357,7 +357,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.execute_single_measured",
     "category": "method",
-    "text": "execute_single_measured(qws::QWSearch{<:QWModelDiscr},[ initstate,] runtime::Int)\nexecute_single_measured(qws::QWSearch{<:QWModelConst},[ initstate,] runtime::Real)\n\nEvolve initstate acording to qws for time runtime. The initial state is generated by initial_state(qws) if not provided. runtime needs to be nonnegative. Measurement probability distribution is returned.\n\n\n\n"
+    "text": "execute_single_measured(qws,[ initstate,] runtime)\n\nEvolve initstate acording to qws for time runtime. The initial state is generated by initial_state(qws) if not provided. runtime needs to be nonnegative. Measurement probability distribution is returned.\n\n\n\n"
 },
 
 {
@@ -365,7 +365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.expected_runtime",
     "category": "method",
-    "text": "expected_runtime(runtime::Real, probability::Real)\nexpected_runtime(state::QSearchState)\n\nReturns the expected runtime needed for quantum walk, considering it as Bernoulli process. It equals to runtime/probability. In the case of state provided the measurement is made.\n\n\n\n"
+    "text": "expected_runtime(runtime, probability)\nexpected_runtime(state)\n\nReturns the expected runtime needed for quantum walk, considering it as Bernoulli process. It equals to runtime/probability. In the case of state provided the measurement is made.\n\n\n\n"
 },
 
 {
@@ -373,7 +373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.initial_state",
     "category": "method",
-    "text": "initial_state(qws::QWSearch)\n\nGenerates initial state for qws.\n\n\n\n"
+    "text": "initial_state(qws)\n\nGenerates initial state for qws.\n\n\n\n"
 },
 
 {
@@ -381,7 +381,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.marked",
     "category": "method",
-    "text": "marked(qws::QWSearch)\n\nReturns marked vertices element of qws.\n\n\n\n"
+    "text": "marked(qws)\n\nReturns marked vertices element of qws.\n\n\n\n"
 },
 
 {
@@ -389,7 +389,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.maximize_quantum_search",
     "category": "method",
-    "text": "maximize_quantum_search(qws::QWSearch{<:QWModelCont} [, maxtime::T, tstep::T]) where T<:Real\n\nDetermines optimal runtime for continuous quantum walk search. The time is searched in [0, maxtime] interval, with penalty penalty(qws). It is recommended for penalty to be nonzero, otherwise time close to 0 is usually returned. Typically penalty equal to log(nv(graph(qws))) is enough, but optimal value may depend on the model or graph chosen.\n\nThe optimal time is chosen according to expected runtime, which equals to runtime over probability. This comes from interpreting th eevolution as the Bernoulli process.\n\ntstep is used for primary grid search to search for determine intervale which is supsected to have small expected runtime. To large value may miss the optimal value, while to small may greatly increase runtime of the algorithm.\n\nmaxtime defaults to graph order n, tstep defaults to sqrt(n)/5. QSearchState is returned by default with penalty. Note that in general the probability is not maximal.\n\njulia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 1., 0.01);\n\njulia> result = maximize_quantum_search(qws)\nQuantumWalk.QSearchState{Array{Complex{Float64},1},Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 12.99636940469214)\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.869767\n\n\n\n"
+    "text": "maximize_quantum_search(qws_cont [, maxtime, tstep])\n\nDetermines optimal runtime for continuous quantum walk search. The time is searched in [0, maxtime] interval, with penalty penalty(qws_cont). It is recommended for penalty to be nonzero, otherwise time close to 0 is usually returned. Typically penalty equal to log(nv(graph(qws_cont))) is enough, but optimal value may depend on the model or graph chosen.\n\nThe optimal time is chosen according to expected runtime, which equals to runtime over probability. This comes from interpreting th eevolution as the Bernoulli process.\n\ntstep is used for primary grid search to search for determine intervale which is supsected to have small expected runtime. To large value may miss the optimal value, while to small may greatly increase runtime of the algorithm.\n\nmaxtime defaults to graph order n, tstep defaults to sqrt(n)/5. QSearchState is returned by default with penalty. Note that in general the probability is not maximal.\n\njulia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 1., 0.01);\n\njulia> result = maximize_quantum_search(qws)\nQuantumWalk.QSearchState{Array{Complex{Float64},1},Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 12.99636940469214)\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.869767\n\n\n\n"
 },
 
 {
@@ -397,7 +397,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.maximize_quantum_search",
     "category": "method",
-    "text": "maximize_quantum_search(qws::QWSearch{<:QWModelDiscr} [, runtime::Int, mode::Symbol])\n\nDetermines optimal runtime for discrete quantum walk search. The time is searched in [0, runtime] interval, with penalty penalty(qws). It is recommended for penalty to be nonzero, otherwise time close 0 is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.\n\nThe optimal time depends on chosen mode:\n\n:firstmaxprob stops when probability start to decrease,\n:firstmaxeff stops when expected runtime start to increase,\n:maxtimeeff chooses exhaustively the time from [0, runtime] with smallest expected time,\n:maxtimeprob chooses exhaustively the time from [0, runtime] with maximal success probability,\n:maxeff (default) finds optimal time with smallest expected time, usually faster than :maxtimefff.\n\nNote last three modes always returns optimal time within the interval.\n\nmaxtime defaults to graph order n, mode defaults to :maxeff. QSearchState is returned by deafult with penalty.\n\njulia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);\n\njulia> result = maximize_quantum_search(qws);\n\njulia> runtime(result)\n7\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.500016\n\njulia> result = maximize_quantum_search(qws, 100, :maxtimeprob);\n\njulia> runtime(result)\n40\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.550938\n\n\n\n"
+    "text": "maximize_quantum_search(qws_discr [, runtime, mode])\n\nDetermines optimal runtime for discrete quantum walk search. The time is searched in [0, runtime] interval, with penalty penalty(qws_discr). It is recommended for penalty to be nonzero, otherwise time close 0 is returned. Typically small penalty approximately equal to log(n) is enough, but optimal value may depend on the model or graph chosen.\n\nThe optimal time depends on chosen mode:\n\n:firstmaxprob stops when probability start to decrease,\n:firstmaxeff stops when expected runtime start to increase,\n:maxtimeeff chooses exhaustively the time from [0, runtime] with smallest expected time,\n:maxtimeprob chooses exhaustively the time from [0, runtime] with maximal success probability,\n:maxeff (default) finds optimal time with smallest expected time, usually faster than :maxtimefff.\n\nNote last three modes always returns optimal time within the interval.\n\nmaxtime defaults to graph order n, mode defaults to :maxeff. QSearchState is returned by deafult with penalty.\n\njulia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);\n\njulia> result = maximize_quantum_search(qws);\n\njulia> runtime(result)\n7\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.500016\n\njulia> result = maximize_quantum_search(qws, 100, :maxtimeprob);\n\njulia> runtime(result)\n40\n\njulia> probability(result)\n1-element Array{Float64,1}:\n 0.550938\n\n\n\n"
 },
 
 {
@@ -405,7 +405,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.penalty",
     "category": "method",
-    "text": "penalty(qws::QWSearch)\n\nReturns penalty element of qws.\n\n\n\n"
+    "text": "penalty(qws)\n\nReturns penalty element of qws.\n\n\n\n"
 },
 
 {
@@ -413,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.probability",
     "category": "method",
-    "text": "probability(qsearchstate::QSearchState)\n\nReturns the list of probabilities of finding marked vertices.\n\n\n\n"
+    "text": "probability(qsearchstate)\n\nReturns the list of probabilities of finding marked vertices.\n\n\n\n"
 },
 
 {
@@ -421,7 +421,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.runtime",
     "category": "method",
-    "text": "runtime(qsearchstate::QSearchState)\n\nReturns the time for which the state was calulated.\n\n\n\n"
+    "text": "runtime(qsearchstate)\n\nReturns the time for which the state was calulated.\n\n\n\n"
 },
 
 {
@@ -429,7 +429,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quantum search",
     "title": "QuantumWalk.state",
     "category": "method",
-    "text": "state(qsearchstate::QSearchState)\n\nReturns the state of qsearchstate.\n\n\n\n"
+    "text": "state(qsearchstate)\n\nReturns the state of qsearchstate.\n\n\n\n"
 },
 
 {
@@ -469,7 +469,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.CTQW",
     "category": "type",
-    "text": "CTQW(graph::Graph, matrix::Symbol)\n\nDefault representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a sparse matrix.\n\n\n\n"
+    "text": "CTQW(graph, matrix)\n\nDefault representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a sparse matrix.\n\n\n\n"
 },
 
 {
@@ -485,7 +485,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.CTQWDense",
     "category": "type",
-    "text": "CTQWDense(graph::Graph, matrix::Symbol)\n\nAlternative representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a dense matrix.\n\n\n\n"
+    "text": "CTQWDense(graph, matrix)\n\nAlternative representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a dense matrix.\n\n\n\n"
 },
 
 {
@@ -501,7 +501,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.QWEvolution",
     "category": "method",
-    "text": "QWEvolution([type::Type{Number}, ]ctqw::AbstractCTQW)\n\nCreates QWEvolution according to AbstractCTQW model. By default type equals Complex128. The hamiltonian is SparseMatrixCSC.\n\n\n\n"
+    "text": "QWEvolution([type, ]ctqw)\n\nCreates QWEvolution according to AbstractCTQW model. By default type equals Complex128. The hamiltonian is SparseMatrixCSC.\n\n\n\n"
 },
 
 {
@@ -509,7 +509,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.QWSearch",
     "category": "method",
-    "text": "QWSearch([type::Type{T}, ]ctqw::AbstractCTQW, marked::Vector{Int}[, penalty::Real, jumpingrate::T]) where T<:Number\n\nCreates QWSearch according to AbstractCTQW model. By default type equals Complex128, jumpingrate equals largest eigenvalue of adjacency matrix of graph if matrix(CTQW) outputs :adjacency and error otherwise, and penalty equals 0. The hamiltonian is SparseMatrixCSC.\n\nQWSearch(qws::QWSearch{<:AbstractCTQW}; marked, penalty)\n\nUpdates quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
+    "text": "QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])\n\nCreates QWSearch according to AbstractCTQW model. By default type equals Complex128, jumpingrate equals largest eigenvalue of adjacency matrix of graph if matrix(CTQW) outputs :adjacency and error otherwise, and penalty equals 0. The hamiltonian is SparseMatrixCSC.\n\nQWSearch(qws_ctqw; marked, penalty)\n\nUpdates quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
 },
 
 {
@@ -517,7 +517,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(QWSearch, ctqw::AbstractCTQW, parameters::Dict{Symbol}, marked::Vector{Int})\n\nChecks whetver combination of ctqw, marked and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. the hermiticity is not checked for efficiency issue.\n\n\n\n"
+    "text": "check_qwdynamics(QWSearch, ctqw, parameters, marked)\n\nChecks whetver combination of ctqw, marked and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. the hermiticity is not checked for efficiency issue.\n\n\n\n"
 },
 
 {
@@ -525,7 +525,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(QWEvolution, ctqw::AbstractCTQW, parameters::Dict{Symbol})\n\nChecks iof combination of ctqw and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. The hermiticity is not checked for efficiency issues.\n\n\n\n"
+    "text": "check_qwdynamics(QWEvolution, ctqw, parameters)\n\nChecks iof combination of ctqw and parameters produces valid QWSearch object. It checks if parameters consists of key :hamiltonian with corresponding value being SparseMatrixCSC or Matrix. Furthermore the hamiltonian needs to be square of size equals to graph(ctqw) order. The hermiticity is not checked for efficiency issues.\n\n\n\n"
 },
 
 {
@@ -533,7 +533,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.evolve",
     "category": "method",
-    "text": "evolve(qwd::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}, runtime::Real)\n\nReturnes new state creates by evolving state by parameters(qwd)[:hamiltonian] for time runtime according to Schrödinger equation.\n\n\n\n"
+    "text": "evolve(qwd_ctqw, state, runtime)\n\nReturnes new state creates by evolving state by parameters(qwd_ctqw)[:hamiltonian] for time runtime according to Schrödinger equation.\n\n\n\n"
 },
 
 {
@@ -541,7 +541,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.initial_state",
     "category": "method",
-    "text": "initial_state(qws::QWSearch{AbstractCTQW})\n\nReturns equal superposition of size size and type of parameters(qws)[:hamiltonian].\n\n\n\n"
+    "text": "initial_state(qws_ctqw)\n\nReturns equal superposition of size size and type of parameters(qws_ctqw)[:hamiltonian].\n\n\n\n"
 },
 
 {
@@ -549,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.matrix",
     "category": "method",
-    "text": "matrix(ctqw::AbstractCTQW)\n\nReturns the matrix symbol defining matrix graph used.\n\n\n\n"
+    "text": "matrix(ctqw)\n\nReturns the matrix symbol defining matrix graph used.\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.measure",
     "category": "method",
-    "text": "measure(::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}[, vertices::Vector{Int}])\n\nReturns the probability of measuring each vertex from vertices from state according to AbstractCTQW model. If vertices is not provided, full measurement is made. The measurement is done by taking square of absolute value of all elements of state.\n\n\n\n"
+    "text": "measure(qwd_ctqw, state[, vertices])\n\nReturns the probability of measuring each vertex from vertices from state according to qwd_abstr_ctqw model. If vertices is not provided, full measurement is made. The measurement is done by taking square of absolute value of all elements of state.\n\n\n\n"
 },
 
 {
@@ -597,7 +597,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.QWEvolution",
     "category": "method",
-    "text": "QWEvolution(szegedy::AbstractSzegedy)\n\nCreate QWEvolution according to AbstractSzegedy model. By default, the constructed operator is of type SparseMatrixCSC.\n\n\n\n"
+    "text": "QWEvolution(szegedy)\n\nCreate QWEvolution according to AbstractSzegedy model. By default, the constructed operator is of type SparseMatrixCSC.\n\n\n\n"
 },
 
 {
@@ -605,7 +605,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.QWSearch",
     "category": "method",
-    "text": "QWSearch(szegedy::AbstractSzegedy, marked::Vector{Int}[, penalty::Real])\n\nCreates QWSearch according to AbstractSzegedy model. By default parameter penalty is set to 0. Evolution operators are constructed according to the definition from https://arxiv.org/abs/1611.02238.\n\nQWSearch(qws::QWSearch[; marked::Vector{Int}, penalty::Real])\n\nUpdate quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
+    "text": "QWSearch(szegedy, marked[, penalty])\n\nCreates QWSearch according to AbstractSzegedy model. By default parameter penalty is set to 0. Evolution operators are constructed according to the definition from https://arxiv.org/abs/1611.02238.\n\nQWSearch(qws[; marked, penalty]; check)\n\nUpdate quantum walk search to new subset of marked elements and new penalty. By default marked and penalty are the same as in qws.\n\n\n\n"
 },
 
 {
@@ -613,7 +613,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.Szegedy",
     "category": "type",
-    "text": "Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})\n\nDefault representation of AbstractSzegedy. Parameter sqrtstochastic needs to be an element-wise square root of stochastic matrix.\n\n\n\n"
+    "text": "Szegedy(graph, sqrtstochastic)\n\nDefault representation of AbstractSzegedy. Parameter sqrtstochastic needs to be an element-wise square root of stochastic matrix.\n\n\n\n"
 },
 
 {
@@ -621,7 +621,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(QWSearch, szegedy::AbstractSzegedy, marked::Vector{Int}, parameters::Dict{Symbol})\n\nCheck whetver combination of szegedy, marked and parameters produces valid QWSearch object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
+    "text": "check_qwdynamics(QWSearch, szegedy, marked, parameters)\n\nCheck whetver combination of szegedy, marked and parameters produces valid QWSearch object. It checks where parameters consists of key :operators with corresponding value being list of SparseMatrixCSC. Furthermore operators needs to be square of size equals to square of graph(szegedy). order.\n\n\n\n"
 },
 
 {
@@ -629,7 +629,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.check_qwdynamics",
     "category": "method",
-    "text": "check_qwdynamics(QWEvolution, szegedy::AbstractSzegedy, parameters::Dict{Symbol})\n\nCheck whetver combination of szegedy, and parameters produces a valid QWEvolution object. It checks where parameters consists of key :operators with corresponding value being a list of SparseMatrixCSC objects. Furthermore operators need to be square of size equals to square of the order of graph(szegedy).\n\n\n\n"
+    "text": "check_qwdynamics(QWEvolution, szegedy, parameters)\n\nCheck whetver combination of szegedy, and parameters produces a valid QWEvolution object. It checks where parameters consists of key :operators with corresponding value being a list of SparseMatrixCSC objects. Furthermore operators need to be square of size equals to square of the order of graph(szegedy).\n\n\n\n"
 },
 
 {
@@ -637,7 +637,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.evolve",
     "category": "method",
-    "text": "evolve(qwd::QWDynamics{AbstractSzegedy}, state::SparseVector)\n\nMultiplies state be each operator from operators from quantum walk evolution qwd. Elements of operators and state should be of the same type.\n\n\n\n"
+    "text": "evolve(qwd_szegedy, state)\n\nMultiplies state be each operator from operators from quantum walk evolution qwd_szegedy. Elements of operators and state should be of the same type.\n\n\n\n"
 },
 
 {
@@ -645,7 +645,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.initial_state",
     "category": "method",
-    "text": "initial_state(qws::QWSearch{<:AbstractSzegedy})\n\nGenerates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238. Vectorizes and normalizes obtained sqrtstochastic matrix from model(qws).\n\n\n\n"
+    "text": "initial_state(qws_szegedy)\n\nGenerates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238. Vectorizes and normalizes obtained sqrtstochastic matrix from model(qws).\n\n\n\n"
 },
 
 {
@@ -653,7 +653,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.measure",
     "category": "method",
-    "text": "measure(qwd::AbstractSzegedy, state::SparseVector{<:Number}[, vertices])\n\nPerformes a measurement on state on vertices. vertices defaults to list of all vertices. It is defined as the measurement of partially traced on second system state https://arxiv.org/abs/1611.02238.\n\n\n\n"
+    "text": "measure(qwd_szegedy, state[, vertices])\n\nPerformes a measurement on state on vertices. vertices defaults to list of all vertices. It is defined as the measurement of partially traced on second system state https://arxiv.org/abs/1611.02238.\n\n\n\n"
 },
 
 {
@@ -661,7 +661,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Szegedy",
     "title": "QuantumWalk.sqrtstochastic",
     "category": "method",
-    "text": "sqrtstochastic(szegedy::AbstractSzegedy)\n\nReturns the sqrtstochastic element of szegedy.\n\n\n\n"
+    "text": "sqrtstochastic(szegedy)\n\nReturns the sqrtstochastic element of szegedy.\n\n\n\n"
 },
 
 {
