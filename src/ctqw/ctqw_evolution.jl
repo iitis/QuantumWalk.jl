@@ -4,9 +4,9 @@ function initial_state_ctqw(::Type{T}, size::Int) where T<:Number
 end
 
 """
-    initial_state(qws::QWSearch{AbstractCTQW})
+    initial_state(qws_ctqw)
 
-Returns equal superposition of size `size` and type of `parameters(qws)[:hamiltonian]`.
+Returns equal superposition of size `size` and type of `parameters(qws_ctqw)[:hamiltonian]`.
 """
 function initial_state(qws::QWSearch{<:AbstractCTQW})
    hamiltonian = qws.parameters[:hamiltonian]
@@ -14,9 +14,9 @@ function initial_state(qws::QWSearch{<:AbstractCTQW})
 end
 
 """
-    evolve(qwd::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}, runtime::Real)
+    evolve(qwd_ctqw, state, runtime)
 
-Returnes new state creates by evolving `state` by `parameters(qwd)[:hamiltonian]`
+Returnes new state creates by evolving `state` by `parameters(qwd_ctqw)[:hamiltonian]`
 for time `runtime` according to Schrödinger equation.
 """
 function evolve(qwd::QWDynamics{<:AbstractCTQW},
@@ -26,10 +26,10 @@ function evolve(qwd::QWDynamics{<:AbstractCTQW},
 end
 
 """
-    measure(::QWDynamics{<:AbstractCTQW}, state::Vector{<:Number}[, vertices::Vector{Int}])
+    measure(qwd_ctqw, state[, vertices])
 
 Returns the probability of measuring each vertex from `vertices` from `state`
-according to `AbstractCTQW` model. If `vertices` is not provided, full measurement is made.
+according to `qwd_abstr_ctqw` model. If `vertices` is not provided, full measurement is made.
 The measurement is done by taking square of absolute value of all elements
 of state.
 """

@@ -14,7 +14,7 @@ operator case is chosen.  Default representation of `AbstractSzegedy` is
 abstract type AbstractSzegedy <: QWModelDiscr end
 
 """
-  Szegedy(graph::AbstractGraph, sqrtstochastic::SparseMatrixCSC{Real})
+  Szegedy(graph, sqrtstochastic)
 
 Default representation of `AbstractSzegedy`. Parameter `sqrtstochastic` needs to
 be an element-wise square root of stochastic matrix.
@@ -30,7 +30,7 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
 end
 
 """
-    Szegedy(graph::AbstractGraph[, stochastic::SparseMatrixCSC{Number}, checkstochastic::Bool])
+    Szegedy(graph[, stochastic, checkstochastic])
 
 Constructors of `AbstractSzegedy`. Parameter `stochastic` needs to be a
 stochastic matrix.  Flag `checkstochastic` decides about checking the stochastic
@@ -54,20 +54,20 @@ function Szegedy(graph::AbstractGraph)
 end
 
 """
-    sqrtstochastic(szegedy::AbstractSzegedy)
+    sqrtstochastic(szegedy)
 
 Returns the `sqrtstochastic` element of `szegedy`.
 """
 sqrtstochastic(szegedy::AbstractSzegedy) = szegedy.sqrtstochastic
 
 """
-    QWSearch(szegedy::AbstractSzegedy, marked::Vector{Int}[, penalty::Real])
+    QWSearch(szegedy, marked[, penalty])
 
 Creates `QWSearch` according to `AbstractSzegedy` model. By default parameter
 `penalty` is set to 0. Evolution operators are constructed according to the
 definition from https://arxiv.org/abs/1611.02238.
 
-    QWSearch(qws::QWSearch[; marked::Vector{Int}, penalty::Real])
+    QWSearch(qws[; marked, penalty]; check)
 
 Update quantum walk search to new subset of marked elements and new penalty. By
 default `marked` and `penalty` are the same as in `qws`.
@@ -101,7 +101,7 @@ function QWSearch(qws::QWSearch{<:Szegedy};
 end
 
 """
-    QWEvolution(szegedy::AbstractSzegedy)
+    QWEvolution(szegedy)
 
 Create `QWEvolution` according to `AbstractSzegedy` model. By default, the
 constructed operator is of type `SparseMatrixCSC`.
@@ -113,7 +113,7 @@ function QWEvolution(szegedy::AbstractSzegedy)
 end
 
 """
-    check_szegedy(szegedy::AbstractSzegedy, parameters::Dict{Symbol})
+    check_szegedy(szegedy, parameters)
 
 Private function for checking the existance of `:operators`, its type, and the
 dimensionality of its elements.
@@ -128,7 +128,7 @@ function check_szegedy(szegedy::AbstractSzegedy,
 end
 
 """
-    check_qwdynamics(QWSearch, szegedy::AbstractSzegedy, marked::Vector{Int}, parameters::Dict{Symbol})
+    check_qwdynamics(QWSearch, szegedy, marked, parameters)
 
 Check whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:operators` with
@@ -143,7 +143,7 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 """
-    check_qwdynamics(QWEvolution, szegedy::AbstractSzegedy, parameters::Dict{Symbol})
+    check_qwdynamics(QWEvolution, szegedy, parameters)
 
 Check whetver combination of `szegedy`, and `parameters` produces a
 valid `QWEvolution` object. It checks where `parameters` consists of key

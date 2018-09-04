@@ -83,9 +83,10 @@ evolve(::Any)
 
 """
     check_qwdynamics(qwdtype::Type{<:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)
+	check_qwdynamics(qwd)
 
 Checks whetver combination of the arguments creates valid quantum walk dynamics
-`qwdtype`.
+`qwdtype`. Check whether `qwd` is properly parametrized dynamic.
 """
 check_qwdynamics(::Any)
 

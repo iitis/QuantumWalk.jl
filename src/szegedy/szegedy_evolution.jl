@@ -4,7 +4,7 @@ function initial_state_szegedy(sqrtstochastic::SparseMatrixCSC{<:Number})
 end
 
 """
-    initial_state(qws::QWSearch{<:AbstractSzegedy})
+    initial_state(qws_szegedy)
 
 Generates typical initial state for Szegedy search, see https://arxiv.org/abs/1611.02238.
 Vectorizes and normalizes obtained `sqrtstochastic` matrix from `model(qws)`.
@@ -14,10 +14,10 @@ function initial_state(qws::QWSearch{<:AbstractSzegedy})
 end
 
 """
-    evolve(qwd::QWDynamics{AbstractSzegedy}, state::SparseVector)
+    evolve(qwd_szegedy, state)
 
 Multiplies `state` be each `operator` from `operators` from quantum walk
-evolution `qwd`. Elements of operators and state should be of the same type.
+evolution `qwd_szegedy`. Elements of operators and state should be of the same type.
 """
 function evolve(qwd::QWDynamics{<:AbstractSzegedy},
                 state::SparseVector{T}) where T<:Number
@@ -38,7 +38,7 @@ function _evolve_szegedy(operator1::SparseMatrixCSC{T},
 end
 
 """
-    measure(qwd::AbstractSzegedy, state::SparseVector{<:Number}[, vertices])
+    measure(qwd_szegedy, state[, vertices])
 
 Performes a measurement on `state` on `vertices`. `vertices` defaults to list of
 all vertices. It is defined as the measurement of partially traced on second system state

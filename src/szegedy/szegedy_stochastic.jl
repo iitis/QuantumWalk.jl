@@ -1,5 +1,5 @@
 """
-    outneighbors_looped(graph::AbstractGraph, vertex::Int)
+    outneighbors_looped(graph, vertex)
 
 Return lists of outneighbors of `vertex` in `graph`. If outdegree of `vertex` is
 zero, then [v] is returned.
@@ -14,7 +14,7 @@ end
 
 
 """
-    isstochastic(stochastic::SparseMatrixCSC{<:Number})
+    isstochastic(stochastic)
 
 Checks whether `stochastic` is column-stochastic matrix. Returns nothing.
 """
@@ -27,7 +27,7 @@ end
 
 
 """
-    stochastic_preserves_graph_check(graph::AbstractGraph, stochastic::SparseMatrixCSC{<:Number})
+    stochastic_preserves_graph_check(graph, stochastic)
 
 Checks whether `stochastic` matrix presreves graph structure. Returns nothing.
 """
@@ -39,7 +39,7 @@ function graphpreservationcheck(graph::AbstractGraph,
 end
 
 """
-    graphstochasticcheck(graph::AbstractGraph, stochastic::SparseMatrixCSC{<:Number})
+    graphstochasticcheck(graph, stochastic)
 
 Check, whether `stochastic` is a column-stochatsic matrix preserving `graph`
 structure. Three properties are verified:
@@ -57,7 +57,7 @@ function graphstochasticcheck(graph::AbstractGraph,
 end
 
 """
-    default_stochastic(graph::AbstractGraph)
+    default_stochastic(graph)
 
 Generates default column-stochastic matrix, which represents random walk with
 uniform spreading. If outdegree of vertex is zero, additional 1 is added on the

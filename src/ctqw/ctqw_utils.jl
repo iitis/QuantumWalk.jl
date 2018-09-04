@@ -1,9 +1,9 @@
 """
-    jumping_rate([type::Type{Number}, ]ctqw::AbstractCTQW)
+    jumping_rate([type_number, ]ctqw)
 
 Return default value of the jumping rate for the adjacency matrix. This function
 is not implemented for `:laplacian`. For `:adjacency` case the greatest eigenvalue
-is returned. By default `type` is set to `Complex128`.
+is returned. By default `type_number` is set to `Complex128`.
 """
 function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    @assert ctqw.matrix == :adjacency "Default jumping rate known for adjacency matrix only"
@@ -21,7 +21,7 @@ end
 
 
 """
-    graph_hamiltonian(type::Type{Number}, ctqw::AbstractCTQW)
+    graph_hamiltonian(type, ctqw)
 
 Returns default evolution matrix of `type`, adjacency or laplacian matrix depending on
 `ctqw` parametrization.
@@ -44,14 +44,13 @@ function graph_hamiltonian(::Type{T}, ctqw::CTQWDense) where T<:Number
    end
 end
 """
-    hamiltonian_evolution(hamiltonian::DenseMatrix{<:Number}, initstate::Vector{<:Number}, runtime::Real)
-    hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number}, initstate::Vector{<:Number}, runtime::Real)
+    hamiltonian_evolution(hamiltonian, initstate, runtime)
 
 Evolve `initstate` according to `hamiltonian` for time `runtime` according to
 Schrödinger equation. For dense matrices matrix exponantation is calculated. For
 sparse matrices `expmv` from `Expokit` package is used.
 """
-function hamiltonian_evolution(hamiltonian::DenseMatrix{<:Number},
+function hamiltonian_evolution(hamiltonian::AbstractMatrix{<:Number},
                                initstate::Vector{<:Number},
                                runtime::Real)
    expm(1im*hamiltonian*runtime)*initstate

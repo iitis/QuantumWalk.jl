@@ -9,13 +9,15 @@ export
 
 
 """
-    QWSearch(model::QWModel, parameters::Dict{Symbol}, marked::Vector{Int}, penalty::Real)
+    QWSearch(model, parameters, marked, penalty[; check])
 
 Simulates quantum search on `model` with `marked` vertices and additional `parameters`.
 `penalty` represents the cost of initial state creation and measurement, which should
 be included for better optimization, see documentation of `maximizing_function`.
 Note that marked vertices needs to be between `1` and `nv(graph(model))`. Furthermore
 penalty needs to be nonnegative.
+
+`check_qwdynamics` is executed if and only iff `check` is true.
 
 Needs implementation of
 * `initial_state(qws::QWSearch)`
@@ -44,24 +46,31 @@ struct QWSearch{T,W<:Real} <: QWDynamics{T}
   function QWSearch(model::T,
                     parameters::Dict{Symbol},
                     marked::Vector{Int},
-                    penalty::W) where {T<:QWModel, W<:Real}
+                    penalty::W;
+                    check::Bool=false) where {T<:QWModel, W<:Real}
     @assert all(1 <= v <= nv(model.graph) for v=marked) && marked != [] "marked vertices needs to be non-empty subset of graph vertices set"
     @assert penalty >= 0 "Penalty needs to be nonnegative"
 
-    check_qwdynamics(QWSearch, model, parameters, marked)
+    if check
+        check_qwdynamics(QWSearch, model, parameters, marked)
+    end
     new{T,W}(model, parameters, marked, penalty)
   end
 end
 
+function check_qwdynamics(qws::QWSearch)
+    check_qwdynamics(QWSearch, model(qws), parameters(qws), marked(qws))
+end
+
 """
-    marked(qws::QWSearch)
+    marked(qws)
 
 Returns `marked` vertices element of `qws`.
 """
 marked(qws::QWSearch) = qws.marked
 
 """
-    penalty(qws::QWSearch)
+    penalty(qws)
 
 Returns `penalty` element of `qws`.
 """
@@ -69,8 +78,8 @@ penalty(qws::QWSearch) = qws.penalty
 
 
 """
-    QSearchState(state, probability::Float64, runtime::Real)
-    QSearchState(qws::QWSearch, state, runtime::Float64)
+    QSearchState(state, probability, runtime)
+    QSearchState(qws, state, runtime)
 
 Creates container which consists of `state`, success probability `probability`
 and running time `runtime`. Validity of `probability` and `runtime` is not checked.
@@ -118,21 +127,21 @@ function QSearchState(qws::QWSearch, state::Vector{Float64}, runtime::Real)
 end
 
 """
-    state(qsearchstate::QSearchState)
+    state(qsearchstate)
 
 Returns the state of qsearchstate.
 """
 state(qsearchstate::QSearchState) = qsearchstate.state
 
 """
-    probability(qsearchstate::QSearchState)
+    probability(qsearchstate)
 
 Returns the list of probabilities of finding marked vertices.
 """
 probability(qsearchstate::QSearchState) = qsearchstate.probability
 
 """
-    runtime(qsearchstate::QSearchState)
+    runtime(qsearchstate)
 
 Returns the time for which the state was calulated.
 """
@@ -141,7 +150,7 @@ runtime(qsearchstate::QSearchState) = qsearchstate.runtime
 
 # documentation for
 """
-    check_qwdynamics(model::QWModel, parameters::Dict{Symbol}, marked::Vector{Int})
+    check_qwdynamics(model, parameters, marked)
 
 Checks whetver combination of `model`, `marked` and `parameters` creates valid
 quantum search evolution. Note that whetver list of vertices `marked` are a subset
@@ -150,7 +159,7 @@ of vertices of `graph` from `model` is checked seperately in `QWSearch` construc
 check_qwdynamics(QWSearch, ::Dict{Symbol}, ::Vector{Int})
 
 """
-    initial_state(qws::QWSearch)
+    initial_state(qws)
 
 Generates initial state for `qws`.
 """
