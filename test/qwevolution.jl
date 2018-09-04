@@ -20,7 +20,7 @@
 
     @test_throws AssertionError execute(qweAdj, init , -1.0)
 
-    @test check_dynamics(ctqwAdj)
+    @test check_qwdynamics(qweAdj) == nothing
 
     @test execute(qweAdj, init, 1) ≈ execute(qweAdj, execute(qweAdj, init, 0.5), 0.5)
 
@@ -37,7 +37,7 @@
 
     steps = 10
 
-    @test check_dynamics(qwe)
+    @test check_qwdynamics(qwe) == nothing
 
     @test_throws AssertionError execute(qwe, init, -1)
     @test_throws MethodError execute(qwe, init, 0.5)

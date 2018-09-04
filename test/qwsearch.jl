@@ -11,7 +11,7 @@ end
   @testset "General" begin
     g = smallgraph(:bull)
     qws = QWSearch(CTQW(g), [1])
-    @test check_dynamics(qws)
+    @test check_qwdynamics(qws) == nothing
   end
 
   @testset "Norm preservation" begin
@@ -41,7 +41,7 @@ end
   qws = QWSearch(Szegedy(g), [1])
 
   @testset "General" begin
-    @test check_dynamics(qws)
+    @test check_qwdynamics(qws) == nothing
   end
 
 
