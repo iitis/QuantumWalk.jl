@@ -2,6 +2,17 @@ using QuantumWalk
 using LightGraphs
 using Base.Test
 
+macro test_no_error(ex)
+    quote
+        try
+            $(esc(ex))
+            true
+        catch
+            false
+        end
+    end
+end
+
 include("ctqw.jl")
 include("szegedy.jl")
 include("qwsearch.jl")

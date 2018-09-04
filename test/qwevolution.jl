@@ -7,6 +7,7 @@
     qwe = QWEvolution(Szegedy(g))
 
     @test_throws AssertionError QWEvolution(Szegedy(g), Dict{Symbol,Any}(), check=true)
+    @test_no_error QWEvolution(Szegedy(g), Dict{Symbol,Any}(), check=false)
     @test check_qwdynamics(qwe) == nothing
   end
 
@@ -23,7 +24,7 @@
     @test_throws AssertionError execute(qweLap, init , -1.0)
     @test execute(qweLap, init, 1) ≈ execute(qweLap, execute(qweLap, init, 0.5), 0.5)
 
-    @test_throws ErrorException CTQW(g, :notimplemented)
+    @test_throws ErrorException QWEvolution(CTQW(g, :notimplemented))
   end
 
   @testset "Quantum walks simulator for Szegedy" begin

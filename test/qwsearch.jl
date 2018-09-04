@@ -4,6 +4,7 @@
 
   @test check_qwdynamics(qws) == nothing
   @test_throws AssertionError QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=true)
+  @test_no_error QWSearch(Szegedy(g), Dict{Symbol, Any}(), [1], 0., check=false) 
 end
 
 @testset "Continuous search" begin
