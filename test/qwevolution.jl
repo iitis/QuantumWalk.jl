@@ -15,8 +15,13 @@
     init = fill(Complex128(1/sqrt(n)), n)
     ctqwAdj = CTQW(g, :adjacency)
     ctqwLap = CTQW(g, :laplacian)
+    ctqwAdjDense = CTQWDense(g, :adjacency)
+    ctqwLapDense = CTQWDense(g, :laplacian)
     qweAdj = QWEvolution(ctqwAdj)
     qweLap = QWEvolution(ctqwLap)
+    qweAdjDense = QWEvolution(ctqwAdjDense)
+    qweLapDense = QWEvolution(ctqwLapDense)
+
 
     @test_throws AssertionError execute(qweAdj, init , -1.0)
 
@@ -29,6 +34,7 @@
 
     # due to sign issue the measure function is needed
     @test measure(qweAdj, execute(qweAdj, init, 1)) ≈ measure(qweLap, execute(qweLap, init, 1))
+    @test measure(qweAdjDense, execute(qweAdjDense, init, 1)) ≈ measure(qweLapDense, execute(qweLapDense, init, 1))
 
     @test_throws ErrorException QWEvolution(CTQW(g, :notimplemented))
   end
