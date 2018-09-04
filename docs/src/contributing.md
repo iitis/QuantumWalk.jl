@@ -4,31 +4,29 @@ If you have a model or an algorithm which in your opinion should be included in
 the package, please open an issue at GitHub. After discussing the issue and the
 proposed changes, we will be happy to include your code in the main tree.
 
-Please do not send pull request before an issue.
+Please do not send pull request before an issue!
 
 
 ## Bugs
 
 In the case, you noticed some bugs, please start with an issue with a minimal
-working example of not-working code. If *Exception* is thrown, please provide an
+working example reproducing it. If *Exception* is thrown, please provide an
 exception message as well.  If no *Exception* is thrown, but the result is
-wrong, please provide in the issue message correct answer.
+invalid, please provide the correct answer in the issue message. 
 
-In the case you make a pull request, please add a not-working example as a test.
+Please add the example reproducing the problem as a test in the pull request.
 
 ## Improvements
 
 If you can provide a code, which works faster than already existing, please
-check its efficiency for various input data. In particular check various
-*dynamics* and *graphs*. Typically checked graphs are Path  and Complete
-graphs.
+check its efficiency for various input data. In particular, check various
+*dynamics* and *graphs*. Typically checked graphs are `PathGraph` and `CompleteGraph`.
 
-We are aware of the fact, that the efficiency of the quantum walk model
-evolution may depend strongly on the graph properties, including order and
-sparsity. If your implementation works better only on some collection, please
-provide it as a separate model, possible as a subtype of an already existing
-model if possible. Note we are interested in the implementation which works well
-for *many* parameters, not only for example for fixed graphs.
+The efficiency of the quantum walk model evolution may depend strongly on the graph 
+properties, including order and sparsity. If your implementation works better only 
+on some collection, please provide it as a separate model, possible as a subtype of 
+an already existing model if possible. Note we are interested in the implementation
+which works well for *many* parameters, not only for fixed graphs.
 
 We welcome any ideas concerning the readability and logic of the code as well.
 
