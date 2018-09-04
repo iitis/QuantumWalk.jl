@@ -701,7 +701,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Contributing",
     "category": "section",
-    "text": "If you have a model or an algorithm which in your opinion should be included in the package, please open an issue at GitHub. After discussing the issue and the proposed changes, we will be happy to include your code in the main tree.Please do not send pull request before an issue."
+    "text": "If you have a model or an algorithm which in your opinion should be included in the package, please open an issue at GitHub. After discussing the issue and the proposed changes, we will be happy to include your code in the main tree.Please do not send pull request before an issue!"
 },
 
 {
@@ -709,7 +709,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Bugs",
     "category": "section",
-    "text": "In the case, you noticed some bugs, please start with an issue with a minimal working example of not-working code. If Exception is thrown, please provide an exception message as well.  If no Exception is thrown, but the result is wrong, please provide in the issue message correct answer.In the case you make a pull request, please add a not-working example as a test."
+    "text": "In the case, you noticed some bugs, please start with an issue with a minimal working example reproducing it. If Exception is thrown, please provide an exception message as well.  If no Exception is thrown, but the result is invalid, please provide the correct answer in the issue message. Please add the example reproducing the problem as a test in the pull request."
 },
 
 {
@@ -717,7 +717,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Contributing",
     "title": "Improvements",
     "category": "section",
-    "text": "If you can provide a code, which works faster than already existing, please check its efficiency for various input data. In particular check various dynamics and graphs. Typically checked graphs are Path  and Complete graphs.We are aware of the fact, that the efficiency of the quantum walk model evolution may depend strongly on the graph properties, including order and sparsity. If your implementation works better only on some collection, please provide it as a separate model, possible as a subtype of an already existing model if possible. Note we are interested in the implementation which works well for many parameters, not only for example for fixed graphs.We welcome any ideas concerning the readability and logic of the code as well."
+    "text": "If you can provide a code, which works faster than already existing, please check its efficiency for various input data. In particular, check various dynamics and graphs. Typically checked graphs are PathGraph and CompleteGraph.The efficiency of the quantum walk model evolution may depend strongly on the graph  properties, including order and sparsity. If your implementation works better only  on some collection, please provide it as a separate model, possible as a subtype of  an already existing model if possible. Note we are interested in the implementation which works well for many parameters, not only for fixed graphs.We welcome any ideas concerning the readability and logic of the code as well."
 },
 
 {
@@ -741,7 +741,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Citing",
     "title": "Usage and citing",
     "category": "section",
-    "text": "In case of citing, please use the following BibTeX form:@misc{glos2018quantumwalkjl,\n  author       = {Adam Glos and Jaros{\\l}aw Adam Miszczak},\n  title        = {{QuantumWalks/QuantumWalk.jl}},\n  year         = {2018},\n  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}\n}Our package was already used in papers concerning quantum attacksAdam Glos, Jarosław Adam Miszczak. \'Impact of the malicious input data modification on the efficiency of quantum algorithms.\' arXiv preprint arXiv:1802.10041 (2018).In case You have used our package for your research, we will be grateful for any information about the paper or the package. With your consent we will provide a link to the paper here."
+    "text": "If you are using our package, please cite us by using the following BibTeX entry:@misc{glos2018quantumwalkjl,\n  author       = {Adam Glos and Jaros{\\l}aw Adam Miszczak},\n  title        = {{QuantumWalks/QuantumWalk.jl}},\n  year         = {2018},\n  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}\n}Our package was already used in papers concerning quantum attacksAdam Glos, Jarosław Adam Miszczak. \'Impact of the malicious input data modification on the efficiency of quantum algorithms.\' arXiv preprint arXiv:1802.10041 (2018).In case you have used our package for your research, we will be grateful for any information about the paper or the package utilizing our code. With your consent, we will provide a link to your work."
 },
 
 {
