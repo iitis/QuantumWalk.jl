@@ -21,7 +21,7 @@ to `:adjacency`. The Hamiltonian is a sparse matrix.
 struct CTQW <: AbstractCTQW
    graph::Graph
    matrix::Symbol
-   CTQW(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw(ErrorException("Only :laplacian and :adjacency is implemented"))
+   CTQW(graph::Graph, matrix::Symbol) = new(graph, matrix)
 end
 
 """
@@ -33,7 +33,7 @@ to `:adjacency`. The Hamiltonian is a dense matrix.
 struct CTQWDense <: AbstractCTQW
    graph::Graph
    matrix::Symbol
-   CTQWDense(graph::Graph, matrix::Symbol) = matrix ∈ [:adjacency, :laplacian] ? new(graph, matrix) : throw(ErrorException("Only :laplacian and :adjacency is implemented"))
+   CTQWDense(graph::Graph, matrix::Symbol) = new(graph, matrix)
 end
 
 """
