@@ -13,7 +13,7 @@
     n = 5
     g = CompleteGraph(n)
     qws = QWSearch(CTQW(g), [1], 0, 1/n)
-    s0 =  QSearchState(qws, initial_state(qws),0.0)
+    s0 =  QSearchState(qws, real(initial_state(qws)), 0.0)
     @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
     @test evolve(qws,evolve(qws,s0,0.1),0.1) ≈ evolve(qws,s0,0.2)
 
