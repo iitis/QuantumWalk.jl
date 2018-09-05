@@ -13,23 +13,23 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Welcome to QuantumWalk.jl",
     "category": "section",
-    "text": "QuantumWalk.jl is a package providing general functionalities and implementations of quantum walks. The package uses the Julia\'s type hierarchy to produce general functions working on at least large collection of quantum walk models."
+    "text": "QuantumWalk.jl is a package for Julia programming language, which provides a framework for implementing and analyzing quantum walks. The packages provides general implementation of functions relevant for all models of quantum walks. To achieve this, it utilizes the Julia\'s type hierarchy to implement general functions working on large collection of quantum walk models."
 },
 
 {
-    "location": "index.html#Why?-1",
+    "location": "index.html#Motivation-1",
     "page": "Home",
-    "title": "Why?",
+    "title": "Motivation",
     "category": "section",
-    "text": "Since the very first paper defining quantum walk, plenty of quantum walk models were proposed. This includes continuous-time quantum walk, Szegedy quantum walk, coined quantum walk, stochastic quantum walk or flip-flop quantum walk, to name a few. Most of the models have the same applications as for example spatial search or transport. Furthermore models are compared by general properties such as localization, propagation or trapping.The purpose of the package is not to provide an implementations of all models, as this is simply impossible due to quantum walk theory progress. Our aim is to provide cross functionality: implementing properly single model allows using already implemented dynamics such as spatial search or pure walk evolution. Contrary, if we came out with some interesting general quantum walk property, we can use the package for analysing already existing models."
+    "text": "Since the very first paper defining quantum walk, plenty of quantum walk models were proposed. This includes continuous-time quantum walk, Szegedy quantum walk, coined quantum walk, stochastic quantum walk, and flip-flop quantum walk, to name a few. Most of the models have the same applications, including spatial search and transport. Furthermore, models can be compared by analyzing their general properties such as localization, propagation, and trapping.The purpose of the package is not to provide implementations of all models, as this is simply impossible due to the rapid progress in the theory of quantum walks. We aim to provide functionality common for all models. Thanks to this, by providing the implementation details of a particular single model, the user can execute the types of dynamics defined by the package, including spatial search and walk evolution. On the other hand, if one is interested in some property relevant for a general quantum walk, the package can be used for analyzing already existing models."
 },
 
 {
-    "location": "index.html#How?-1",
+    "location": "index.html#Package-structure-1",
     "page": "Home",
-    "title": "How?",
+    "title": "Package structure",
     "category": "section",
-    "text": "The package implements two independent type hierarchies: one for quantum walk model, one for quantum dynamics. If possible, the quantum dynamics is defined iff proper functions for quantum walk models are defined. For example if we provide evolve, measure and check_qwdynamics methods we can use the model for simulating pure walk evolution. Similarly we need initial_state, evolve, measure and check_qwdynamics for quantum spatial search dynamics.Currently defined quantum walk models are presented in section Exemplary models, while exemplary quantum dynamics are presented in Exemplary models."
+    "text": "The package structure is based on two independent type hierarchies: the first one for operating on walk models, and second for defining dynamics. The dynamic is defined if the appropriate functions for the model are defined. For example, if one provides evolve, measure, and check_qwdynamics methods for the newly defined model, the package can be used to simulate the evolution of this model. If additionally, the user provides initial_state method, the package can be used for executing quantum spatial search dynamics.Models of quantum walks currently implemented in the package are presented in section Models, while the types of dynamics provided by the package are decried in section Dynamics."
 },
 
 {
@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Can I contribute?",
     "category": "section",
-    "text": "Yes, You can! As there are simply to many models and quantum dynamics we cannot deal with such on our own. The details concerning contribution can be found in Contributing section."
+    "text": "Yes, You can! There are simply to many models and quantum dynamics we cannot deal with all of them. If you can provide an implementation of a new model, we would be happy to include it in our package. The details can be found in section Contributing."
 },
 
 {
@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "Continuous-Time Quantum Walk",
     "category": "section",
-    "text": "Implementation of continuous-time quantum walk. The model is defined for arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, state is measured in canonic basis. The evolution is made on the pure system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW, which works on sparse matrices. Alternative realization is CTQWDense, which works on dense matrices. The model includes following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
+    "text": "Implementation of the continuous-time quantum walk. The model is defined for an arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, the state is measured in the canonical basis. The evolution is defined on a system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW, utilizing sparse matrices. Alternative realization is CTQWDense, which works on standard matrices. The model includes the following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
 },
 
 {
@@ -674,15 +674,15 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "new_dynamics.html#",
-    "page": "New dynamics",
-    "title": "New dynamics",
+    "page": "Extending",
+    "title": "Extending",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "new_dynamics.html#New-dynamics-1",
-    "page": "New dynamics",
+    "page": "Extending",
     "title": "New dynamics",
     "category": "section",
     "text": "The main purpose of the package is to provide easy extendability of the code. As Quantum walk models needs to be adjusted to existing dynamics, the key is to defined an describe dynamic. As an example we propose an example of simple dynamic determining the period of the model.struct QWPeriod{T} <: QWDynamics{T}\n  model::T\n  parameters::Dict{Symbol,Any}\n\n  function QWPeriod(model::T,\n                    parameters::Dict{Symbol}) where T<:QWModelDiscr\n    check_qwdynamics(QWPeriod, model, parameters)\n    new{T}(model, parameters)\n  end\nend\n\nfunction determine_period(qwp::QWPeriod,\n                          init_state,\n                          state_diff_val::Real,\n                          tmax::Int=nv(graph(qwp)))\n  state = evolve(qwp, init_state)\n  for t=1:tmax\n    if state_diff(qwp, state, init_state) < state_diff_val\n      return t\n    end\n    state = evolve(qwp, state)\n  end\n  return -1\nend\n\nfunction QWPeriod(szegedy::AbstractSzegedy)\n  operators = QuantumWalk.szegedy_walk_operators(szegedy)\n  parameters = Dict{Symbol,Any}(:operators => operators)\n  QWPeriod(szegedy, parameters)\nendAccording to the definition above, the following function should be implemented for Model:QWPeriod(model::Model,...),\ncheck_dynamics(QWPeriod, model::Model, parameters::Dict{Symbol,Any}),\nevolve(qwp::QWPeriod{<:Model}, state),\nstate_diff(qwp::QWPeriod{<:Model}, state1::S, state2::S) where S.Note that for Szegedy function evolve is already implemented, and we can use private function for check_dynamics. Furthermore execute family commands are inherited from QWDynamics, which in this case is equivalent to execution of QWEvolution.The implementation for the Szegedy can have following form:function QWPeriod(szegedy::AbstractSzegedy)\n  operators = QuantumWalk.szegedy_walk_operators(szegedy)\n  parameters = Dict{Symbol,Any}(:operators => operators)\n  QWPeriod(szegedy, parameters)\nend\n\nfunction check_qwdynamics(::Type{QWPeriod}, szegedy::AbstractSzegedy, parameters::Dict{Symbol})\n  QuantumWalk.check_szegedy(szegedy, parameters)\nend\n\nfunction state_diff(qwp::QWPeriod{<:AbstractSzegedy},\n                    state1::SparseVector{T},\n                    state2::SparseVector{T}) where T<:Number\n  1-abs(sum(state1.*conj.(state2)))\nendThanks to the code above we can check the periodicity for the Szegedy walk.julia> n = 20\n20\n\njulia> qwp = QWPeriod(Szegedy(barabasi_albert(n, 3)));\n\njulia> determine_period(qwp, sparse(fill(1/n, n^2)), 0.01)\n1\n\njulia> state = sparse(randn(n^2)); state /= norm(state);\n\njulia> determine_period(qwp, state, 0.05, 8000)\n401"
