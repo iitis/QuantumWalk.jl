@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "Continuous-Time Quantum Walk",
     "category": "section",
-    "text": "Implementation of the continuous-time quantum walk. The model is defined for an arbitrary undirected graph. Hamiltonian is chosen to be adjacency or Laplacian matrix. After the evolution, the state is measured in the canonical basis. The evolution is defined on a system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW, utilizing sparse matrices. Alternative realization is CTQWDense, which works on standard matrices. The model includes the following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
+    "text": "Implementation of the continuous-time quantum walk. The model is defined for an arbitrary undirected graph. Hamiltonian is chosen to be adjacency, normalized Laplacian  or Laplacian matrix. After the evolution, the state is measured in the canonical basis. The evolution is defined on a system of size equal to graph order. The precise definition can be found in Spatial search by quantum walk by Childs and Goldstone, where both pure walk and search dynamics are described.The abstract supertype is AbstractCTQW with its default realization CTQW, utilizing sparse matrices. Alternative realization is CTQWDense, which works on standard matrices. The model includes the following types and methods:Order = [:type, :function]\nModules = [QuantumWalk]\nPages   = [\"ctqw.md\"]"
 },
 
 {
@@ -469,7 +469,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.CTQW",
     "category": "type",
-    "text": "CTQW(graph, matrix)\n\nDefault representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a sparse matrix.\n\n\n\n"
+    "text": "CTQW(graph, matrix)\n\nDefault representation of AbstractCTQW. matrix defaults to :adjacency. The Hamiltonian is a sparse matrix.\n\n\n\n"
 },
 
 {
@@ -485,7 +485,7 @@ var documenterSearchIndex = {"docs": [
     "page": "CTQW and CTQWDense",
     "title": "QuantumWalk.CTQWDense",
     "category": "type",
-    "text": "CTQWDense(graph, matrix)\n\nAlternative representation of AbstractCTQW. matrix needs to be :adjacency or :laplacian and defaults to :adjacency. The Hamiltonian is a dense matrix.\n\n\n\n"
+    "text": "CTQWDense(graph, matrix)\n\nAlternative representation of AbstractCTQW. matrix defaults to :adjacency. The Hamiltonian is a dense matrix.\n\n\n\n"
 },
 
 {
