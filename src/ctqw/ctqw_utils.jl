@@ -2,7 +2,7 @@
     jumping_rate([type_number, ]ctqw)
 
 Return default value of the jumping rate for the adjacency matrix. This function
-is not implemented for `:laplacian`. For `:adjacency` case the greatest eigenvalue
+is not implemented for `:laplacian` or `:normalized_laplacian`. For `:adjacency` case the greatest eigenvalue
 is returned. By default `type_number` is set to `Complex128`.
 """
 function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
@@ -20,27 +20,28 @@ function jumping_rate(ctqw::AbstractCTQW)
 end
 
 
+function normalized_laplacian(g::Graph, ::Type{T}) where T<:Number
+  l = laplacian_matrix(g, T)
+  d = spdiagm(sqrt.(1./(diag(l))))
+  d*l*d
+end
+
+
 """
     graph_hamiltonian(type, ctqw)
 
-Returns default evolution matrix of `type`, adjacency or laplacian matrix depending on
+Returns default evolution matrix of `type`, adjacency, laplacian matrix or normalized laplacian depending on
 `ctqw` parametrization.
 """
 function graph_hamiltonian(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    if ctqw.matrix == :adjacency
-      return adjacency_matrix(ctqw.graph, T)
+      return -adjacency_matrix(ctqw.graph, T)
    elseif ctqw.matrix == :laplacian
       return laplacian_matrix(ctqw.graph, T)
+   elseif ctqw.matrix == :normalized_laplacian
+      return normalized_laplacian(ctqw.graph, T)
    else
       throw(ErrorException("Model $ctqw poorly parametrized"))
-   end
-end,
-
-function graph_hamiltonian(::Type{T}, ctqw::CTQWDense) where T<:Number
-   if ctqw.matrix == :adjacency
-      return full(adjacency_matrix(ctqw.graph, T))
-   elseif ctqw.matrix == :laplacian
-      return full(laplacian_matrix(ctqw.graph, T))
    end
 end
 """
@@ -53,11 +54,11 @@ sparse matrices `expmv` from `Expokit` package is used.
 function hamiltonian_evolution(hamiltonian::AbstractMatrix{<:Number},
                                initstate::Vector{<:Number},
                                runtime::Real)
-   expm(1im*hamiltonian*runtime)*initstate
+   expm(-1im*hamiltonian*runtime)*initstate
 end
 
 function hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number},
                                initstate::Vector{<:Number},
                                runtime::Real)
-   expmv(runtime, 1im*hamiltonian, initstate)
+   expmv(runtime, -1im*hamiltonian, initstate)
 end

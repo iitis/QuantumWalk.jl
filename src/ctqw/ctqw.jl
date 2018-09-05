@@ -15,7 +15,7 @@ abstract type AbstractCTQW <: QWModelCont end
 """
     CTQW(graph, matrix)
 
-Default representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
+Default representation of `AbstractCTQW`. `matrix` defaults
 to `:adjacency`. The Hamiltonian is a sparse matrix.
 """
 struct CTQW <: AbstractCTQW
@@ -27,7 +27,7 @@ end
 """
     CTQWDense(graph, matrix)
 
-Alternative representation of `AbstractCTQW`. `matrix` needs to be `:adjacency` or `:laplacian` and defaults
+Alternative representation of `AbstractCTQW`. `matrix` defaults
 to `:adjacency`. The Hamiltonian is a dense matrix.
 """
 struct CTQWDense <: AbstractCTQW
@@ -100,8 +100,23 @@ function QWSearch(::Type{T},
                   marked::Vector{Int},
                   penalty::Real = 0.,
                   jumpingrate::T = jumping_rate(T, ctqw)) where T<:Number
+
    hamiltonian = jumpingrate*graph_hamiltonian(T, ctqw)
-   hamiltonian += sum(proj(T, v, nv(ctqw.graph)) for v=marked)
+   hamiltonian -= sum(proj(T, v, nv(ctqw.graph)) for v=marked)
+
+   parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
+
+   QWSearch(ctqw, parameters, marked, penalty)
+end,
+
+function QWSearch(::Type{T},
+                  ctqw::CTQWDense,
+                  marked::Vector{Int},
+                  penalty::Real = 0.,
+                  jumpingrate::T = jumping_rate(T, ctqw)) where T<:Number
+
+   hamiltonian = jumpingrate*full(graph_hamiltonian(T, ctqw))
+   hamiltonian -= sum(proj(T, v, nv(ctqw.graph)) for v=marked)
 
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
 
@@ -121,8 +136,8 @@ function QWSearch(qws::QWSearch{<:AbstractCTQW};
    oldmarked = qws.marked
 
    hamiltonian = copy(parameters(qws)[:hamiltonian])
-   hamiltonian += sum(proj(eltype(hamiltonian), v, nv(graph(qws))) for v=marked)
-   hamiltonian -= sum(proj(eltype(hamiltonian), v, nv(graph(qws))) for v=oldmarked)
+   hamiltonian -= sum(proj(eltype(hamiltonian), v, nv(graph(qws))) for v=marked)
+   hamiltonian += sum(proj(eltype(hamiltonian), v, nv(graph(qws))) for v=oldmarked)
 
    QWSearch(model(qws), Dict(:hamiltonian => hamiltonian), marked, penalty)
 end

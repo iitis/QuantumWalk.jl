@@ -33,6 +33,15 @@ end
 
     qws = QWSearch(CTQWDense(g), [1], 0, 1/n)
     @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
+
+
+    n = 5
+    g = CycleGraph(5)
+    qss_adj = QWSearch(CTQW(g, :adjacency), [1], 0, 1/2)
+    qss_lap = QWSearch(CTQW(g, :laplacian), [1], 0, 1/2)
+    qss_normlap = QWSearch(CTQW(g, :normalized_laplacian), [1], 0, 1)
+    @test sum(execute_single(qss_adj, 2.).probability) ≈ sum(execute_single(qss_lap, 2.).probability)
+    @test sum(execute_single(qss_adj, 2.).probability) ≈ sum(execute_single(qss_normlap, 2.).probability)
   end
 end
 
