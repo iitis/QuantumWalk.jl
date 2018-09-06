@@ -11,12 +11,12 @@
 
         @test_throws AssertionError maximize_quantum_search(cqss, -1.)
         @test_throws AssertionError maximize_quantum_search(cqss, 1., -1.)
-        @test runtime(maximize_quantum_search(cqss)) > qss_penalty
-        @test runtime(maximize_quantum_search(cqss, 1., 1.)) > qss_penalty
+        @test runtime(maximize_quantum_search(cqss)) > 0
+        @test runtime(maximize_quantum_search(cqss, 1., 1.)) > 0
         @test_warn r".*" maximize_quantum_search(cqss0)
         @test_nowarn maximize_quantum_search(cqss)
 
-        @test runtime(maximize_quantum_search(cqss, 1., 0.2)) ≈ 1.+penalty(cqss)
+        @test isapprox(runtime(maximize_quantum_search(cqss, 1., 0.2)), 1., atol=0.001)
 
     end
 
@@ -26,12 +26,12 @@
 
         @test_throws AssertionError maximize_quantum_search(dqss0, -1)
         @test_throws AssertionError maximize_quantum_search(dqss0, 1, :unknown_mode)
-        @test runtime(maximize_quantum_search(dqss)) > qss_penalty
-        @test runtime(maximize_quantum_search(dqss, nv(g), :firstmaxprob)) > qss_penalty
-        @test runtime(maximize_quantum_search(dqss, nv(g), :firstmaxeff)) > qss_penalty
-        @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeeff)) > qss_penalty
-        @test runtime(maximize_quantum_search(dqss, nv(g), :maxeff)) > qss_penalty
-        @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeprob)) > qss_penalty
+        @test runtime(maximize_quantum_search(dqss)) > 0
+        @test runtime(maximize_quantum_search(dqss, nv(g), :firstmaxprob)) > 0
+        @test runtime(maximize_quantum_search(dqss, nv(g), :firstmaxeff)) > 0
+        @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeeff)) > 0
+        @test runtime(maximize_quantum_search(dqss, nv(g), :maxeff)) > 0
+        @test runtime(maximize_quantum_search(dqss, nv(g), :maxtimeprob)) > 0
 
 
         @test_warn r".*" maximize_quantum_search(dqss0)

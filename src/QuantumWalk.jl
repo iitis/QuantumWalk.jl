@@ -95,12 +95,7 @@ check_qwdynamics(::Any)
 include("type_hierarchy.jl")
 include("dynamics.jl")
 
-# dynamics
-include("qwsearch/qwsearch.jl")
-include("qwevolution/qwevolution.jl")
-
-# models
-include("ctqw/ctqw.jl")
-include("szegedy/szegedy.jl")
+include("qwdynamics/qwdynamics_import.jl")
+include("qwmodels/qwmodels_import.jl")
 
 end

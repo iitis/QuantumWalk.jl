@@ -78,11 +78,11 @@ penalty(qws::QWSearch) = qws.penalty
 
 
 """
-    QSearchState(state, probability, runtime)
+    QSearchState(state, probability, runtime, penalty)
     QSearchState(qws, state, runtime)
 
-Creates container which consists of `state`, success probability `probability`
-and running time `runtime`. Validity of `probability` and `runtime` is not checked.
+Creates container which consists of `state`, success probability `probability`,
+running time `runtime` and penalty `penalty`.
 
 In second case `state` is measured according to `qws`.
 
@@ -91,7 +91,7 @@ In second case `state` is measured according to `qws`.
 julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qws, initial_state(qws), 0)
-QuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64}(  [2 ]  =  0.288675
+QuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64,Int64}(  [2 ]  =  0.288675
   [3 ]  =  0.288675
   [4 ]  =  0.288675
   [5 ]  =  0.288675
@@ -102,28 +102,34 @@ QuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64}(  [2 ]  =  0.288675
   [12]  =  0.288675
   [13]  =  0.288675
   [14]  =  0.288675
-  [15]  =  0.288675, [0.25], 0)
+  [15]  =  0.288675, [0.25], 0, 0)
 ```
 """
-struct QSearchState{S,Y<:Real}
+struct QSearchState{S,Y<:Real,T<:Real}
   state::S
   probability::Vector{Float64}
   runtime::Y
+  penalty::T
 
   function QSearchState(state::S,
                         probability::Vector{Float64},
-                        runtime::Y) where {S,Y<:Real}
-     new{S,Y}(state, probability, runtime)
+                        runtime::Y,
+                        penalty::T=0.) where {S,Y<:Real,T<:Real}
+     @assert runtime >= zero(Y) "runtime needs to be nonnegative"
+     @assert penalty >= zero(T) "penalty needs to be nonnegative"
+     @assert all(0. .<= probability .<= 1.001) && sum(probability) <= 1.001 "probability is not a subprobability vector"
+
+     new{S,Y,T}(state, probability, runtime, penalty)
   end
 end
 
 function QSearchState(qws::QWSearch, state, runtime::Real)
-   QSearchState(state, measure(qws, state, qws.marked), runtime)
+   QSearchState(state, measure(qws, state, qws.marked), runtime, penalty(qws))
 end
 
 # Following for resolving method ambiguity error
 function QSearchState(qws::QWSearch, state::Vector{Float64}, runtime::Real)
-   QSearchState(state, measure(qws, state, qws.marked), runtime)
+   QSearchState(state, measure(qws, state, qws.marked), runtime, penalty(qws))
 end
 
 """
@@ -146,6 +152,13 @@ probability(qsearchstate::QSearchState) = qsearchstate.probability
 Returns the time for which the state was calulated.
 """
 runtime(qsearchstate::QSearchState) = qsearchstate.runtime
+
+"""
+    penalty(qsearchstate)
+
+Returns the penalty time for which the state was calulated.
+"""
+penalty(qsearchstate::QSearchState) = qsearchstate.penalty
 
 
 # documentation for

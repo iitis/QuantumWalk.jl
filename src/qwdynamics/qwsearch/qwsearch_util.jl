@@ -33,5 +33,5 @@ function expected_runtime(runtime::Real, probability::Real)
 end,
 
 function expected_runtime(state::QSearchState)
-   expected_runtime(state.runtime, sum(state.probability))
+   expected_runtime(state.runtime + state.penalty, sum(state.probability))
 end

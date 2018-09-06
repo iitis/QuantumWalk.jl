@@ -11,21 +11,20 @@ returned. Typically `penalty` equal to `log(nv(graph(qws_cont)))` is enough, but
 optimal value may depend on the model or graph chosen.
 
 The optimal time is chosen according to expected runtime, which equals to
-runtime over probability. This comes from interpreting th eevolution as the
+runtime over probability. This comes from interpreting the evolution as the
 Bernoulli process.
 
 `tstep` is used for primary grid search to search for determine intervale which
 is supsected to have small expected runtime. To large value may miss the optimal value,
 while to small may greatly increase runtime of the algorithm.
 
-`maxtime` defaults to graph order n, `tstep` defaults to `sqrt(n)/5`. `QSearchState`
-is returned by default with `penalty`. Note that in general the probability is not maximal.
+`maxtime` defaults to graph order n, `tstep` defaults to `sqrt(n)/5`. Note that in general the probability is not maximal.
 
 ```jldoctest
 julia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 1., 0.01);
 
 julia> result = maximize_quantum_search(qws)
-QuantumWalk.QSearchState{Array{Complex{Float64},1},Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 12.99636940469214)
+QuantumWalk.QSearchState{Array{Complex{Float64},1},Float64,Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 11.99636940469214, 1.0)
 
 julia> probability(result)
 1-element Array{Float64,1}:
@@ -75,7 +74,7 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
 
    optresult = optimize(efficiency_opt, mint, maxt)
    result = execute_single(qws, Optim.minimizer(optresult))
-   QSearchState(result.state, result.probability, result.runtime+qws.penalty)
+   QSearchState(result.state, result.probability, result.runtime, penalty(qws))
 end
 
 """
@@ -96,8 +95,7 @@ The optimal time depends on chosen `mode`:
 
 Note last three modes always returns optimal time within the interval.
 
-`maxtime` defaults to graph order n, `mode` defaults to `:maxeff`. `QSearchState`
-is returned by deafult with `penalty`.
+`maxtime` defaults to graph order n, `mode` defaults to `:maxeff`.
 
 ```jldoctest
 julia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
@@ -105,7 +103,7 @@ julia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
 julia> result = maximize_quantum_search(qws);
 
 julia> runtime(result)
-7
+6
 
 julia> probability(result)
 1-element Array{Float64,1}:
@@ -114,7 +112,7 @@ julia> probability(result)
 julia> result = maximize_quantum_search(qws, 100, :maxtimeprob);
 
 julia> runtime(result)
-40
+39
 
 julia> probability(result)
 1-element Array{Float64,1}:
@@ -132,10 +130,10 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
    end
 
 
-   best_result = QSearchState(qws, initial_state(qws), qws.penalty)
-   state = QSearchState(qws, initial_state(qws), qws.penalty)
+   best_result = QSearchState(qws, initial_state(qws), 0)
+   state = QSearchState(qws, initial_state(qws), 0)
    for t=1:runtime
-      state = QSearchState(qws, evolve(qws, state), t+qws.penalty)
+      state = QSearchState(qws, evolve(qws, state), t)
       stopsearchflag = stopsearch(best_result, state, mode)
       best_result = best(best_result, state, mode)
 
@@ -161,15 +159,15 @@ The optimal time depende on chosen `mode`:
 
 `false` means maximizing should continue unless other constraints, `true` otherwise.
 """
-function stopsearch(previous_state::QSearchState,
+function stopsearch(prev_state::QSearchState,
                     state::QSearchState,
                     mode::Symbol)
    if mode == :maxeff
-      return expected_runtime(previous_state) < state.runtime+1 #check whetver needs to analyze next step
+      return expected_runtime(prev_state) < state.runtime+1 #check whetver needs to analyze next step
    elseif mode == :firstmaxprob
-      return sum(previous_state.probability) > sum(state.probability)
+      return sum(prev_state.probability) > sum(state.probability)
    elseif mode == :firstmaxeff
-      return expected_runtime(previous_state) < expected_runtime(state)
+      return expected_runtime(prev_state) < expected_runtime(state)
    else # include :maxtime case, should be considered by outside loop (hack?)
       return false
    end

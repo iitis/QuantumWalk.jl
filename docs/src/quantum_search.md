@@ -19,8 +19,8 @@ Quantum spatial search is an algorithm, which starts at some initial state (whic
  *expected runtime* and can be obtained by `expected_runtime` function.
 
  Some function as a result outputs `QSearchState` instead of the original state.
- It consists of the original state, the runtime and the probability of measuring
- each marked vertex. Those elements can be extracted by `state`, `runtime` and `probability` functions.
+ It consists of the original state, the runtime, the probability of measuring
+ each marked vertex, and penalty used for computing QSearchState. Those elements can be extracted by `state`, `runtime`, `probability` and `penalty` functions.
 
  Following functions are connected to the quantum search:
 ```@index
