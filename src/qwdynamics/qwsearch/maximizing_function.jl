@@ -134,8 +134,8 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
    state = QSearchState(qws, initial_state(qws), 0)
    for t=1:runtime
       state = QSearchState(qws, evolve(qws, state), t)
-      stopsearchflag = stopsearch(best_result, state, mode)
-      best_result = best(best_result, state, mode)
+      stopsearchflag = stopsearch(qws, best_result, state, mode)
+      best_result = best(qws, best_result, state, mode)
 
       if stopsearchflag
          break
@@ -146,7 +146,7 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
 end
 
 """
-    stopsearch(previous_state, state, mode)
+    stopsearch(qws, previous_state, state, mode)
 
 For given combination of argument decides whetver maximizing search function
 should be stopped:
@@ -159,33 +159,35 @@ The optimal time depende on chosen `mode`:
 
 `false` means maximizing should continue unless other constraints, `true` otherwise.
 """
-function stopsearch(prev_state::QSearchState,
+function stopsearch(qws::QWSearch,
+                    prev_state::QSearchState,
                     state::QSearchState,
                     mode::Symbol)
    if mode == :maxeff
-      return expected_runtime(prev_state) < state.runtime+1 #check whetver needs to analyze next step
+      return expected_runtime(qws, prev_state) < state.runtime+1 #check whetver needs to analyze next step
    elseif mode == :firstmaxprob
       return sum(prev_state.probability) > sum(state.probability)
    elseif mode == :firstmaxeff
-      return expected_runtime(prev_state) < expected_runtime(state)
+      return expected_runtime(qws, prev_state) < expected_runtime(qws, state)
    else # include :maxtime case, should be considered by outside loop (hack?)
       return false
    end
 end
 
 """
-    best(state1, state2, mode)
+    best(qws, state1, state2, mode)
 
 Choose better state depending on mode. If success probability is maximized, then
 the success probability is compared. If expected runtime is minimized,
 then expected runtime is compared.
 """
-function best(state1::QSearchState,
+function best(qws::QWSearch,
+              state1::QSearchState,
               state2::QSearchState,
               mode::Symbol)
    if mode ∈ [:firstmaxprob,:maxtimeprob]
       sum(state1.probability) > sum(state2.probability) ? state1 : state2
    else
-      expected_runtime(state1) < expected_runtime(state2) ? state1 : state2
+      expected_runtime(qws, state1) < expected_runtime(qws, state2) ? state1 : state2
    end
 end
