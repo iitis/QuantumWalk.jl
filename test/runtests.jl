@@ -1,6 +1,7 @@
 using QuantumWalk
 using LightGraphs
-using Base.Test
+using Test
+using LinearAlgebra,SparseArrays
 
 macro test_no_error(ex)
     quote

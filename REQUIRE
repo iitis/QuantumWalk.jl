@@ -1,4 +1,4 @@
-julia 0.6 0.7-
-Expokit 0.1 0.2-
-LightGraphs 
-Optim 
+julia 0.7
+Expokit 0.2
+LightGraphs 1.0
+Optim 0.17

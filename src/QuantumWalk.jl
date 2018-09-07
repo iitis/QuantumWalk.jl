@@ -6,6 +6,10 @@ using Expokit
 using LightGraphs
 using Optim
 
+using LinearAlgebra
+using SparseArrays
+using Arpack
+
 export
 	AbstractCTQW,
 	AbstractSzegedy,

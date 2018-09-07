@@ -12,7 +12,7 @@
   end
 
   @testset "Quantum walks simulator for CTQW" begin
-    init = fill(Complex128(1/sqrt(n)), n)
+    init = fill(ComplexF64(1/sqrt(n)), n)
     ctqwAdj = CTQW(g, :adjacency)
     ctqwLap = CTQW(g, :laplacian)
     ctqwAdjDense = CTQWDense(g, :adjacency)

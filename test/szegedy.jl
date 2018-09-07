@@ -38,16 +38,16 @@
 
    @test_throws AssertionError QuantumWalk.graphstochasticcheck(g, sparse([0 0 0; -1 1 0; 2 0 1]))
    #dense not allowed
-   @test_throws MethodError QuantumWalk.graphstochasticcheck(g, full(QuantumWalk.default_stochastic(g)))
+   @test_throws MethodError QuantumWalk.graphstochasticcheck(g, Matrix(QuantumWalk.default_stochastic(g)))
   end
 
   @testset "Default stochastic matrix" begin
     g = smallgraph(:bull)
-    result = [0.0  1./3  1./3  0.0  0.0;
-              0.5  0.0   1./3  1.0  0.0;
-              0.5  1./3  0.0   0.0  1.0;
-              0.0  1./3  0.0   0.0  0.0;
-              0.0  0.0   1./3  0.0  0.0]
+    result = [0.0  1. /3  1. /3  0.0  0.0;
+              0.5  0.0   1. /3  1.0  0.0;
+              0.5  1. /3  0.0   0.0  1.0;
+              0.0  1. /3  0.0   0.0  0.0;
+              0.0  0.0   1. /3  0.0  0.0]
 
     @test isapprox(QuantumWalk.default_stochastic(g), sparse(result), atol=1e-5)
 

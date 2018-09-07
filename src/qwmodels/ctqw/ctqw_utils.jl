@@ -3,7 +3,7 @@
 
 Return default value of the jumping rate for the adjacency matrix. This function
 is not implemented for `:laplacian` or `:normalized_laplacian`. For `:adjacency` case the greatest eigenvalue
-is returned. By default `type_number` is set to `Complex128`.
+is returned. By default `type_number` is set to `ComplexF64`.
 """
 function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    @assert ctqw.matrix == :adjacency "Default jumping rate known for adjacency matrix only"
@@ -11,18 +11,18 @@ function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    if ne(ctqw.graph) == 0 # if graph is empty
       return T(1.) #does not matter
    else
-      return T(1./eigs(adjacency_matrix(ctqw.graph), nev=1)[1][1])
+      return T(1. /eigs(adjacency_matrix(ctqw.graph), nev=1)[1][1])
    end
 end,
 
 function jumping_rate(ctqw::AbstractCTQW)
-   jumping_rate(Complex128, ctqw)
+   jumping_rate(ComplexF64, ctqw)
 end
 
 
 function normalized_laplacian(g::Graph, ::Type{T}) where T<:Number
   l = laplacian_matrix(g, T)
-  d = spdiagm(sqrt.(1./(diag(l))))
+  d = spdiagm(sqrt.(1. /(diag(l))))
   d*l*d
 end
 

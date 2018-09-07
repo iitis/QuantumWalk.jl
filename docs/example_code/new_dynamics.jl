@@ -42,7 +42,7 @@ end
 function state_diff(qwp::QWPeriod{<:AbstractSzegedy},
                     state1::SparseVector{T},
                     state2::SparseVector{T}) where T<:Number
-  1-abs(sum(state1.*conj.(state2)))
+  1-abs(sum(state1 .* conj.(state2)))
 end
 ##
 n = 20

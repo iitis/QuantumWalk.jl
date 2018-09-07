@@ -86,7 +86,7 @@ end
     QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])
 
 Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
-`Complex128`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
+`ComplexF64`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
 The hamiltonian is `SparseMatrixCSC`.
 
@@ -115,7 +115,7 @@ function QWSearch(::Type{T},
                   penalty::Real = 0.,
                   jumpingrate::T = jumping_rate(T, ctqw)) where T<:Number
 
-   hamiltonian = jumpingrate*full(graph_hamiltonian(T, ctqw))
+   hamiltonian = jumpingrate*Matrix(graph_hamiltonian(T, ctqw))
    hamiltonian -= sum(proj(T, v, nv(ctqw.graph)) for v=marked)
 
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
@@ -127,7 +127,7 @@ function QWSearch(ctqw::AbstractCTQW,
                   marked::Vector{Int},
                   penalty::Real = 0.,
                   jumpingrate::Real = jumping_rate(Float64, ctqw))
-   QWSearch(Complex128, ctqw, marked, penalty, Complex128(jumpingrate))
+   QWSearch(ComplexF64, ctqw, marked, penalty, ComplexF64(jumpingrate))
 end,
 
 function QWSearch(qws::QWSearch{<:AbstractCTQW};
@@ -164,7 +164,7 @@ end
     QWEvolution([type, ]ctqw)
 
 Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equals
-`Complex128`. The hamiltonian is `SparseMatrixCSC`.
+`ComplexF64`. The hamiltonian is `SparseMatrixCSC`.
 """
 function QWEvolution(::Type{U},
                      ctqw::AbstractCTQW) where U<:Number
@@ -173,7 +173,7 @@ function QWEvolution(::Type{U},
 end,
 
 function QWEvolution(ctqw::AbstractCTQW)
-   QWEvolution(Complex128, ctqw)
+   QWEvolution(ComplexF64, ctqw)
 end
 
 """

@@ -22,9 +22,9 @@ The operators should be applied in given order.
 
 function szegedy_walk_operators(szegedy::AbstractSzegedy)
    order = nv(szegedy.graph)
-   projectors = map(x->2.*proj(szegedy.sqrtstochastic[:,x]), 1:order)
+   projectors = map(x->2. * proj(szegedy.sqrtstochastic[:,x]), 1:order)
 
-   r1 = cat([1, 2], projectors...)
+   r1 = cat(projectors..., dims=(1, 2))
 
    r2 = spzeros(eltype(szegedy.sqrtstochastic), order^2, order^2)
    for x=1:order

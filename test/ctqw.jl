@@ -9,7 +9,7 @@
 
 
   @testset "Default jumping rate" begin
-    @test QuantumWalk.jumping_rate(ctqw) ≈ 1./(n-1)
+    @test QuantumWalk.jumping_rate(ctqw) ≈ 1. /(n-1)
     @test QuantumWalk.jumping_rate(CTQW(Graph(n))) == 1.
     @test_throws AssertionError QuantumWalk.jumping_rate(CTQW(g, :laplacian))
   end
@@ -58,7 +58,7 @@ end
 
 
   @testset "Default jumping rate" begin
-    @test QuantumWalk.jumping_rate(ctqw) ≈ 1./(n-1)
+    @test QuantumWalk.jumping_rate(ctqw) ≈ 1. /(n-1)
     @test QuantumWalk.jumping_rate(CTQWDense(Graph(n))) == 1.
     @test_throws AssertionError QuantumWalk.jumping_rate(CTQWDense(g, :laplacian))
   end

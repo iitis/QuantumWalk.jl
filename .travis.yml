@@ -3,17 +3,20 @@ os:
   - linux
   - osx
 julia:
-  - 0.6
+  - 0.7
+  - 1.0
+  - nightly
+matrix:
+  allow_failures:
+    julia: nightly
 notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.add("Expokit")'
-  - julia -e 'Pkg.add("LightGraphs")'
-  - julia -e 'Pkg.clone(pwd())'
-  - julia -e 'Pkg.build("QuantumWalk")'
-  - julia -e 'Pkg.test("QuantumWalk"; coverage=true)'
+  - julia -e 'using Pkg; Pkg.add("Expokit")'
+  - julia -e 'using Pkg; Pkg.add("LightGraphs")'
+  - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("QuantumWalk")'
+  - julia -e 'using Pkg; Pkg.test("QuantumWalk"; coverage=true)'
 after_success:
-  - julia --depwarn=no -e 'cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("QuantumWalk")); include(joinpath("docs", "make.jl"))'
+  - julia --depwarn=no -e 'using Pkg; cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia -e 'using Pkg; Pkg.add("Documenter"); cd(Pkg.dir("QuantumWalk")); include(joinpath("docs", "make.jl"))'
