@@ -92,7 +92,7 @@ function QWSearch(qws::QWSearch{<:Szegedy};
     corr_oracles = szegedy_oracle_operators(model(qws), oldmarked) .*
                    szegedy_oracle_operators(model(qws), marked)
    else
-      corr_oracles = speye.(parameters(qws)[:operators])
+      corr_oracles = fill(I, length(parameters(qws)[:operators]))#speye.(parameters(qws)[:operators])
    end
    QWSearch(model(qws),
             Dict(:operators => parameters(qws)[:operators].*corr_oracles),

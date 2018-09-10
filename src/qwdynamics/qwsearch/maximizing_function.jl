@@ -38,8 +38,8 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
    @assert tstep > 0. "Parameter 'tstep' needs to be positive"
 
    if penalty(qws) == 0
-      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero may be returned. "*
-      "Typically penalty should be approximately log(n), but this might by case-dependant.")
+      @warn "It is recommended for the penalty to be nonzero. Otherwise, the time close to zero may be returned. "*
+      "Typically penalty should be approximately log(n), but this might by case-dependant."
    end
 
    state = initial_state(qws)
@@ -125,8 +125,8 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},
    @assert runtime>=0 "Parameter 'runtime' needs to be nonnegative"
    @assert mode ∈ [:firstmaxprob, :firstmaxeff, :maxtimeeff, :maxeff, :maxtimeprob] "Specified stop condition is not implemented"
    if penalty(qws) == 0
-      warn("It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
-      "Typically penalty should be approximately log(n), but this might by case-dependant.")
+      @warn "It is recommended for the penalty to be nonzero. Otherwise, the time close to zero is returned. "*
+      "Typically penalty should be approximately log(n), but this might by case-dependant."
    end
 
 

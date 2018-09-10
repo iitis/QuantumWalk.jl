@@ -112,14 +112,14 @@ struct QSearchState{S,Y<:Real,T<:Real}
   penalty::T
 
   function QSearchState(state::S,
-                        probability::Vector{Float64},
+                        probability::AbstractVector{Float64},
                         runtime::Y,
                         penalty::T=0.) where {S,Y<:Real,T<:Real}
      @assert runtime >= zero(Y) "runtime needs to be nonnegative"
      @assert penalty >= zero(T) "penalty needs to be nonnegative"
      @assert all(0. .<= probability .<= 1.001) && sum(probability) <= 1.001 "probability is not a subprobability vector"
 
-     new{S,Y,T}(state, probability, runtime, penalty)
+     new{S,Y,T}(state, Vector(probability), runtime, penalty)
   end
 end
 

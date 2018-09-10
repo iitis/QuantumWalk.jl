@@ -22,7 +22,7 @@ end
 
 function normalized_laplacian(g::Graph, ::Type{T}) where T<:Number
   l = laplacian_matrix(g, T)
-  d = spdiagm(sqrt.(1. /(diag(l))))
+  d = Diagonal(sqrt.(1 ./(diag(l))))
   d*l*d
 end
 
@@ -54,7 +54,7 @@ sparse matrices `expmv` from `Expokit` package is used.
 function hamiltonian_evolution(hamiltonian::AbstractMatrix{<:Number},
                                initstate::Vector{<:Number},
                                runtime::Real)
-   expm(-1im*hamiltonian*runtime)*initstate
+   exp(-1im*hamiltonian*runtime)*initstate
 end
 
 function hamiltonian_evolution(hamiltonian::SparseMatrixCSC{<:Number},

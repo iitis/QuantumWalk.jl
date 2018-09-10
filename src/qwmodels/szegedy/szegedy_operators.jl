@@ -28,11 +28,11 @@ function szegedy_walk_operators(szegedy::AbstractSzegedy)
 
    r2 = spzeros(eltype(szegedy.sqrtstochastic), order^2, order^2)
    for x=1:order
-      r2[(1:order:order^2)+x-1,(1:order:order^2)+x-1] = projectors[x]
+      r2[(1:order:order^2) .+ (x-1),(1:order:order^2) .+ (x-1)] = projectors[x]
    end
 
-   r1 -= speye(r1)
-   r2 -= speye(r2)
+   r1 -= I
+   r2 -= I
 
    (r1, r2)
 end
@@ -49,13 +49,13 @@ function szegedy_oracle_operators(szegedy::AbstractSzegedy,
                                 marked::Vector{Int})
    order = nv(szegedy.graph)
 
-   markedidentity = speye(eltype(szegedy.sqrtstochastic), order)
+   markedidentity = SparseMatrixCSC{eltype(szegedy.sqrtstochastic)}(I, order, order)
    for v=marked
       markedidentity[v,v] = -1.
    end
 
-   q1 = kron(markedidentity, speye(order))
-   q2 = kron(speye(order), markedidentity)
+   q1 = kron(markedidentity, SparseMatrixCSC{eltype(szegedy.sqrtstochastic)}(I, order, order))
+   q2 = kron(SparseMatrixCSC{eltype(szegedy.sqrtstochastic)}(I, order, order), markedidentity)
 
    (q1, q2)
 end

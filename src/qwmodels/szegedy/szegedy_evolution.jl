@@ -20,7 +20,7 @@ Multiplies `state` be each `operator` from `operators` from quantum walk
 evolution `qwd_szegedy`. Elements of operators and state should be of the same type.
 """
 function evolve(qwd::QWDynamics{<:AbstractSzegedy},
-                state::SparseVector{T}) where T<:Number
+                state::AbstractVector{T}) where T<:Number
    _evolve_szegedy((qwd.parameters[:operators])..., state)
 end
 
@@ -33,7 +33,7 @@ operators and state should be of the same type.
 """
 function _evolve_szegedy(operator1::SparseMatrixCSC{T},
                          operator2::SparseMatrixCSC{T},
-                         state::SparseVector{T}) where T<:Number
+                         state::AbstractVector{T}) where T<:Number
    operator2*(operator1*state)
 end
 
@@ -45,14 +45,14 @@ all vertices. It is defined as the measurement of partially traced on second sys
 https://arxiv.org/abs/1611.02238.
 """
 function measure(::QWDynamics{<:AbstractSzegedy},
-                 state::SparseVector{<:Number})
+                 state::AbstractVector{<:Number})
    dim = floor(Int, sqrt(length(state)))
-   vec(mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), [1]))
+   vec(mapslices(sum, reshape((abs.(state)).^2, (dim, dim)), dims=[1]))
 end,
 
 function measure(::QWDynamics{<:AbstractSzegedy},
-                 state::SparseVector{<:Number},
+                 state::AbstractVector{<:Number},
                  vertices::Vector{Int})
    dim = floor(Int, sqrt(length(state)))
-   vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, [1]))
+   vec(mapslices(sum, abs.(reshape(state, (dim, dim))[:,vertices]).^2, dims=[1]))
 end
