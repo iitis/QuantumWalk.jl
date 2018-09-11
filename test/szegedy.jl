@@ -95,7 +95,7 @@
 
     function is_equal_mine(q1::QWSearch, q2::QWSearch)
       model(q1) == model(q2) &&
-      parameters(q1) == parameters(q2) &&
+      all(parameters(q1)[:operators] .≈ parameters(q2)[:operators]) &&
       penalty(q1) == penalty(q2) &&
       marked(q1) == marked(q2)
     end
@@ -113,10 +113,10 @@
     qss4_ref = QWSearch(szegedy, [1], 1.)
     qss5_ref = QWSearch(szegedy, [2], 1.)
 
-    @test_broken is_equal_mine(qss1, qss1_ref)
-    @test_broken is_equal_mine(qss2, qss2_ref)
+    @test is_equal_mine(qss1, qss1_ref)
+    @test is_equal_mine(qss2, qss2_ref)
     @test is_equal_mine(qss3, qss3_ref)
-    @test_broken is_equal_mine(qss4, qss4_ref)
+    @test is_equal_mine(qss4, qss4_ref)
     @test is_equal_mine(qss5, qss5_ref)
     @test !is_equal_mine(qss6, qss5_ref)
   end

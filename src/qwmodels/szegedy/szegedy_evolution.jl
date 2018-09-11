@@ -31,8 +31,8 @@ end
 Multiplies `state` be `operator1` and then by `operator2`. Elements of
 operators and state should be of the same type.
 """
-function _evolve_szegedy(operator1::SparseMatrixCSC{T},
-                         operator2::SparseMatrixCSC{T},
+function _evolve_szegedy(operator1::AbstractMatrix{T},
+                         operator2::AbstractMatrix{T},
                          state::AbstractVector{T}) where T<:Number
    operator2*(operator1*state)
 end

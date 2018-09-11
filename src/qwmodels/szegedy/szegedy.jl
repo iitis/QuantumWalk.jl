@@ -122,7 +122,7 @@ function check_szegedy(szegedy::AbstractSzegedy,
                        parameters::Dict{Symbol})
    @assert :operators in keys(parameters) "Parameters should contain key operators"
    @assert length(parameters[:operators]) == 2 "Only two operators allowed"
-   @assert all(typeof(i) <: SparseMatrixCSC{<:Number} for i=parameters[:operators]) "Parameters should be a list of SparseMatrixCSC{<:Number}"
+   @assert all(typeof(i) <: AbstractMatrix{<:Number} for i=parameters[:operators]) "Parameters should be a list of SparseMatrixCSC{<:Number}"
    order = nv(szegedy.graph)
    @assert all(size(i) == (order, order).^2 for i=parameters[:operators]) "Operators sizes mismatch"
 end
