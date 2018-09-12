@@ -1,9 +1,10 @@
 using Documenter
-include("../src/QuantumWalk.jl")
+#include("../src/QuantumWalk.jl")
 using QuantumWalk, LightGraphs
+using SparseArrays,Arpack,LinearAlgebra
 
 # same for contributing and license
-cp(normpath(@__FILE__, "../../LICENSE.md"), normpath(@__FILE__, "../src/license.md"); remove_destination=true)
+cp(normpath(@__FILE__, "../../LICENSE.md"), normpath(@__FILE__, "../src/license.md"), force=true)
 
 
 

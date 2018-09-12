@@ -24,11 +24,11 @@ while to small may greatly increase runtime of the algorithm.
 julia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 1., 0.01);
 
 julia> result = maximize_quantum_search(qws)
-QuantumWalk.QSearchState{Array{Complex{Float64},1},Float64,Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 11.99636940469214, 1.0)
+QSearchState{Array{Complex{Float64},1},Float64,Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 11.99636940469214, 1.0)
 
 julia> probability(result)
 1-element Array{Float64,1}:
- 0.869767
+ 0.8697670119768242
 ```
 """
 function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
@@ -107,7 +107,7 @@ julia> runtime(result)
 
 julia> probability(result)
 1-element Array{Float64,1}:
- 0.500016
+ 0.5000160413993846
 
 julia> result = maximize_quantum_search(qws, 100, :maxtimeprob);
 
@@ -116,7 +116,7 @@ julia> runtime(result)
 
 julia> probability(result)
 1-element Array{Float64,1}:
- 0.550938
+ 0.5509378780415133
 ```
 """
 function maximize_quantum_search(qws::QWSearch{<:QWModelDiscr},

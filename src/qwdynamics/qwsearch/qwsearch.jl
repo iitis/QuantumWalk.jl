@@ -91,18 +91,7 @@ In second case `state` is measured according to `qws`.
 julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
 
 julia> result = QSearchState(qws, initial_state(qws), 0)
-QuantumWalk.QSearchState{SparseVector{Float64,Int64},Int64,Int64}(  [2 ]  =  0.288675
-  [3 ]  =  0.288675
-  [4 ]  =  0.288675
-  [5 ]  =  0.288675
-  [7 ]  =  0.288675
-  [8 ]  =  0.288675
-  [9 ]  =  0.288675
-  [10]  =  0.288675
-  [12]  =  0.288675
-  [13]  =  0.288675
-  [14]  =  0.288675
-  [15]  =  0.288675, [0.25], 0, 0)
+QSearchState{Array{Float64,1},Int64,Int64}([0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0], [0.25], 0, 0)
 ```
 """
 struct QSearchState{S,Y<:Real,T<:Real}
