@@ -25,8 +25,8 @@ The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs
 ## Installation
 
 The package can be installed using `Pkg.clone` command as
-```julia
-Pkg.add("QuantumWalk")
+```julia-repl
+(v1.0) pkg> add QuantumWalk
 ```
 All of the required modules will be installed automatically.
 
