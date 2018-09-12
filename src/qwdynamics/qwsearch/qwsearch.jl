@@ -23,7 +23,7 @@ Needs implementation of
 * `initial_state(qws::QWSearch)`
 * `evolve(qws::QWSearch{<:QWModelDiscr}, state)` or `evolve(qws::QWSearch{<:QWModelCont}, state, time::Real)`
 * `measure(qws::QWSearch, state[, vertices])`
-* `check_qwdynamics(::QWSearch, parameters::Dict{Symbol})`
+* `check_qwdynamics(QWSearch, model::QWModel, parameters::Dict{Symbol}, penalty::Real)`
 * proper constructors.
 
 Offers functions
@@ -35,7 +35,7 @@ Offers functions
 * `maximize_quantum_search`.
 
 It is encoureged to implement constructor, which changes the `penalty` and/or `marked`
-vertices, as their are usuallu simple to adapt.
+vertices only, as their are usually simple to adapt.
 """
 struct QWSearch{T,W<:Real} <: QWDynamics{T}
   model::T
@@ -148,17 +148,6 @@ runtime(qsearchstate::QSearchState) = qsearchstate.runtime
 Returns the penalty time for which the state was calulated.
 """
 penalty(qsearchstate::QSearchState) = qsearchstate.penalty
-
-
-# documentation for
-"""
-    check_qwdynamics(model, parameters, marked)
-
-Checks whetver combination of `model`, `marked` and `parameters` creates valid
-quantum search evolution. Note that whetver list of vertices `marked` are a subset
-of vertices of `graph` from `model` is checked seperately in `QWSearch` constructor.
-"""
-check_qwdynamics(QWSearch, ::Dict{Symbol}, ::Vector{Int})
 
 """
     initial_state(qws)

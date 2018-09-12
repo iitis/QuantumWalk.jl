@@ -78,7 +78,7 @@ function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
 end
 
 """
-   maximize_quantum_search(qws_discr [, runtime, mode])
+    maximize_quantum_search(qws_discr [, runtime, mode])
 
 Determines optimal runtime for discrete quantum walk search. The time is
 searched in [0, runtime] interval, with penalty `penalty(qws_discr)`.

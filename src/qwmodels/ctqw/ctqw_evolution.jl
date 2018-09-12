@@ -29,7 +29,7 @@ end
     measure(qwd_ctqw, state[, vertices])
 
 Returns the probability of measuring each vertex from `vertices` from `state`
-according to `qwd_abstr_ctqw` model. If `vertices` is not provided, full measurement is made.
+according to `qwd_ctqw` model. If `vertices` is not provided, full measurement is made.
 The measurement is done by taking square of absolute value of all elements
 of state.
 """

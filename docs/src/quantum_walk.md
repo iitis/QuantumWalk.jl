@@ -20,17 +20,8 @@ functions.
 **Note:** Methods `execute_all` and `execute_all_measured` are provided only for discrete
 quantum walk models.
 
-Following functions are connected to the dynamics. Note that since `QWEvolution`
-is a default subtype of `QWDynamics`, most of the functions are defined for
-the last type.
-```@index
-Order = [:type, :function]
-Modules = [QuantumWalk]
-Pages   = ["quantum_walk.md"]
-```
-
 ## Example
-```julia
+```julia-repl
 julia> qwe = QWEvolution(Szegedy(CompleteGraph(4)));
 
 julia> state = rand(16); state = sparse(state/norm(state));
@@ -131,7 +122,7 @@ end
 
 Now we can make a pure walk evolution.
 
-```julia
+```julia-repl
 julia> dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))
 QuantumWalk.QWEvolution{UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}}(UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}({5, 5} undirected simple Int64 graph), Dict{Symbol,Any}(Pair{Symbol,Any}(:stochastic,
   [2, 1]  =  0.5
@@ -151,7 +142,18 @@ julia> println(execute_single(dynamic, fill(1./5, 5), 5))
 
 Note that continuous walks requires time argument in `evolution` function, as an example consider  [CTQW model](ctqw.md).
 
-## Full docs
+## Documentation
+
+Following functions are connected to the dynamics. Note that since `QWEvolution`
+is a default subtype of `QWDynamics`, most of the functions are defined for
+the last type.
+```@index
+Order = [:type, :function]
+Modules = [QuantumWalk]
+Pages   = ["quantum_walk.md"]
+```
+
+### Full docs
 
 ```@docs
 QWEvolution

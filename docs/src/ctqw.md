@@ -11,13 +11,15 @@ Implementation of the continuous-time quantum walk. The model is defined for an 
 
 The abstract supertype is `AbstractCTQW` with its default realization `CTQW`, utilizing sparse matrices. Alternative realization is `CTQWDense`, which works on standard matrices. The model includes the following types and methods:
 
+## Documentation
+
 ```@index
 Order = [:type, :function]
 Modules = [QuantumWalk]
 Pages   = ["ctqw.md"]
 ```
 
-## Full docs
+### Full docs
 
 ```@docs
 AbstractCTQW
@@ -32,5 +34,5 @@ check_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})
 evolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
 initial_state(::QWSearch{<:AbstractCTQW})
 matrix(::AbstractCTQW)
-measure(::QWDynamics{AbstractCTQW}, ::Vector{Number})
+measure(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number})
 ```

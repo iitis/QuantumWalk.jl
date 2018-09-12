@@ -26,7 +26,7 @@ end
 
 Returns the expected runtime needed for quantum walk, considering it as Bernoulli
 process. It equals to `runtime/probability`. In the case of `state` provided the
-measurement is made.
+measurement is made, penalty is included.
 """
 function expected_runtime(runtime::Real, probability::Real)
    runtime/probability

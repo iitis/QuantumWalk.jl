@@ -77,10 +77,19 @@ dimensionality.
 function check_ctqw(ctqw::AbstractCTQW,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
-   @assert isa(parameters[:hamiltonian], SparseMatrixCSC{<:Number}) || isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
+   @assert isa(parameters[:hamiltonian], AbstractMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
+   @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
+   nothing
+end,
+
+function check_ctqw(ctqw::CTQWDense,
+                    parameters::Dict{Symbol})
+   @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
+   @assert isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
    nothing
 end
+
 
 """
     QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])
@@ -88,7 +97,6 @@ end
 Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
 `ComplexF64`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
-The hamiltonian is `SparseMatrixCSC`.
 
     QWSearch(qws_ctqw; marked, penalty)
 
@@ -149,7 +157,7 @@ end
 
 Checks whetver combination of `ctqw`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks if `parameters` consists of key `:hamiltonian` with
-corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
+real-valued matrix. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order. the hermiticity is
 not checked for efficiency issue.
 """
@@ -161,10 +169,10 @@ function check_qwdynamics(::Type{QWSearch},
 end
 
 """
-    QWEvolution([type, ]ctqw)
+    QWEvolution([type_ctqw, ]ctqw)
 
 Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equals
-`ComplexF64`. The hamiltonian is `SparseMatrixCSC`.
+`ComplexF64`.
 """
 function QWEvolution(::Type{U},
                      ctqw::AbstractCTQW) where U<:Number
@@ -179,9 +187,9 @@ end
 """
     check_qwdynamics(QWEvolution, ctqw, parameters)
 
-Checks iof combination of `ctqw` and `parameters` produces valid
+Checks if combination of `ctqw` and `parameters` produces valid
 `QWSearch` object. It checks if `parameters` consists of key `:hamiltonian` with
-corresponding value being `SparseMatrixCSC` or `Matrix`. Furthermore the hamiltonian
+real-valued matrix. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order. The hermiticity is
 not checked for efficiency issues.
 """

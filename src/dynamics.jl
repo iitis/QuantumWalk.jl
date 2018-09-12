@@ -33,7 +33,7 @@ end
 """
     execute_single(qwd, initstate, runtime)
 
-Evolve `initstate` acording to QWDynamics `qwd` for time `runtime`.
+Evolve `initstate` according to QWDynamics `qwd` for time `runtime`.
 `runtime` needs to be nonnegative.
 """
 function execute_single(qwd::QWDynamics{<:QWModelDiscr},

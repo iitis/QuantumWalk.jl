@@ -132,7 +132,7 @@ end
 
 Check whetver combination of `szegedy`, `marked` and `parameters` produces valid
 `QWSearch` object. It checks where `parameters` consists of key `:operators` with
-corresponding value being list of `SparseMatrixCSC`. Furthermore operators
+corresponding value being list of `AbstractMatrix`. Furthermore operators
 needs to be square of size equals to square of `graph(szegedy).` order.
 """
 function check_qwdynamics(::Type{QWSearch},
@@ -147,7 +147,7 @@ end
 
 Check whetver combination of `szegedy`, and `parameters` produces a
 valid `QWEvolution` object. It checks where `parameters` consists of key
-`:operators` with corresponding value being a list of `SparseMatrixCSC` objects.
+`:operators` with corresponding value being a list of `AbstractMatrix` objects.
 Furthermore operators need to be square of size equals to square of the order of
 `graph(szegedy)`.
 """

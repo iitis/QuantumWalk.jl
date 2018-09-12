@@ -2,7 +2,7 @@
 
 ## Welcome to QuantumWalk.jl
 
-*QuantumWalk.jl* is a package for Julia programming language, which provides a framework for implementing and analyzing quantum walks. The packages provides general implementation of functions relevant for all models of quantum walks. To achieve this, it utilizes the Julia's type hierarchy to implement general functions working on large collection of quantum walk models.
+*QuantumWalk.jl* is a package for Julia programming language, which provides a framework for implementing and analyzing quantum walks. The package provides general implementation of functions relevant for all models of quantum walks. To achieve this, it utilizes the Julia's type hierarchy to implement general functions working on large collection of quantum walk models.
 
 ## Motivation
 
@@ -18,4 +18,4 @@ Models of quantum walks currently implemented in the package are presented in se
 
 ## Can I contribute?
 
-Yes, You can! There are simply to many models and quantum dynamics we cannot deal with all of them. If you can provide an implementation of a new model, we would be happy to include it in our package. The details can be found in section *[Contributing](contributing.html)*.
+Yes, You can! There are simply to many models and quantum dynamics, we cannot deal with all of them. If you can provide an implementation of a new model, we would be happy to include it in our package. The details can be found in section *[Contributing](contributing.html)*.

@@ -8,7 +8,7 @@ Type describing standard quantum walk evolution. `check_qwdynamics` is executed 
  Needs implementation of
 * `evolve(::QWEvolution{<:QWModelDiscr}, state)` or `evolve(::QWEvolution{<:QWModelCont}, state, time::Real)`
 * `measure(::QWEvolution, state)`
-* `check_qwdynamics(::QWModelDiscr, parameters::Dict{Symbol})`
+* `check_qwdynamics(QWEvolution, ::QWModel, parameters::Dict{Symbol})`
 * proper constructors.
 
 Offers functions

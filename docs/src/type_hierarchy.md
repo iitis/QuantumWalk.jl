@@ -77,7 +77,7 @@ Modules = [QuantumWalk]
 Pages   = ["type_hierarchy.md"]
 ```
 
-## Full docs
+### Full docs
 
 ```@docs
 QWDynamics{T<:QWModel}

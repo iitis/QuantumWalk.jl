@@ -11,13 +11,15 @@ The Szegedy quantum walk is one of the most popular discrete quantum walk models
 The abstract supertype is `AbstractSzegedy` with its default realization `Szegedy`.
 The model includes following types and methods:
 
+## Documentation
+
 ```@index
 Order = [:type, :function]
 Modules = [QuantumWalk]
 Pages   = ["szegedy.md"]
 ```
 
-## Full docs
+### Full docs
 
 ```@docs
 AbstractSzegedy
