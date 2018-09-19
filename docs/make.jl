@@ -27,7 +27,6 @@ makedocs(
 				"CTQW and CTQWDense" 	 => "ctqw.md",
 				"Szegedy" 		         => "szegedy.md"
                 ],
-		"Extending"     => "new_dynamics.md",
 		"Contributing"	   => "contributing.md",
         "Citing"	       => "citing.md",
 		"Licence"	       => "license.md",
