@@ -14,7 +14,7 @@ The purpose of the package is not to provide implementations of all models, as t
 
 The package structure is based on two independent type hierarchies: the first one for operating on walk models, and second for defining dynamics. The dynamic is defined if the appropriate functions for the model are defined. For example, if one provides `evolve`, `measure`, and `check_qwdynamics` methods for the newly defined model, the package can be used to simulate the evolution of this model. If additionally, the user provides `initial_state` method, the package can be used for executing quantum spatial search dynamics.
 
-Models of quantum walks currently implemented in the package are presented in section *Models*, while the types of dynamics provided by the package are decried in section *Dynamics*.
+Models of quantum walks currently implemented in the package are presented in section *Models*, while the types of dynamics provided by the package are decried in section *Dynamics*. Simple usage examples can be found on [our GitHub repository](https://github.com/QuantumWalks/QuantumWalk.jl/tree/master/tutorials).
 
 ## Can I contribute?
 

@@ -17,7 +17,7 @@ makedocs(
     checkdocs   = :exports,
     assets 	    = ["assets/logo.ico"],
     pages       = Any[
-		"Home"  => "index.md",
+		"Home"             => "index.md",
 		"Type hierarchies" => "type_hierarchy.md",
     		"Dynamics"	   => Any[
                 "Quantum walk evolution" => "quantum_walk.md",
