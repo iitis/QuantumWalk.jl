@@ -5,6 +5,10 @@ os:
 julia:
   - 0.7
   - 1.0
+  - nightly
+matrix:
+  allow_failures:
+    julia: nightly
 notifications:
   email: false
 script:
@@ -12,7 +16,8 @@ script:
   - julia -e 'using Pkg; Pkg.add("Expokit")'
   - julia -e 'using Pkg; Pkg.add("LightGraphs")'
   - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("QuantumWalk")'
-  - julia -e 'using Pkg; Pkg.test("QuantumWalk"; coverage=true)'
+  - julia --code-coverage=all --inline=no -e 'using Pkg; Pkg.test("QuantumWalk"; coverage=true)'
 after_success:
-  - julia --depwarn=no -e 'using Pkg; cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia --depwarn=no -e 'using Pkg; cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage");'
+  - julia --depwarn=no -e 'using Coverage; Coveralls.submit(process_folder())'
   - julia -e 'using Pkg; Pkg.add("Documenter"); cd(Pkg.dir("QuantumWalk")); include(joinpath("docs", "make.jl"))'
