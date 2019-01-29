@@ -21,3 +21,4 @@ after_success:
   - julia --depwarn=no -e 'using Pkg; cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage");'
   - julia --depwarn=no -e 'using Coverage; Coveralls.submit(process_folder())'
   - julia -e 'using Pkg; Pkg.add("Documenter"); cd(Pkg.dir("QuantumWalk")); include(joinpath("docs", "make.jl"))'
+
