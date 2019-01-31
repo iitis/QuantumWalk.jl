@@ -12,10 +12,8 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'using Pkg; Pkg.add("Expokit")'
-  - julia -e 'using Pkg; Pkg.add("LightGraphs")'
-  - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("QuantumWalk")'
-  - julia --code-coverage=all --inline=no -e 'using Pkg; Pkg.test("QuantumWalk"; coverage=true)'
+  - julia -e 'using Pkg; pkg"build QuantumWalk";'
+  - julia --code-coverage test/runtests.jl 
 after_success:
   - julia --depwarn=no -e 'using Pkg; cd(Pkg.dir("QuantumWalk")); Pkg.add("Coverage");'
   - julia --depwarn=no -e 'using Coverage; Coveralls.submit(process_folder())'
