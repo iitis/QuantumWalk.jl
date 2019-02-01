@@ -13,7 +13,7 @@ function jumping_rate(::Type{T}, ctqw::AbstractCTQW) where T<:Number
    else
       return T(1. /eigs(adjacency_matrix(ctqw.graph), nev=1)[1][1])
    end
-end,
+end
 
 function jumping_rate(ctqw::AbstractCTQW)
    jumping_rate(ComplexF64, ctqw)

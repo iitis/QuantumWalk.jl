@@ -157,12 +157,12 @@ Pages   = ["quantum_walk.md"]
 
 ```@docs
 QWEvolution
-check_qwdynamics(::Any)
-evolve(::Any)
+check_qwdynamics
+evolve
 execute(::QWDynamics, ::Any, ::Real)
 execute_all(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
 execute_all_measured(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
 execute_single(::QWDynamics{<:QWModelDiscr}, ::Any, ::Int)
 execute_single_measured(::QWDynamics, ::Any, ::Real)
-measure(::Any)
+measure
 ```

@@ -24,15 +24,10 @@ Pages   = ["ctqw.md"]
 ```@docs
 AbstractCTQW
 CTQW
-CTQW(::Graph)
 CTQWDense
-CTQWDense(::Graph)
 QWEvolution(::Type{U}, ::AbstractCTQW) where U<:Number
 QWSearch(::Type{T}, ::AbstractCTQW, ::Vector{Int}, ::Real = 0., ::T) where T<:Number
 check_qwdynamics(::Type{QWSearch}, ::AbstractCTQW, ::Dict{Symbol}, ::Vector{Int})
 check_qwdynamics(::Type{QWEvolution}, ::AbstractCTQW, ::Dict{Symbol})
-evolve(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number}, ::Real)
-initial_state(::QWSearch{<:AbstractCTQW})
 matrix(::AbstractCTQW)
-measure(::QWDynamics{<:AbstractCTQW}, ::Vector{<:Number})
 ```

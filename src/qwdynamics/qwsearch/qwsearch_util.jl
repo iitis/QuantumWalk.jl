@@ -30,7 +30,7 @@ measurement is made, penalty is included.
 """
 function expected_runtime(runtime::Real, probability::Real)
    runtime/probability
-end,
+end
 
 function expected_runtime(qws::QWSearch, state::QSearchState)
    expected_runtime(state.runtime + state.penalty, sum(state.probability))

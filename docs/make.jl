@@ -10,7 +10,7 @@ cp(normpath(@__FILE__, "../../LICENSE.md"), normpath(@__FILE__, "../src/license.
 
 makedocs(
     modules     = [QuantumWalk],
-    format      = :html,
+    format      = Documenter.HTML(),
     sitename    = "QuantumWalk",
     clean       = true,
     doctest     = true,
@@ -38,7 +38,6 @@ deploydocs(
     make        = nothing,
     repo        = "github.com/QuantumWalks/QuantumWalk.jl",
     target      = "build",
-    julia       = "0.6",
     osname      = "linux"
 )
 

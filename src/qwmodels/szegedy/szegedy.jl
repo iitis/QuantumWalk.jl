@@ -14,10 +14,20 @@ operator case is chosen.  Default representation of `AbstractSzegedy` is
 abstract type AbstractSzegedy <: QWModelDiscr end
 
 """
-  Szegedy(graph, sqrtstochastic)
+    Szegedy{G, T}(graph, sqrtstochastic)
 
 Default representation of `AbstractSzegedy`. Parameter `sqrtstochastic` needs to
 be an element-wise square root of stochastic matrix.
+
+    Szegedy(graph[, stochastic, checkstochastic])
+
+Constructors of `AbstractSzegedy`. Parameter `stochastic` needs to be a
+stochastic matrix.  Flag `checkstochastic` decides about checking the stochastic
+properties.
+
+Matrix `stochastic` defaults to the uniform walk operator, and `checkstochastic`
+deafults to `false` in case of default `stochastic`. If matrix `stochastic` is
+provided by the user, the default value of `stochastic` is `true`.
 """
 struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
     graph::G
@@ -29,17 +39,6 @@ struct Szegedy{G<:AbstractGraph, T<:Number} <: AbstractSzegedy
     end
 end
 
-"""
-    Szegedy(graph[, stochastic, checkstochastic])
-
-Constructors of `AbstractSzegedy`. Parameter `stochastic` needs to be a
-stochastic matrix.  Flag `checkstochastic` decides about checking the stochastic
-properties.
-
-Matrix `stochastic` defaults to the uniform walk operator, and `checkstochastic`
-deafults to `false` in case of default `stochastic`. If matrix `stochastic` is
-provided by the user, the default value of `stochastic` is `true`.
-"""
 function Szegedy(graph::G,
                  stochastic::SparseMatrixCSC{T},
                  checkstochastic::Bool=true) where {G<:AbstractGraph, T<:Number}
@@ -47,7 +46,7 @@ function Szegedy(graph::G,
         graphstochasticcheck(graph, stochastic)
     end
     Szegedy{G, T}(graph, sqrt.(stochastic))
-end,
+end
 
 function Szegedy(graph::AbstractGraph)
     Szegedy(graph, default_stochastic(graph), false)

@@ -62,3 +62,30 @@ model(qwd::QWDynamics) = qwd.model
 Returns `parameters` element of dynamics `qwd`.
 """
 parameters(qwd::QWDynamics) = qwd.parameters
+
+"""
+    measure(qwd::QWDynamics, state[, vertices::Vector{Int}])
+
+Measure `state` according to `qwd`. If `vertices` is provided, probabilities of
+given vertices is returned. Otherwise full probability distribution is returned.
+Output is of type `Vector{Float64}`.
+"""
+measure
+
+"""
+    evolve(qwd::QWDynamics{<:QWModelDiscr}, state)
+    evolve(qwd::QWDynamics{<:QWModelCont}, state, time::Real)
+
+Evolve `state` according to `qwd`. For discrete model single-step evolution
+is implemented. Type returned is the same as type of `state`.
+"""
+evolve
+
+"""
+    check_qwdynamics(qwdtype::Type{<:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)
+	check_qwdynamics(qwd)
+
+Checks whetver combination of the arguments creates valid quantum walk dynamics
+`qwdtype`. Check whether `qwd` is properly parametrized dynamic.
+"""
+check_qwdynamics

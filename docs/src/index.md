@@ -21,3 +21,7 @@ Models of quantum walks currently implemented in the package are presented in se
 Yes, You can! There are simply to many models and quantum dynamics, we cannot deal with all of them. If you can provide an implementation of a new model, we would be happy to include it in our package. The details can be found in section *[Contributing](contributing.html)*.
 
 An example of how to define new dynamics or quantum walk model can be found in tutorial directory on [our GitHub repository](https://github.com/QuantumWalks/QuantumWalk.jl/tree/master/tutorials).
+
+```@docs
+QuantumWalk
+```
