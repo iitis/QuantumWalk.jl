@@ -24,7 +24,7 @@ struct QWEvolution{T} <: QWDynamics{T}
 
   function QWEvolution(model::T,
                        parameters::Dict{Symbol};
-                       check::Bool=false) where T<:QWModel
+                       check::Bool=true) where T<:QWModel
     if check
        check_qwdynamics(QWEvolution, model, parameters)
     end

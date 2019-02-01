@@ -68,15 +68,6 @@ function check_qwmodel(ctqw::AbstractCTQW,
    nothing
 end
 
-function check_qwmodel(ctqw::CTQWDense,
-                    parameters::Dict{Symbol})
-   @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
-   @assert isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be AbstractMatrix with numbers"
-   @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
-   nothing
-end
-
-
 """
     QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])
 

@@ -35,13 +35,13 @@ struct UniformStochastic{G<:SimpleGraph} <: AbstractStochastic
   graph::G
 end
 
-function check_qwmodel(stochastic::AbstractStochastic,
+function check_qwmodel(abs_stoch::AbstractStochastic,
                        parameters::Dict{Symbol,Any})
    @assert :stochastic ∈ keys(parameters) "parameters needs to have key stochastic"
    n = nv(graph(abs_stoch))
    @assert isa(parameters[:stochastic], AbstractMatrix{<:Real}) "value for :stochastic needs to be sparse matrix with real numbers"
    @assert size(parameters[:stochastic], 1) == size(parameters[:stochastic], 2) "Stochastic matrix needs to be square stochastic matrix"
-   @assert mapslices(sum, parameters[:stochastic], 1)[1,:] ≈ ones(n) "Stochastic matrix needs to be square stochastic matrix of order graph"
+   @assert mapslices(sum, parameters[:stochastic], dims=[1])[1,:] ≈ ones(n) "Stochastic matrix needs to be square stochastic matrix of order graph"
 end
 
 """
@@ -55,9 +55,9 @@ Furthermore operators need to be square of size equals to square of the order of
 `graph(szegedy)`.
 """
 function check_qwdynamics(::Type{QWEvolution},
-                          abs_stoch::Stochastic,
+                          abs_stoch::AbstractStochastic,
                           parameters::Dict{Symbol,Any})
-   check_qwmodel(stochastic, parameters)
+   check_qwmodel(abs_stoch, parameters)
 end
 
 """
@@ -108,10 +108,10 @@ Furthermore operators need to be square of size equals to square of the order of
 `graph(szegedy)`.
 """
 function check_qwdynamics(::Type{QWSearch},
-                          abs_stoch::UniformStochastic,
-                          ::Vector{Int},
-                          parameters::Dict{Symbol,Any})
-   check_qwmodel(stochastic, parameters)
+                          abs_stoch::AbstractStochastic,
+                          parameters::Dict{Symbol,Any},
+                          ::Vector{Int})
+   check_qwmodel(abs_stoch, parameters)
 end
 
 """
