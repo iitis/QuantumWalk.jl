@@ -25,7 +25,8 @@ makedocs(
                 ],
 			"Models"       => Any[
 				"CTQW and CTQWDense" 	 => "ctqw.md",
-				"Szegedy" 		         => "szegedy.md"
+				"Szegedy" 		         => "szegedy.md",
+                "Stochastic RW" 		 => "stochastic.md"
                 ],
 		"Contributing"	   => "contributing.md",
         	"Citing"	       => "citing.md",

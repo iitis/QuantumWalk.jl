@@ -17,14 +17,14 @@
     end
 
     @testset "Graph stochastic matrix checker" begin
-    g = smallgraph(:bull)
+        g = smallgraph(:bull)
 
-    @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.uniform_stochastic(g)) == nothing
+        @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.uniform_stochastic(g)) == nothing
 
-    g = DiGraph(3)
-    add_edge!(g, 1, 3)
+        g = DiGraph(3)
+        add_edge!(g, 1, 3)
 
-    @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.uniform_stochastic(g)) == nothing
+        @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.uniform_stochastic(g)) == nothing
 
      # negative cases
      g = smallgraph(:bull)
@@ -39,6 +39,11 @@
      @test_throws AssertionError QuantumWalk.graphstochasticcheck(g, sparse([0 0 0; -1 1 0; 2 0 1]))
      #dense not allowed
      @test_throws MethodError QuantumWalk.graphstochasticcheck(g, Matrix(QuantumWalk.uniform_stochastic(g)))
+
+     #
+     g = smallgraph(:bull)
+     add_vertex!(g)
+     @test QuantumWalk.uniform_stochastic(g, 6) == SparseVector([0., 0., 0., 0., 0., 1.])
     end
 
     @testset "Default stochastic matrix" begin
