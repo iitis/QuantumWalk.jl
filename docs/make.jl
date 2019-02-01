@@ -28,7 +28,7 @@ makedocs(
 				"Szegedy" 		         => "szegedy.md"
                 ],
 		"Contributing"	   => "contributing.md",
-        "Citing"	       => "citing.md",
+        	"Citing"	       => "citing.md",
 		"Licence"	       => "license.md",
     ]
 )
@@ -37,8 +37,7 @@ deploydocs(
     deps        = nothing,
     make        = nothing,
     repo        = "github.com/QuantumWalks/QuantumWalk.jl",
-    target      = "build",
-    osname      = "linux"
+    target      = "build"
 )
 
 
