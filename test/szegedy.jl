@@ -1,64 +1,9 @@
 @testset "Szegedy model test" begin
-  @testset "Generalized neighbor function" begin
-    g = DiGraph(3)
-    @test QuantumWalk.outneighbors_looped(g, 3) == [3]
 
-    add_edge!(g, 1, 2)
-    add_edge!(g, 1, 3)
-
-    @test QuantumWalk.outneighbors_looped(g, 1) == [2, 3]
-    @test QuantumWalk.outneighbors_looped(g, 3) == [3]
-
-    @test QuantumWalk.outneighbors_looped(CompleteGraph(3), 3) == [1, 2]
-    @test QuantumWalk.outneighbors_looped(CompleteDiGraph(3), 3) == [1, 2]
-
-    @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 0)
-    @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 4)
-  end
-
-  @testset "Graph stochastic matrix checker" begin
-  g = smallgraph(:bull)
-
-  @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.default_stochastic(g)) == nothing
-
-  g = DiGraph(3)
-  add_edge!(g, 1, 3)
-
-  @test QuantumWalk.graphstochasticcheck(g, QuantumWalk.default_stochastic(g)) == nothing
-
-   # negative cases
-   g = smallgraph(:bull)
-   @test_throws AssertionError QuantumWalk.graphstochasticcheck(g, adjacency_matrix(g))
-   @test_throws AssertionError QuantumWalk.graphstochasticcheck(CompleteGraph(nv(g)+1), QuantumWalk.default_stochastic(g))
-   @test_throws AssertionError QuantumWalk.graphstochasticcheck(DiGraph(nv(g)), adjacency_matrix(g))
-
-   g = DiGraph(3)
-   add_edge!(g, 1, 2)
-   add_edge!(g, 1, 3)
-
-   @test_throws AssertionError QuantumWalk.graphstochasticcheck(g, sparse([0 0 0; -1 1 0; 2 0 1]))
-   #dense not allowed
-   @test_throws MethodError QuantumWalk.graphstochasticcheck(g, Matrix(QuantumWalk.default_stochastic(g)))
-  end
-
-  @testset "Default stochastic matrix" begin
-    g = smallgraph(:bull)
-    result = [0.0  1. /3  1. /3  0.0  0.0;
-              0.5  0.0   1. /3  1.0  0.0;
-              0.5  1. /3  0.0   0.0  1.0;
-              0.0  1. /3  0.0   0.0  0.0;
-              0.0  0.0   1. /3  0.0  0.0]
-
-    @test isapprox(QuantumWalk.default_stochastic(g), sparse(result), atol=1e-5)
-
-    g = DiGraph(3)
-    add_edge!(g, 1, 3)
-    @test isapprox(QuantumWalk.default_stochastic(g), [0 0 0; 0 1 0; 1 0 1], atol=1e-5)
-  end
 
   @testset "Szegedy walk operators" begin
     g = smallgraph(:bull)
-    sz = Szegedy(g, QuantumWalk.default_stochastic(g), true)
+    sz = Szegedy(g, QuantumWalk.uniform_stochastic(g), true)
 
     @test sqrtstochastic(sz) == sz.sqrtstochastic
 
@@ -120,5 +65,4 @@
     @test is_equal_mine(qss5, qss5_ref)
     @test !is_equal_mine(qss6, qss5_ref)
   end
-
 end

@@ -1,3 +1,4 @@
+
 """
     outneighbors_looped(graph, vertex)
 
@@ -57,13 +58,13 @@ function graphstochasticcheck(graph::AbstractGraph,
 end
 
 """
-    default_stochastic(graph)
+    uniform_stochastic(graph[, node])
 
 Generates default column-stochastic matrix, which represents random walk with
 uniform spreading. If outdegree of vertex is zero, additional 1 is added on the
-diagonal.
+diagonal. If `node` is specified, that return only `node`th column
 """
-function default_stochastic(graph::AbstractGraph)
+function uniform_stochastic(graph::AbstractGraph)
    result = adjacency_matrix(graph, Float64, dir=:in)
    outdegrees = outdegree(graph)
    for i = 1:size(result, 1)
@@ -74,4 +75,15 @@ function default_stochastic(graph::AbstractGraph)
       end
    end
    result
+end
+
+function uniform_stochastic(graph::AbstractGraph, node::Int)
+   result = spzeros(Float64, nv(graph))
+   outdeg = outdegree(graph, node)
+    if outdeg == 0
+        result[node] = 1.
+    else
+        result[outneighbors(graph, node)] = fill(1. / outdeg, outdeg)
+    end
+    result
 end

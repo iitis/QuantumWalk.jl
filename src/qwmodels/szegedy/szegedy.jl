@@ -17,7 +17,8 @@ abstract type AbstractSzegedy <: QWModelDiscr end
     Szegedy{G, T}(graph, sqrtstochastic)
 
 Default representation of `AbstractSzegedy`. Parameter `sqrtstochastic` needs to
-be an element-wise square root of stochastic matrix.
+be an element-wise square root of stochastic matrix. The validity of sqrtstochastic
+is not checked.
 
     Szegedy(graph[, stochastic, checkstochastic])
 
@@ -49,7 +50,7 @@ function Szegedy(graph::G,
 end
 
 function Szegedy(graph::AbstractGraph)
-    Szegedy(graph, default_stochastic(graph), false)
+    Szegedy(graph, uniform_stochastic(graph), false)
 end
 
 """
@@ -66,7 +67,7 @@ Creates `QWSearch` according to `AbstractSzegedy` model. By default parameter
 `penalty` is set to 0. Evolution operators are constructed according to the
 definition from https://arxiv.org/abs/1611.02238.
 
-    QWSearch(qws[; marked, penalty]; check)
+    QWSearch(qws[; marked, penalty])
 
 Update quantum walk search to new subset of marked elements and new penalty. By
 default `marked` and `penalty` are the same as in `qws`.
@@ -156,6 +157,5 @@ function check_qwdynamics(::Type{QWEvolution},
    check_qwmodel(szegedy, parameters)
 end
 
-include("szegedy_stochastic.jl")
 include("szegedy_operators.jl")
 include("szegedy_evolution.jl")

@@ -1,10 +1,10 @@
 
-function initial_state(qws::QWSearch{<:AbstractStochastic{T,G}})
+function initial_state(qws::QWSearch{<:AbstractStochastic})
   n = nv(graph(qws))
-  fill(one(eltype(T)/n, n)
+  fill(1. / n, n)
 end
 
-function stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T<:Real
+function stochastic_evolution(s::AbstractMatrix{T}, v::Vector{T}) where T<:Real
   s*v
 end
 

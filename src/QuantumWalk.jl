@@ -70,8 +70,11 @@ QuantumWalk
 
 include("type_hierarchy.jl")
 include("dynamics.jl")
+include("utils/utils_stochastic.jl")
+
 
 include("qwdynamics/qwdynamics_import.jl")
 include("qwmodels/qwmodels_import.jl")
+
 
 end
