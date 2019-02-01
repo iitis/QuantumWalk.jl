@@ -36,7 +36,7 @@ function QWPeriod(szegedy::AbstractSzegedy)
 end
 
 function check_qwdynamics(::Type{QWPeriod}, szegedy::AbstractSzegedy, parameters::Dict{Symbol})
-  QuantumWalk.check_szegedy(szegedy, parameters)
+  QuantumWalk.check_qwmodel(szegedy, parameters)
 end
 
 function state_diff(qwp::QWPeriod{<:AbstractSzegedy},

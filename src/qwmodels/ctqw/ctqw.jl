@@ -55,12 +55,12 @@ function proj(::Type{T}, i::Int, n::Int) where T<:Number
 end
 
 """
-    check_ctqw(ctqw, parameters)
+    check_qwmodel(ctqw, parameters)
 
 Private functions which checks the existance of `:hamiltonian`, its type and
 dimensionality.
 """
-function check_ctqw(ctqw::AbstractCTQW,
+function check_qwmodel(ctqw::AbstractCTQW,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
    @assert isa(parameters[:hamiltonian], AbstractMatrix{<:Number}) "value for :hamiltonian needs to be AbstractMatrix with numbers"
@@ -68,7 +68,7 @@ function check_ctqw(ctqw::AbstractCTQW,
    nothing
 end
 
-function check_ctqw(ctqw::CTQWDense,
+function check_qwmodel(ctqw::CTQWDense,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
    @assert isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be AbstractMatrix with numbers"
@@ -156,7 +156,7 @@ function check_qwdynamics(::Type{QWSearch},
                           ctqw::AbstractCTQW,
                           parameters::Dict{Symbol},
                           marked::Vector{Int})
-   check_ctqw(ctqw, parameters)
+   check_qwmodel(ctqw, parameters)
 end
 
 """
@@ -188,7 +188,7 @@ not checked for efficiency issues.
 function check_qwdynamics(::Type{QWEvolution},
                           ctqw::AbstractCTQW,
                           parameters::Dict{Symbol})
-   check_ctqw(ctqw, parameters)
+   check_qwmodel(ctqw, parameters)
 end
 
 include("ctqw_utils.jl")

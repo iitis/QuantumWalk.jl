@@ -112,12 +112,12 @@ function QWEvolution(szegedy::AbstractSzegedy)
 end
 
 """
-    check_szegedy(szegedy, parameters)
+    check_qwmodel(szegedy, parameters)
 
 Private function for checking the existance of `:operators`, its type, and the
 dimensionality of its elements.
 """
-function check_szegedy(szegedy::AbstractSzegedy,
+function check_qwmodel(szegedy::AbstractSzegedy,
                        parameters::Dict{Symbol})
    @assert :operators in keys(parameters) "Parameters should contain key operators"
    @assert length(parameters[:operators]) == 2 "Only two operators allowed"
@@ -138,7 +138,7 @@ function check_qwdynamics(::Type{QWSearch},
                           szegedy::AbstractSzegedy,
                           parameters::Dict{Symbol},
                           marked::Vector{Int})
-   check_szegedy(szegedy, parameters)
+   check_qwmodel(szegedy, parameters)
 end
 
 """
@@ -153,7 +153,7 @@ Furthermore operators need to be square of size equals to square of the order of
 function check_qwdynamics(::Type{QWEvolution},
                           szegedy::AbstractSzegedy,
                           parameters::Dict{Symbol})
-   check_szegedy(szegedy, parameters)
+   check_qwmodel(szegedy, parameters)
 end
 
 include("szegedy_stochastic.jl")
