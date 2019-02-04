@@ -55,5 +55,5 @@
         qwe_orig = QWSearch(ctqw_model, marked_v, 1. / n)
         qwe_discr = QWSearch(DiscretizedQWModel(ctqw_model, .5))
 
-    end
+    end=#
 end
