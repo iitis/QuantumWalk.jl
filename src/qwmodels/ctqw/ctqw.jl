@@ -185,10 +185,10 @@ function QWEvolution(ctqw::AbstractCTQW)
 end
 
 """
-    check_qwdynamics(QWEvolution, ctqw, parameters)
+    check_qwdynamics(QWDynamics, ctqw, parameters)
 
 Checks if combination of `ctqw` and `parameters` produces valid
-`QWSearch` object. It checks if `parameters` consists of key `:hamiltonian` with
+`QWDynamics` object. It checks if `parameters` consists of key `:hamiltonian` with
 real-valued matrix. Furthermore the hamiltonian
 needs to be square of size equals to `graph(ctqw)` order. The hermiticity is
 not checked for efficiency issues.

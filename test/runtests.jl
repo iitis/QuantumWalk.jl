@@ -15,6 +15,7 @@ macro test_no_error(ex)
 end
 
 include("ctqw.jl")
+include("discretized_model.jl")
 include("szegedy.jl")
 include("qwsearch.jl")
 include("qwevolution.jl")

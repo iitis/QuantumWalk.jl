@@ -2,7 +2,8 @@ export
    AbstractDiscretizedQWModel,
    DiscretizedQWModel,
    granulation,
-   real_runtime,
+   realtoint_runtime,
+   inttoreal_runtime,
    dynamics_internal
 
 """
@@ -13,6 +14,11 @@ version of an continuous time quantum walk, where each time step of value repres
 some (not necessarily 1.) time step. Note that the original model needs
 to be Markovian, i.e. the operation cannot depend on current time, only of
 its length.
+
+Warning: performing large number of steps may be more error-prone comparing
+to original continuous-time model. For high precision calculation we advise
+to compare the results with the original qwdynamics, in which it is usually a
+single-step calculation.
 """
 abstract type AbstractDiscretizedQWModel <: QWModelDiscr end
 
@@ -32,12 +38,13 @@ struct DiscretizedQWModel{T<:QWModelCont,S<:Real} <: AbstractDiscretizedQWModel
     end
 end
 
-function DiscretizedQWModel(qwmodel::QWModelCont)
-    DiscretizedQWModel(qwmodel, 1.)
+function DiscretizedQWModel(qwmodel::S,
+                            granulation::T=1.) where{S,T}
+    DiscretizedQWModel{S,T}(qwmodel, granulation)
 end
 
 function model(discrqwmodel::AbstractDiscretizedQWModel)
-    DiscretizedQWModel.qwmodelcont
+    discrqwmodel.qwmodelcont
 end
 
 """
@@ -46,17 +53,33 @@ end
 Outputs `granulation` of the discretezing model.
 """
 function granulation(discrqwmodel::AbstractDiscretizedQWModel)
-    DiscretizedQWModel.granulation
+    discrqwmodel.granulation
+end
+
+function granulation(qwdynamics_discr::QWDynamics{<:AbstractDiscretizedQWModel})
+    granulation(qwdynamics_discr.model)
 end
 
 """
-    real_runtime(discrqwmodel, time::Int)
+    inttoreal_runtime(discrqwmodel, time)
 
 Corrects `time` by granulation of the model.
 """
-function real_runtime(qwmodel::DiscretizedQWModel, time::Int)
-    granulation(qwmodel)*time
+function inttoreal_runtime(qwmodel::DiscretizedQWModel, runtime::Int)
+    granulation(qwmodel)*runtime
 end
 
+"""
+    realtoint_runtime(discrqwmodel, time[, rounding])
+
+Corrects `time` by granulation of the model. Converge to `Int` by taking the
+`rounding`, which defaults to `x->ceil(Int, x)`.
+"""
+function realtoint_runtime(qwmodel::DiscretizedQWModel,
+                    runtime::Real,
+                    rounding_method::Function= x->Int(ceil(x)))
+    rounding_method(runtime/granulation(qwmodel))
+end
 
 include("discretizedqwmodel_dynamics.jl")
+include("discretizedqwmodel_evolution.jl")
