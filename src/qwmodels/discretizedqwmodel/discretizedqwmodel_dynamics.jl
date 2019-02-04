@@ -25,7 +25,7 @@ function dynamics_internal(qwd::QWDynamics{<:AbstractDiscretizedQWModel})
     return parameters(qwd)[:qwd_internal]
 end
 
-function initial_state(qws:: QWSearch{<:AbstractDiscretizedQWModel})
+function initial_state(qws::QWSearch{<:AbstractDiscretizedQWModel})
     initial_state(dynamics_internal(qwd))
 end
 
@@ -34,9 +34,9 @@ function evolve(qws::QWSearch{<:AbstractDiscretizedQWModel}, state)
 end
 
 function measure(qws::QWSearch{<:AbstractDiscretizedQWModel}, state)
-    measure(dynamics_internal(qwd), state, granulation(model(qws)))
+    measure(dynamics_internal(qwd), state)
 end
 
 function measure(qws::QWSearch{<:AbstractDiscretizedQWModel}, state, vertices::Vector{Int})
-    measure(dynamics_internal(qwd), state, granulation(model(qws)))
+    measure(dynamics_internal(qwd), state, vertices)
 end
