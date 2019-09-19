@@ -20,8 +20,6 @@ and dynamics
 
 In particular for the last dynamic algorithm `maximize_quantum_search` finding optimal measure time are implemeneted. Note the function works in general for arbitrary discrete-time quantum walk. The results are not guaranteed for continuous-time quantum walk, as times is not discretized.
 
-The package requires [LightGraphs.jl](https://github.com/JuliaGraphs/LightGraphs.jl), [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) and [Expokit.jl](https://github.com/acroy/Expokit.jl).
-
 ## Installation
 
 The package can be installed using `Pkg.clone` command as

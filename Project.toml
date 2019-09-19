@@ -4,7 +4,7 @@ keywords = ["quantum walk", "quantum computing"]
 desc = "Package for building algorithms based on quantum walks"
 authors = ["Adam Glos <aglos@iitis.pl>", "Jarosław Adam Miszczak <jmiszczak@iitis.pl>"]
 licence = "MIT"
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
