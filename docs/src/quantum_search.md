@@ -156,7 +156,7 @@ execute_all_measured(::QWSearch{<:QWModelDiscr}, ::Int)
 execute_single(::QWSearch{<:QWModelDiscr}, ::Any, ::Int)
 execute_single_measured(::QWSearch, ::Int)
 expected_runtime(::Real, ::Real)
-initial_state(::QWSearch)
+initial_state
 marked(::QWSearch)
 maximize_quantum_search(::QWSearch{<:QWModelCont})
 maximize_quantum_search(::QWSearch{<:QWModelDiscr})

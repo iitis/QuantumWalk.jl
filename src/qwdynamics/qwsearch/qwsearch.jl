@@ -154,7 +154,7 @@ penalty(qsearchstate::QSearchState) = qsearchstate.penalty
 
 Generates initial state for `qws`.
 """
-initial_state(::QWSearch)
+initial_state
 
 include("qwsearch_dynamics.jl")
 include("qwsearch_util.jl")

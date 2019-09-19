@@ -13,7 +13,7 @@ representation of `AbstractCTQW` is `CTQW`.
 abstract type AbstractCTQW <: QWModelCont end
 
 """
-    CTQW(graph, matrix)
+    CTQW(graph[, matrix])
 
 Default representation of `AbstractCTQW`. `matrix` defaults
 to `:adjacency`. The Hamiltonian is a sparse matrix.
@@ -21,11 +21,11 @@ to `:adjacency`. The Hamiltonian is a sparse matrix.
 struct CTQW <: AbstractCTQW
    graph::Graph
    matrix::Symbol
-   CTQW(graph::Graph, matrix::Symbol) = new(graph, matrix)
+   CTQW(graph::Graph, matrix::Symbol=:adjacency) = new(graph, matrix)
 end
 
 """
-    CTQWDense(graph, matrix)
+    CTQWDense(graph[, matrix])
 
 Alternative representation of `AbstractCTQW`. `matrix` defaults
 to `:adjacency`. The Hamiltonian is a dense matrix.
@@ -33,22 +33,8 @@ to `:adjacency`. The Hamiltonian is a dense matrix.
 struct CTQWDense <: AbstractCTQW
    graph::Graph
    matrix::Symbol
-   CTQWDense(graph::Graph, matrix::Symbol) = new(graph, matrix)
+   CTQWDense(graph::Graph, matrix::Symbol=:adjacency) = new(graph, matrix)
 end
-
-"""
-    CTQW(graph)
-
-Constructor for CTQW, taking `matrix` to be `:adjacency`.
-"""
-CTQW(graph::Graph) = CTQW(graph, :adjacency)
-
-"""
-    CTQWDense(graph)
-
-Constructor for CTQWDense, taking `matrix` to be `:adjacency`.
-"""
-CTQWDense(graph::Graph) = CTQWDense(graph, :adjacency)
 
 """
     matrix(ctqw)
@@ -69,23 +55,23 @@ function proj(::Type{T}, i::Int, n::Int) where T<:Number
 end
 
 """
-    check_ctqw(ctqw, parameters)
+    check_qwmodel(ctqw, parameters)
 
 Private functions which checks the existance of `:hamiltonian`, its type and
 dimensionality.
 """
-function check_ctqw(ctqw::AbstractCTQW,
+function check_qwmodel(ctqw::AbstractCTQW,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
-   @assert isa(parameters[:hamiltonian], AbstractMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
+   @assert isa(parameters[:hamiltonian], AbstractMatrix{<:Number}) "value for :hamiltonian needs to be AbstractMatrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
    nothing
-end,
+end
 
-function check_ctqw(ctqw::CTQWDense,
+function check_qwmodel(ctqw::CTQWDense,
                     parameters::Dict{Symbol})
    @assert :hamiltonian ∈ keys(parameters) "parameters needs to have key hamiltonian"
-   @assert isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be Matrix with numbers"
+   @assert isa(parameters[:hamiltonian], DenseMatrix{<:Number}) "value for :hamiltonian needs to be AbstractMatrix with numbers"
    @assert size(parameters[:hamiltonian], 1) == size(parameters[:hamiltonian], 2) == nv(ctqw.graph) "Hamiltonian needs to be square matrix of order equal to graph order"
    nothing
 end
@@ -94,14 +80,19 @@ end
 """
     QWSearch([type, ]ctqw, marked[, penalty, jumpingrate])
 
-Creates `QWSearch` according to `AbstractCTQW` model. By default `type` equals
+Creates `QWSearch` according to `AbstractCTQW` model. The evolution is defined by
+Hamiltonian, is the sum of the quantum walk part and the oracle. By default `type` equals
 `ComplexF64`, `jumpingrate` equals largest eigenvalue of adjacency matrix of graph if
 `matrix(CTQW)` outputs `:adjacency` and error otherwise, and `penalty` equals 0.
+Details can be found in the original [paper](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.70.022314).
+
 
     QWSearch(qws_ctqw; marked, penalty)
 
 Updates quantum walk search to new subset of marked elements and new penalty. By
 default marked and penalty are the same as in qws.
+
+
 """
 function QWSearch(::Type{T},
                   ctqw::AbstractCTQW,
@@ -115,7 +106,7 @@ function QWSearch(::Type{T},
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
 
    QWSearch(ctqw, parameters, marked, penalty)
-end,
+end
 
 function QWSearch(::Type{T},
                   ctqw::CTQWDense,
@@ -129,14 +120,14 @@ function QWSearch(::Type{T},
    parameters = Dict{Symbol,Any}(:hamiltonian => hamiltonian)
 
    QWSearch(ctqw, parameters, marked, penalty)
-end,
+end
 
 function QWSearch(ctqw::AbstractCTQW,
                   marked::Vector{Int},
                   penalty::Real = 0.,
                   jumpingrate::Real = jumping_rate(Float64, ctqw))
    QWSearch(ComplexF64, ctqw, marked, penalty, ComplexF64(jumpingrate))
-end,
+end
 
 function QWSearch(qws::QWSearch{<:AbstractCTQW};
                   marked::Vector{Int}=qws.marked,
@@ -165,20 +156,21 @@ function check_qwdynamics(::Type{QWSearch},
                           ctqw::AbstractCTQW,
                           parameters::Dict{Symbol},
                           marked::Vector{Int})
-   check_ctqw(ctqw, parameters)
+   check_qwmodel(ctqw, parameters)
 end
 
 """
     QWEvolution([type_ctqw, ]ctqw)
 
 Creates `QWEvolution` according to `AbstractCTQW` model. By default `type` equals
-`ComplexF64`.
+`ComplexF64`. The Hamiltonian of the system is either (normalized) Laplacian, or
+minus adjacency matrix.
 """
 function QWEvolution(::Type{U},
                      ctqw::AbstractCTQW) where U<:Number
    parameters = Dict{Symbol,Any}(:hamiltonian => graph_hamiltonian(U, ctqw))
    QWEvolution(ctqw, parameters)
-end,
+end
 
 function QWEvolution(ctqw::AbstractCTQW)
    QWEvolution(ComplexF64, ctqw)
@@ -196,7 +188,7 @@ not checked for efficiency issues.
 function check_qwdynamics(::Type{QWEvolution},
                           ctqw::AbstractCTQW,
                           parameters::Dict{Symbol})
-   check_ctqw(ctqw, parameters)
+   check_qwmodel(ctqw, parameters)
 end
 
 include("ctqw_utils.jl")

@@ -47,7 +47,7 @@ function execute_single(qwd::QWDynamics{<:QWModelDiscr},
    end
 
    state
-end,
+end
 
 function execute_single(qwd::QWDynamics{<:QWModelCont},
                         initstate,
@@ -74,7 +74,8 @@ end
     execute_all(qwd, initstate, runtime)
 
 Returns list of all states including the `initstate` according to `qwd` for
-times from 0 to `runtime`. `runtime` needs to be nonnegative.
+times from 0 to `runtime`. `runtime` needs to be nonnegative. Wroks only for
+discrete-time evolution.
 """
 function execute_all(qwd::QWDynamics{<:QWModelDiscr},
                      initstate::S,
@@ -97,6 +98,7 @@ end
 Evolve `initstate` acording to `qwd` for time `runtime`. Returns matrix of type
 `Matrix{Float64}` for which `i`-th column is the probability distribution obtained
  from the measurement in (`i-1`)-th step. `runtime` needs to be nonnegative.
+ Wroks only for discrete-time evolution.
 """
 function execute_all_measured(qwd::QWDynamics{<:QWModelDiscr},
                               initstate,
