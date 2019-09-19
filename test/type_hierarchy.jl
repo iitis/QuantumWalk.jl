@@ -1,6 +1,6 @@
 @testset "Getter functions for types" begin
   n = 5
-  g = CompleteGraph(n)
+  g = complete_graph(n)
   ctqw = CTQW(g)
   qws = QWSearch(ctqw, [1])
 

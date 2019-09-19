@@ -9,8 +9,8 @@
     @test QuantumWalk.outneighbors_looped(g, 1) == [2, 3]
     @test QuantumWalk.outneighbors_looped(g, 3) == [3]
 
-    @test QuantumWalk.outneighbors_looped(CompleteGraph(3), 3) == [1, 2]
-    @test QuantumWalk.outneighbors_looped(CompleteDiGraph(3), 3) == [1, 2]
+    @test QuantumWalk.outneighbors_looped(complete_graph(3), 3) == [1, 2]
+    @test QuantumWalk.outneighbors_looped(complete_digraph(3), 3) == [1, 2]
 
     @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 0)
     @test_throws BoundsError QuantumWalk.outneighbors_looped(g, 4)
@@ -29,7 +29,7 @@
    # negative cases
    g = smallgraph(:bull)
    @test_throws AssertionError QuantumWalk.graphstochasticcheck(g, adjacency_matrix(g))
-   @test_throws AssertionError QuantumWalk.graphstochasticcheck(CompleteGraph(nv(g)+1), QuantumWalk.default_stochastic(g))
+   @test_throws AssertionError QuantumWalk.graphstochasticcheck(complete_graph(nv(g)+1), QuantumWalk.default_stochastic(g))
    @test_throws AssertionError QuantumWalk.graphstochasticcheck(DiGraph(nv(g)), adjacency_matrix(g))
 
    g = DiGraph(3)

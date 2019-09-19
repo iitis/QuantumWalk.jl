@@ -1,7 +1,7 @@
 @testset "Maximization for quantum search" begin
 
     n = 5
-    g = CompleteGraph(n)
+    g = complete_graph(n)
     qss_penalty = ceil(Int, log(nv(g)))
 
     @testset "Continuous mode" begin

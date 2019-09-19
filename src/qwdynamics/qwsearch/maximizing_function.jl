@@ -20,15 +20,15 @@ while to small may greatly increase runtime of the algorithm.
 
 `maxtime` defaults to graph order n, `tstep` defaults to `sqrt(n)/5`. Note that in general the probability is not maximal.
 
-```jldoctest
-julia> qws = QWSearch(CTQW(CompleteGraph(100)), [1], 1., 0.01);
+```jldoctest; setup = :(using QuantumWalk,LightGraphs)
+julia> qws = QWSearch(CTQW(complete_graph(100)), [1], 1., 0.01);
 
 julia> result = maximize_quantum_search(qws)
-QSearchState{Array{Complex{Float64},1},Float64,Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 11.99636940469214, 1.0)
+QSearchState{Array{Complex{Float64},1},Float64,Float64}(Complex{Float64}[0.621142+0.695665im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im  …  0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im, 0.0279736-0.023086im], [0.869767], 11.996369403338626, 1.0)
 
 julia> probability(result)
 1-element Array{Float64,1}:
- 0.8697670119768242
+ 0.8697670118862033
 ```
 """
 function maximize_quantum_search(qws::QWSearch{<:QWModelCont},
@@ -97,8 +97,8 @@ Note last three modes always returns optimal time within the interval.
 
 `maxtime` defaults to graph order n, `mode` defaults to `:maxeff`.
 
-```jldoctest
-julia> qws = QWSearch(Szegedy(CompleteGraph(200)), [1], 1);
+```jldoctest; setup = :(using QuantumWalk,LightGraphs)
+julia> qws = QWSearch(Szegedy(complete_graph(200)), [1], 1);
 
 julia> result = maximize_quantum_search(qws);
 
@@ -107,7 +107,7 @@ julia> runtime(result)
 
 julia> probability(result)
 1-element Array{Float64,1}:
- 0.5000160413993846
+ 0.5000160413993847
 
 julia> result = maximize_quantum_search(qws, 100, :maxtimeprob);
 

@@ -87,8 +87,8 @@ running time `runtime` and penalty `penalty`.
 In second case `state` is measured according to `qws`.
 
 # Example
-```jldoctest
-julia> qws = QWSearch(Szegedy(CompleteGraph(4)), [1]);
+```jldoctest; setup = :(using QuantumWalk,LightGraphs)
+julia> qws = QWSearch(Szegedy(complete_graph(4)), [1]);
 
 julia> result = QSearchState(qws, initial_state(qws), 0)
 QSearchState{Array{Float64,1},Int64,Int64}([0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0, 0.288675, 0.288675, 0.288675, 0.288675, 0.0], [0.25], 0, 0)

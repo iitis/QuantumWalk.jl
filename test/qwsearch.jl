@@ -25,7 +25,7 @@ end
 
   @testset "CTQW and CTQWDense arch" begin
     n = 5
-    g = CompleteGraph(n)
+    g = complete_graph(n)
     qws = QWSearch(CTQW(g), [1], 0, 1/n)
     s0 =  QSearchState(qws, real(initial_state(qws)), 0.0)
     @test sum(execute_single(qws, pi*sqrt(n)/2).probability) ≈ 1
@@ -36,7 +36,7 @@ end
 
 
     n = 5
-    g = CycleGraph(5)
+    g = cycle_graph(5)
     qss_adj = QWSearch(CTQW(g, :adjacency), [1], 0, 1/2)
     qss_lap = QWSearch(CTQW(g, :laplacian), [1], 0, 1/2)
     qss_normlap = QWSearch(CTQW(g, :normalized_laplacian), [1], 0, 1)

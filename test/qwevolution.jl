@@ -1,7 +1,7 @@
 @testset "Quantum walks simulator" begin
 
   n = 5
-  g = CompleteGraph(n)
+  g = complete_graph(n)
 
   @testset "General" begin
     qwe = QWEvolution(Szegedy(g))

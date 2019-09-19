@@ -1,6 +1,6 @@
 @testset "CTQW model check" begin
   n = 5
-  g = CompleteGraph(n)
+  g = complete_graph(n)
   ctqw = CTQW(g)
   ctqw_qss = QWSearch(ctqw, [1,3])
 
@@ -49,7 +49,7 @@ end
 
 @testset "CTQWDense model check" begin
   n = 5
-  g = CompleteGraph(n)
+  g = complete_graph(n)
   ctqw = CTQWDense(g)
   ctqw_qss = QWSearch(ctqw, [1,3])
 

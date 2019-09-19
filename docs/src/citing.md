@@ -6,9 +6,9 @@ If you are using our package, please cite us by using the following BibTeX entry
 ```tex
 @misc{glos2018quantumwalkjl,
   author       = {Adam Glos and Jaros{\l}aw Adam Miszczak},
-  title        = {{QuantumWalks/QuantumWalk.jl}},
+  title        = {{iitis/QuantumWalk.jl}},
   year         = {2018},
-  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}
+  url          = {https://github.com/iitis/QuantumWalk.jl}
 }
 ```
 
