@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/QuantumWalks/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/QuantumWalks/QuantumWalk.jl)
-[![Coverage Status](https://coveralls.io/repos/github/QuantumWalks/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/QuantumWalks/QuantumWalk.jl?branch=master)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://QuantumWalks.github.io/QuantumWalk.jl/latest)
+[![Build Status](https://travis-ci.org/iitis/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/iitis/QuantumWalk.jl)
+[![Coverage Status](https://coveralls.io/repos/github/iitis/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/iitis/QuantumWalk.jl?branch=master)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://iitis.github.io/QuantumWalk.jl/latest)
 # QuantumWalk
 
 ## Description
@@ -39,8 +39,8 @@ In case of citing, please use the following BibTeX form:
 ```tex
 @misc{glos2018quantumwalkjl,
   author       = {Adam Glos and Jaros{\l}aw Adam Miszczak},
-  title        = {{QuantumWalks/QuantumWalk.jl}},
+  title        = {{iitis/QuantumWalk.jl}},
   year         = {2018},
-  url          = {https://github.com/QuantumWalks/QuantumWalk.jl}
+  url          = {https://github.com/iitis/QuantumWalk.jl}
 }
 ```
