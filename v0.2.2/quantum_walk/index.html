@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quantum walk evolution · QuantumWalk</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/><link href="../assets/logo.ico" rel="icon" type="image/x-icon"/></head><body><nav class="toc"><a href="../"><img class="logo" src="../assets/logo.png" alt="QuantumWalk logo"/></a><h1>QuantumWalk</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../">Home</a></li><li><a class="toctext" href="../type_hierarchy/">Type hierarchies</a></li><li><span class="toctext">Dynamics</span><ul><li class="current"><a class="toctext" href>Quantum walk evolution</a><ul class="internal"><li><a class="toctext" href="#Quantum-walk-evolution-1">Quantum walk evolution</a></li><li><a class="toctext" href="#Example-1">Example</a></li><li><a class="toctext" href="#Adjusting-model-to-QWEvolution-1">Adjusting model to <code>QWEvolution</code></a></li><li><a class="toctext" href="#Documentation-1">Documentation</a></li></ul></li><li><a class="toctext" href="../quantum_search/">Quantum search</a></li></ul></li><li><span class="toctext">Models</span><ul><li><a class="toctext" href="../ctqw/">CTQW and CTQWDense</a></li><li><a class="toctext" href="../szegedy/">Szegedy</a></li></ul></li><li><a class="toctext" href="../contributing/">Contributing</a></li><li><a class="toctext" href="../citing/">Citing</a></li><li><a class="toctext" href="../license/">Licence</a></li></ul></nav><article id="docs"><header><nav><ul><li>Dynamics</li><li><a href>Quantum walk evolution</a></li></ul><a class="edit-page" href="https://github.com/iitis/QuantumWalk.jl/blob/master/docs/src/quantum_walk.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Quantum walk evolution</span><a class="fa fa-bars" href="#"></a></div></header><h2><a class="nav-anchor" id="Quantum-walk-evolution-1" href="#Quantum-walk-evolution-1">Quantum walk evolution</a></h2><p>The simplest quantum walk evolution. It simply takes the model and initial state from the user, simulate an evolution and outputs the state or the probability distribution of measured state.</p><p>The dynamics requires <code>evolve</code>, <code>measure</code> and <code>check_qwdynamics</code> functions. It provides <code>execute</code>, <code>execute_single</code>, <code>execute_single_measured</code>, <code>execute_all</code> and <code>execute_all_measured</code> functions. Depending on the name it outputs single state or all states, measured or not measured. The execute combines the last four functions. In the case of type-stability requirement, we recommend to use the last four functions.</p><p><strong>Note:</strong> Methods <code>execute_all</code> and <code>execute_all_measured</code> are provided only for discrete quantum walk models.</p><h2><a class="nav-anchor" id="Example-1" href="#Example-1">Example</a></h2><pre><code class="language-julia-repl">julia&gt; qwe = QWEvolution(Szegedy(CompleteGraph(4)));
+
+julia&gt; state = rand(16); state = sparse(state/norm(state));
+
+julia&gt; execute_single(qwe, state, 4)
+16-element SparseVector{Float64,Int64} with 16 stored entries:
+  [1 ]  =  0.37243
+  [2 ]  =  0.402212
+  [3 ]  =  0.356914
+  [4 ]  =  0.0384893
+  [5 ]  =  0.230443
+  [6 ]  =  0.0373444
+  [7 ]  =  0.12092
+  [8 ]  =  0.285178
+  [9 ]  =  0.151519
+  [10]  =  0.258755
+  [11]  =  0.30374
+  [12]  =  0.375624
+  [13]  =  0.169741
+  [14]  =  -0.0403198
+  [15]  =  0.255573
+  [16]  =  0.0344363
+
+julia&gt; execute_all_measured(qwe, state, 4)
+4×5 Array{Float64,2}:
+ 0.273249  0.455568  0.308632  0.339199  0.429348
+ 0.20334   0.165956  0.188335  0.188466  0.150447
+ 0.244393  0.213254  0.378161  0.171268  0.323264
+ 0.279018  0.165221  0.124872  0.301066  0.0969412
+
+julia&gt; execute(qwe, state, 4, measure=true, all=true)
+4×5 Array{Float64,2}:
+ 0.273249  0.455568  0.308632  0.339199  0.429348
+ 0.20334   0.165956  0.188335  0.188466  0.150447
+ 0.244393  0.213254  0.378161  0.171268  0.323264
+ 0.279018  0.165221  0.124872  0.301066  0.0969412</code></pre><h2><a class="nav-anchor" id="Adjusting-model-to-QWEvolution-1" href="#Adjusting-model-to-QWEvolution-1">Adjusting model to <code>QWEvolution</code></a></h2><p>The <code>QWEvolution</code> requires an implementation of <code>evolve</code>, <code>measure</code> and <code>check_qwdynamics</code>. Instead of implementing purely quantum walk, we will implement simple random walk, which still fits our considerations.</p><p>We create an  <code>AbstractStochastic</code> supertype, in case someone would prefer to make different stochastic evolution (for example change the stochastic matrix). Note we skipped some assertion checking for readability. Furthermore note we have defined two versions of <code>measure</code>: in most cases measuring only part of <code>vertices</code> are faster than making full measurement.</p><pre><code class="language-julia">abstract type AbstractStochastic &lt;: QWModelDiscr end
+
+struct UniformStochastic{G&lt;:SimpleGraph} &lt;: AbstractStochastic
+  graph::G
+end
+
+UniformScaling(digraph::G) where G= UniformStochastic{G}(digraph)
+
+function check_qwdynamics(::Type{QWEvolution},
+                          abs_stoch::UniformStochastic,
+                          parameters::Dict{Symbol,Any})
+  @assert :stochastic ∈ keys(parameters) &quot;parameters needs to have key stochastic&quot;
+  n = nv(graph(abs_stoch))
+  @assert isa(parameters[:stochastic], SparseMatrixCSC{&lt;:Real}) &quot;value for :stochastic needs to be sparse matrix with real numbers&quot;
+  @assert size(parameters[:stochastic], 1) == size(parameters[:stochastic], 2) &quot;Stochastic matrix needs to be square stochastic matrix&quot;
+  @assert mapslices(sum, parameters[:stochastic], 1)[1,:] ≈ ones(n) &quot;Stochastic matrix needs to be square stochastic matrix of order graph&quot;
+end
+
+function stochastic_matrix(g::SimpleGraph)
+  a = adjacency_matrix(g)
+  a*spdiagm(mapslices(x-&gt;1/sum(x), a, 1)[1,:])
+end
+
+function QWEvolution(stoch::AbstractStochastic)
+   parameters = Dict{Symbol,Any}(:stochastic =&gt; stochastic_matrix(graph(stoch)))
+   QWEvolution(stoch, parameters)
+end
+
+function stochastic_evolution(s::SparseMatrixCSC{T}, v::Vector{T}) where T&lt;:Real
+  s*v
+end
+
+function evolve(qws::QWDynamics{&lt;:AbstractStochastic}, state)
+  stochastic_evolution(parameters(qws)[:stochastic], state)
+end
+
+function measure(::QWDynamics{&lt;:AbstractStochastic}, state::Vector{&lt;:Real})
+   return state
+end
+
+function measure(::QWDynamics{&lt;:AbstractStochastic},
+                 state::Vector{&lt;:Real},
+                 vertices::Vector{Int})
+   return state[vertices]
+end</code></pre><p>Now we can make a pure walk evolution.</p><pre><code class="language-julia-repl">julia&gt; dynamic = QWEvolution(UniformStochastic(smallgraph(:bull)))
+QuantumWalk.QWEvolution{UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}}(UniformStochastic{LightGraphs.SimpleGraphs.SimpleGraph{Int64}}({5, 5} undirected simple Int64 graph), Dict{Symbol,Any}(Pair{Symbol,Any}(:stochastic,
+  [2, 1]  =  0.5
+  [3, 1]  =  0.5
+  [1, 2]  =  0.333333
+  [3, 2]  =  0.333333
+  [4, 2]  =  0.333333
+  [1, 3]  =  0.333333
+  [2, 3]  =  0.333333
+  [5, 3]  =  0.333333
+  [2, 4]  =  1.0
+  [3, 5]  =  1.0)))
+
+julia&gt; println(execute_single(dynamic, fill(1./5, 5), 5))
+[0.186831, 0.313169, 0.313169, 0.0934156, 0.0934156]</code></pre><p>Note that continuous walks requires time argument in <code>evolution</code> function, as an example consider  <a href="../ctqw/">CTQW model</a>.</p><h2><a class="nav-anchor" id="Documentation-1" href="#Documentation-1">Documentation</a></h2><p>Following functions are connected to the dynamics. Note that since <code>QWEvolution</code> is a default subtype of <code>QWDynamics</code>, most of the functions are defined for the last type.</p><ul><li><a href="#QuantumWalk.QWEvolution"><code>QuantumWalk.QWEvolution</code></a></li><li><a href="#QuantumWalk.check_qwdynamics"><code>QuantumWalk.check_qwdynamics</code></a></li><li><a href="#QuantumWalk.evolve"><code>QuantumWalk.evolve</code></a></li><li><a href="#QuantumWalk.execute-Tuple{QWDynamics,Any,Real}"><code>QuantumWalk.execute</code></a></li><li><a href="#QuantumWalk.execute_all-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_all</code></a></li><li><a href="#QuantumWalk.execute_all_measured-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_all_measured</code></a></li><li><a href="#QuantumWalk.execute_single-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_single</code></a></li><li><a href="#QuantumWalk.execute_single_measured-Tuple{QWDynamics,Any,Real}"><code>QuantumWalk.execute_single_measured</code></a></li><li><a href="#QuantumWalk.measure"><code>QuantumWalk.measure</code></a></li></ul><h3><a class="nav-anchor" id="Full-docs-1" href="#Full-docs-1">Full docs</a></h3><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.QWEvolution" href="#QuantumWalk.QWEvolution"><code>QuantumWalk.QWEvolution</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">QWEvolution(model, parameters, check)</code></pre><p>Type describing standard quantum walk evolution. <code>check_qwdynamics</code> is executed if and only iff <code>check</code> is true.</p><p>Needs implementation of</p><ul><li><code>evolve(::QWEvolution{&lt;:QWModelDiscr}, state)</code> or <code>evolve(::QWEvolution{&lt;:QWModelCont}, state, time::Real)</code></li><li><code>measure(::QWEvolution, state)</code></li><li><code>check_qwdynamics(QWEvolution, ::QWModel, parameters::Dict{Symbol})</code></li><li>proper constructors.</li></ul><p>Offers functions</p><ul><li><code>execute</code></li><li><code>execute_single</code></li><li><code>execute_single_measured</code></li><li><code>execute_all</code></li><li><code>execute_all_measured</code></li></ul></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/qwdynamics/qwevolution/qwevolution.jl#L3-L20">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.check_qwdynamics" href="#QuantumWalk.check_qwdynamics"><code>QuantumWalk.check_qwdynamics</code></a> — <span class="docstring-category">Function</span>.</div><div><div><pre><code class="language-julia">check_qwdynamics(qwdtype::Type{&lt;:QWDynamics}, model::QWModel, parameters::Dict{Symbol}, ...)
+check_qwdynamics(qwd)</code></pre><p>Checks whetver combination of the arguments creates valid quantum walk dynamics <code>qwdtype</code>. Check whether <code>qwd</code> is properly parametrized dynamic.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/type_hierarchy.jl#L84-L90">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.evolve" href="#QuantumWalk.evolve"><code>QuantumWalk.evolve</code></a> — <span class="docstring-category">Function</span>.</div><div><div><pre><code class="language-julia">evolve(qwd::QWDynamics{&lt;:QWModelDiscr}, state)
+evolve(qwd::QWDynamics{&lt;:QWModelCont}, state, time::Real)</code></pre><p>Evolve <code>state</code> according to <code>qwd</code>. For discrete model single-step evolution is implemented. Type returned is the same as type of <code>state</code>.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/type_hierarchy.jl#L75-L81">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.execute-Tuple{QWDynamics,Any,Real}" href="#QuantumWalk.execute-Tuple{QWDynamics,Any,Real}"><code>QuantumWalk.execute</code></a> — <span class="docstring-category">Method</span>.</div><div><div><pre><code class="language-julia">execute(qwd, initstate, runtime[, all=false, measure=false])</code></pre><p>Run proper execution function depending on given keywords. <code>all</code> and <code>measure</code> keywords defaults to <code>false</code>. In case of <code>all</code> being true, all intermidiate states are returned. Note that for <code>all</code> equal to <code>true</code>, the model specified by <code>qwd</code> needs to be disrete. For <code>measure</code> equal to true, measurement distributions are returned.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/dynamics.jl#L8-L16">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.execute_all-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}" href="#QuantumWalk.execute_all-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_all</code></a> — <span class="docstring-category">Method</span>.</div><div><div><pre><code class="language-julia">execute_all(qwd, initstate, runtime)</code></pre><p>Returns list of all states including the <code>initstate</code> according to <code>qwd</code> for times from 0 to <code>runtime</code>. <code>runtime</code> needs to be nonnegative. Wroks only for discrete-time evolution.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/dynamics.jl#L73-L79">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.execute_all_measured-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}" href="#QuantumWalk.execute_all_measured-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_all_measured</code></a> — <span class="docstring-category">Method</span>.</div><div><div><pre><code class="language-julia">execute_all_measured(qwd, initstate, runtime)</code></pre><p>Evolve <code>initstate</code> acording to <code>qwd</code> for time <code>runtime</code>. Returns matrix of type <code>Matrix{Float64}</code> for which <code>i</code>-th column is the probability distribution obtained  from the measurement in (<code>i-1</code>)-th step. <code>runtime</code> needs to be nonnegative.  Wroks only for discrete-time evolution.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/dynamics.jl#L95-L102">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.execute_single-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}" href="#QuantumWalk.execute_single-Tuple{QWDynamics{#s3} where #s3&lt;:QWModelDiscr,Any,Int64}"><code>QuantumWalk.execute_single</code></a> — <span class="docstring-category">Method</span>.</div><div><div><pre><code class="language-julia">execute_single(qwd, initstate, runtime)</code></pre><p>Evolve <code>initstate</code> according to QWDynamics <code>qwd</code> for time <code>runtime</code>. <code>runtime</code> needs to be nonnegative.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/dynamics.jl#L33-L38">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.execute_single_measured-Tuple{QWDynamics,Any,Real}" href="#QuantumWalk.execute_single_measured-Tuple{QWDynamics,Any,Real}"><code>QuantumWalk.execute_single_measured</code></a> — <span class="docstring-category">Method</span>.</div><div><div><pre><code class="language-julia">execute_single_measured(qwd, initstate, runtime)</code></pre><p>Evolve <code>initstate</code> acording to <code>qwd</code> for time <code>runtime</code> and measure it in the end. <code>runtime</code> needs to be nonnegative.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/dynamics.jl#L60-L65">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="QuantumWalk.measure" href="#QuantumWalk.measure"><code>QuantumWalk.measure</code></a> — <span class="docstring-category">Function</span>.</div><div><div><pre><code class="language-julia">measure(qwd::QWDynamics, state[, vertices::Vector{Int}])</code></pre><p>Measure <code>state</code> according to <code>qwd</code>. If <code>vertices</code> is provided, probabilities of given vertices is returned. Otherwise full probability distribution is returned. Output is of type <code>Vector{Float64}</code>.</p></div></div><a class="source-link" target="_blank" href="https://github.com/iitis/QuantumWalk.jl/blob/c9ca4eaf57373cffb3fab922f97efc6c3f630527/src/type_hierarchy.jl#L66-L72">source</a></section><footer><hr/><a class="previous" href="../type_hierarchy/"><span class="direction">Previous</span><span class="title">Type hierarchies</span></a><a class="next" href="../quantum_search/"><span class="direction">Next</span><span class="title">Quantum search</span></a></footer></article></body></html>
