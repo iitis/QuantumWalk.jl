@@ -1,4 +1,3 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3457951.svg)](https://doi.org/10.5281/zenodo.3457951)
 [![Build Status](https://travis-ci.org/iitis/QuantumWalk.jl.svg?branch=master)](https://travis-ci.org/iitis/QuantumWalk.jl)
 [![Coverage Status](https://coveralls.io/repos/github/iitis/QuantumWalk.jl/badge.svg?branch=master)](https://coveralls.io/github/iitis/QuantumWalk.jl?branch=master)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://iitis.github.io/QuantumWalk.jl/latest)
